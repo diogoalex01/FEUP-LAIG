@@ -391,9 +391,41 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-
         //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("To do: Parse textures.");
+        var children = texturesNode.children;
+        this.textures = [];
+
+        // Any number of textures.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current texture.
+            var textureID = this.reader.getString(children[i], 'id');
+            if (textureID == null)
+                return "no ID defined for texture";
+
+            // Checks for repeated IDs.
+            if (this.textures[textureID] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureID + ")";
+
+            // Get id of the current texture.
+            var filePath = this.reader.getString(children[i], 'file');
+            if (file == null)
+                return "no file path defined for texture";
+
+            // Checks for repeated file paths.
+            if (this.textures[filePath] != null)
+                return "file paths must be unique for each texture (conflict: ID = " + textureID + ")";
+
+            var texture = new CGFtexture(this.scene, "./scenes/" + filepath);
+            this.textures[textureID] = texture;
+        }
+
+        this.log("Parsed textures");
         return null;
     }
 
@@ -402,10 +434,8 @@ class MySceneGraph {
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
-        var children = materialsNode.children;
-
         this.materials = [];
-
+        var children = materialsNode.children;
         var grandChildren = [];
         var nodeNames = [];
 
@@ -426,11 +456,198 @@ class MySceneGraph {
             if (this.materials[materialID] != null)
                 return "ID must be unique for each light (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+            // Get shininess of the current material.
+            var shininess = this.reader.getFloat(children[i], 'shininess');
+            if (shininess != null && !isNaN(shininess))
+                return "unable to parse shininess of the material with ID = " + materialID;
+
+            grandChildren = children[i].children;
+            nodeNames = [];
+
+            // Validate the material components
+            if (grandChildren.length != 4) {
+                return "There must be exactly 4 material components in the following order (emission, ambient, diffuse, specular) on material with ID" + materialID;
+            }
+
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            var emissionIndex = nodeNames.indexOf("emission");
+            var ambientIndex = nodeNames.indexOf("ambient");
+            var diffuseIndex = nodeNames.indexOf("diffuse");
+            var specularIndex = nodeNames.indexOf("specular");
+
+            if (grandChildren[emissionIndex].nodeName != "emission") {
+                return "unknown tag <" + grandChildren[i].nodeName + ">";
+            }
+
+            var emission = [];
+            var ambient = [];
+            var diffuse = [];
+            var specular = [];
+
+            /* emission */
+            // R
+            var r = this.reader.getFloat(grandChildren[emissionIndex], 'r');
+            if (r == null)
+                return "missing component R of the emission parameter for material with ID = " + materialID;
+            else if (isNaN(r))
+                return "component R of the emission parameter is non-numeric on the 'materials' block";
+            else if (r < 0 || r > 1)
+                return "component R of the emission parameter must be a value between 0 and 1 on the 'materials' block"
+            emission.push(r);
+            // G
+            var g = this.reader.getFloat(grandChildren[emissionIndex], 'g');
+            if (g == null)
+                return "missing component G of the emission parameter for material with ID = " + materialID;
+            else if (isNaN(g))
+                return "component G of the emission parameter is non-numeric on the 'materials' block";
+            else if (g < 0 || g > 1)
+                return "component G of the emission parameter must be a value between 0 and 1 on the 'materials' block"
+            emission.push(g);
+            // B
+            var b = this.reader.getFloat(grandChildren[emissionIndex], 'b');
+            if (b == null)
+                return "missing component B of the emission parameter for material with ID = " + materialID;
+            else if (isNaN(b))
+                return "component B of the emission parameter is non-numeric on the 'materials' block";
+            else if (b < 0 || b > 1)
+                return "component B of the emission parameter must be a value between 0 and 1 on the 'materials' block"
+            emission.push(b);
+            // A
+            var a = this.reader.getFloat(grandChildren[emissionIndex], 'a');
+            if (a == null)
+                return "missing component A of the emission parameter for material with ID = " + materialID;
+            else if (isNaN(a))
+                return "component A of the emission parameter is non-numeric on the 'materials' block";
+            else if (a < 0 || a > 1)
+                return "component A of the emission parameter must be a value between 0 and 1 on the 'materials' block"
+            emission.push(a);
+
+            /* ambient */
+            // R
+            var r = this.reader.getFloat(grandChildren[ambientIndex], 'r');
+            if (r == null)
+                return "missing component R of the ambient parameter for material with ID = " + materialID;
+            else if (isNaN(r))
+                return "component R of the ambient parameter is non-numeric on the 'materials' block";
+            else if (r < 0 || r > 1)
+                return "component R of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
+            ambient.push(r);
+            // G
+            var g = this.reader.getFloat(grandChildren[ambientIndex], 'g');
+            if (g == null)
+                return "missing component G of the ambient parameter for material with ID = " + materialID;
+            else if (isNaN(g))
+                return "component G of the ambient parameter is non-numeric on the 'materials' block";
+            else if (g < 0 || g > 1)
+                return "component G of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
+            ambient.push(g);
+            // B
+            var b = this.reader.getFloat(grandChildren[ambientIndex], 'b');
+            if (b == null)
+                return "missing component B of the ambient parameter for material with ID = " + materialID;
+            else if (isNaN(b))
+                return "component B of the ambient parameter is non-numeric on the 'materials' block";
+            else if (b < 0 || b > 1)
+                return "component B of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
+            ambient.push(b);
+            // A
+            var a = this.reader.getFloat(grandChildren[ambientIndex], 'a');
+            if (a == null)
+                return "missing component A of the ambient parameter for material with ID = " + materialID;
+            else if (isNaN(a))
+                return "component A of the ambient parameter is non-numeric on the 'materials' block";
+            else if (a < 0 || a > 1)
+                return "component A of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
+            ambient.push(a);
+
+            /* diffuse */
+            // R
+            var r = this.reader.getFloat(grandChildren[diffuseIndex], 'r');
+            if (r == null)
+                return "missing component R of the diffuse parameter for material with ID = " + materialID;
+            else if (isNaN(r))
+                return "component R of the diffuse parameter is non-numeric on the 'materials' block";
+            else if (r < 0 || r > 1)
+                return "component R of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
+            diffuse.push(r);
+            // G
+            var g = this.reader.getFloat(grandChildren[diffuseIndex], 'g');
+            if (g == null)
+                return "missing component G of the diffuse parameter for material with ID = " + materialID;
+            else if (isNaN(g))
+                return "component G of the diffuse parameter is non-numeric on the 'materials' block";
+            else if (g < 0 || g > 1)
+                return "component G of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
+            diffuse.push(g);
+            // B
+            var b = this.reader.getFloat(grandChildren[diffuseIndex], 'b');
+            if (b == null)
+                return "missing component B of the diffuse parameter for material with ID = " + materialID;
+            else if (isNaN(b))
+                return "component B of the diffuse parameter is non-numeric on the 'materials' block";
+            else if (b < 0 || b > 1)
+                return "component B of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
+            diffuse.push(b);
+            // A
+            var a = this.reader.getFloat(grandChildren[diffuseIndex], 'a');
+            if (a == null)
+                return "missing component A of the diffuse parameter for material with ID = " + materialID;
+            else if (isNaN(a))
+                return "component A of the diffuse parameter is non-numeric on the 'materials' block";
+            else if (a < 0 || a > 1)
+                return "component A of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
+            diffuse.push(a);
+
+            /* specular */
+            // R
+            var r = this.reader.getFloat(grandChildren[specularIndex], 'r');
+            if (r == null)
+                return "missing component R of the specular parameter for material with ID = " + materialID;
+            else if (isNaN(r))
+                return "component R of the specular parameter is non-numeric on the 'materials' block";
+            else if (r < 0 || r > 1)
+                return "component R of the specular parameter must be a value between 0 and 1 on the 'materials' block"
+            specular.push(r);
+            // G
+            var g = this.reader.getFloat(grandChildren[specularIndex], 'g');
+            if (g == null)
+                return "missing component G of the specular parameter for material with ID = " + materialID;
+            else if (isNaN(g))
+                return "component G of the specular parameter is non-numeric on the 'materials' block";
+            else if (g < 0 || g > 1)
+                return "component G of the specular parameter must be a value between 0 and 1 on the 'materials' block"
+            specular.push(g);
+            // B
+            var b = this.reader.getFloat(grandChildren[specularIndex], 'b');
+            if (b == null)
+                return "missing component B of the specular parameter for material with ID = " + materialID;
+            else if (isNaN(b))
+                return "component B of the specular parameter is non-numeric on the 'materials' block";
+            else if (b < 0 || b > 1)
+                return "component B of the specular parameter must be a value between 0 and 1 on the 'materials' block"
+            specular.push(b);
+            // A
+            var a = this.reader.getFloat(grandChildren[specularIndex], 'a');
+            if (a == null)
+                return "missing component A of the specular parameter for material with ID = " + materialID;
+            else if (isNaN(a))
+                return "component A of the specular parameter is non-numeric on the 'materials' block";
+            else if (a < 0 || a > 1)
+                return "component A of the specular parameter must be a value between 0 and 1 on the 'materials' block"
+            specular.push(a);
+
+            var material = new CGFappearance(this.scene);
+            material.setEmission(shininess);
+            material.setAmbient(ambientComponent[0], ambientComponent[1], ambientComponent[2], ambientComponent[3]);
+            material.setDiffuse(diffuseComponent[0], diffuseComponent[1], diffuseComponent[2], diffuseComponent[3]);
+            material.setSpecular(specularComponent[0], specularComponent[1], specularComponent[2], specularComponent[3]);
+            this.materials[materialID] = material;
         }
 
-        //this.log("Parsed materials");
+        this.log("Parsed materials");
         return null;
     }
 
@@ -442,7 +659,6 @@ class MySceneGraph {
         var children = transformationsNode.children;
 
         this.transformations = [];
-
         var grandChildren = [];
 
         // Any number of transformations.
@@ -476,18 +692,18 @@ class MySceneGraph {
 
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
-                    case 'scale':                        
+                    case 'scale':
                         var coordinates = this.parseCoordinates3D(grandChildren[j], "scale transformation for ID " + transformationID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
 
                         transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
-                            break;
+                        break;
                     case 'rotate':
                         var coordinates = this.parseRotation2D(grandChildren[j], "rotate transformation for ID " + transformationID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
-    
+
                         transfMatrix = mat4.rotate(transfMatrix, transfMatrix, coordinates[1], coordinates[0]);
                         break;
                 }
@@ -507,7 +723,6 @@ class MySceneGraph {
         var children = primitivesNode.children;
 
         this.primitives = [];
-
         var grandChildren = [];
 
         // Any number of primitives.
@@ -703,7 +918,6 @@ class MySceneGraph {
         var children = componentsNode.children;
 
         this.components = [];
-
         var grandChildren = [];
         var grandgrandChildren = [];
         var nodeNames = [];
@@ -726,8 +940,8 @@ class MySceneGraph {
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
             grandChildren = children[i].children;
-
             nodeNames = [];
+
             for (var j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
             }
@@ -748,41 +962,40 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
                     continue;
                 }
-    
+
                 var transfMatrix = mat4.create();
 
-                if (grandgrandChildren.nodeName != "transref"){
-    
+                if (grandgrandChildren.nodeName != "transref") {
+
                     for (var j = 0; j < grandgrandChildren.length; j++) {
                         switch (grandgrandChildren[j].nodeName) {
                             case 'translate':
                                 var coordinates = this.parseCoordinates3D(grandgrandChildren[j], "translate transformation for ID " + transformationID);
                                 if (!Array.isArray(coordinates))
                                     return coordinates;
-        
+
                                 transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                                 break;
-                            case 'scale':                        
+                            case 'scale':
                                 var coordinates = this.parseCoordinates3D(grandgrandChildren[j], "scale transformation for ID " + transformationID);
                                 if (!Array.isArray(coordinates))
                                     return coordinates;
-        
+
                                 transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
-                                    break;
+                                break;
                             case 'rotate':
                                 var coordinates = this.parseRotation2D(grandgrandChildren[j], "rotate transformation for ID " + transformationID);
                                 if (!Array.isArray(coordinates))
                                     return coordinates;
-            
+
                                 transfMatrix = mat4.rotate(transfMatrix, transfMatrix, coordinates[1], coordinates[0]);
                                 break;
                         }
                     }
                 }
                 node.mat = transfMatrix;
-                
             }
-    
+
             this.log("Parsed transformations");
             // Materials
 
@@ -791,27 +1004,25 @@ class MySceneGraph {
             // Children
 
             var childrenID = [];
-    
+
             if (grandChildren[childrenIndex].nodeName != "children") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
                 continue;
             }
 
-            if (grandgrandChildren.nodeName != "primitiveref" || grandgrandChildren.nodeName != "componentref"){
-                
+            if (grandgrandChildren.nodeName != "primitiveref" || grandgrandChildren.nodeName != "componentref") {
+
             }
-            else{ 
-                for(var j = 0; j < grandgrandChildren.length; j++)
-                {
+            else {
+                for (var j = 0; j < grandgrandChildren.length; j++) {
                     childrenID.push(this.reader.getString(grandgrandchildren[j], 'id'));
                 }
             }
-            
+
             node.descendants = childrenID;
             this.vecNodes.push(node);
         }
     }
-
 
     /**
      * Parse the coordinates from a node with ID = id
@@ -852,8 +1063,8 @@ class MySceneGraph {
         if (!(ang != null && !isNaN(ang)))
             return "unable to parse y-coordinate of the " + messageError;
 
-            var angR = (Math.PI * ang) / 180;
-        rotation.push(...[axis,angR]);
+        var angR = (Math.PI * ang) / 180;
+        rotation.push(...[axis, angR]);
 
         return rotation;
     }
@@ -946,64 +1157,6 @@ class MySceneGraph {
     displayScene() {
 
         //To do: Create display loop for transversing the scene graph
-
         //To test the parsing/creation of the primitives, call the display function directly
-    
-        this.scene.triangle = new MyTriangle(this.scene,0,1,0.5,0,1);
-        //board
-        this.scene.pushMatrix();
-
-        this.scene.scale(1,0.2,1.5);
-        //tras
-        this.scene.pushMatrix();
-        this.scene.translate(0,0,-1);
-        this.scene.scale(1,0.25,1);
-        this.scene.rotate(-Math.PI,0,1,0);
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-
-        //frente
-        this.scene.pushMatrix();
-        this.scene.translate(0,0,1);
-        this.scene.scale(1,0.25,1);
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-
-        //dir
-        this.scene.pushMatrix();
-        this.scene.translate(0.5,0,0);
-        this.scene.scale(1,0.25,2);
-        this.scene.rotate(Math.PI/2, 0,1,0);
-
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-
-        //esq
-        this.scene.pushMatrix();
-        this.scene.translate(-0.5,0,0);
-        this.scene.scale(1,0.25,2);
-        this.scene.rotate(-Math.PI/2, 0,1,0);
-
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-
-        //cima
-        this.scene.pushMatrix();
-        this.scene.translate(0,0.25,0);
-        this.scene.rotate(-Math.PI/2, 1,0,0);
-
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-
-        //baixo
-        this.scene.pushMatrix();
-        this.scene.translate(0,-0.25,0);
-        this.scene.rotate(Math.PI/2, 1,0,0);
-
-        this.primitives['rectangle'].display();
-        this.scene.popMatrix();
-        this.scene.popMatrix();
-
-        this.scene.triangle.display();
     }
 }

@@ -2,7 +2,6 @@
  * GraphNode class, representing a graph node.
  */
 class GraphNode {
-
     /**
      * @constructor
      */
