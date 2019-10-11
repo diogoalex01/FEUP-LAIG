@@ -227,8 +227,78 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.onXMLMinorError("To do: Parse views and create cameras.");
+        this.views = [];
+        this.defaulView = this.reader.getString(viewsNode, 'default');
+        var children = viewsNode.children;
+        var grandChildren = [];
 
+        var pID, nearP, farP, angle,fromP,toPersp;
+        var oID, nearO, farO, left,right,top,bottom ,fromO, toO,up;
+        
+        if(children.length < 1){
+            this.onXMLError("define at least one view");
+        }
+
+        for(var i = 0; i < children.lenght; i++){
+            if(children[i].nodeName == "perspective"){
+                pID = this.reader.getString(children[i], 'id');
+                nearP = this.reader.getFloat(children[i], 'near');
+                farP = this.reader.getFloat(children[i], 'far');
+                angle = this.reader.getFloat(children[i], 'angle') * Math.PI / 180; //To radians
+                
+                grandchildren = children[i].children;
+                for(var j = 0; j < grandChildren.length; j++){
+                    if(grandChildren[j].nodeName == "from"){
+                        fromP = this.parseCoordinates3D(grandChildren[j], "from component of perspective of ID "+ pID);
+                    }
+                    else if(grandChildren[j].nodeName == "to"){
+                        toPersp = this.parseCoordinates3D(grandChildren[j], "to component of perspective of ID "+ pID);
+                    }
+                    else
+                    {
+                        this.onXMLError("not valid perspective child node type");
+                    }
+
+                }
+                var perspectiveCam = new CGFcamera(angle,nearP,farP,fromP, toPersp);
+                this.views.push(perspectiveCam);
+            }
+
+
+            if(children[i].nodeName == "ortho"){
+                oID = this.reader.getString(children[i], 'id');
+                nearO = this.reader.getFloat(children[i], 'near');
+                farO = this.reader.getFloat(children[i], 'far');
+                left = this.reader.getFloat(children[i], 'letf');
+                right = this.reader.getFloat(children[i], 'right');
+                top = this.reader.getFloat(children[i], 'top');
+                bottom = this.reader.getFloat(children[i], 'bottom');
+
+                
+                grandchildren = children[i].children;
+
+                for(var j = 0; j < grandChildren.length; j++){
+                    if(grandChildren[j].nodeName == "from"){
+                        fromO = this.parseCoordinates3D(grandChildren[j], "from component of ortho of ID "+ oID);
+                    }
+                    else if(grandChildren[j].nodeName == "to"){
+                        toO = this.parseCoordinates3D(grandChildren[j], "to component of ortho of ID "+ oID);
+                    }
+                    else if(grandChildren[j].nodeName == "up"){
+                        up = this.parseCoordinates3D(grandChildren[j], "to component of ortho of ID "+ oID);
+                    }
+                    else
+                    {
+                        this.onXMLError("not valid perspective child node type");
+                    }
+
+                }
+                var orthoCam = new CGFcameraOrtho(left,right,bottom,top,nearO,farO,fromO,toO,up);
+                this.views.push(orthoCam);
+            }
+
+
+        }
         return null;
     }
 
@@ -951,21 +1021,19 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
+            // Transformations
             grandgrandChildren = grandChildren[transformationIndex].children;
 
-            // Transformations
             var node = new MyNode(this.components[componentID]);
 
-            for (var i = 0; i < grandChildren.length; i++) {
-
-                if (grandChildren[transformationIndex].nodeName != "transformation") {
-                    this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+            if (grandChildren[transformationIndex].nodeName != "transformation") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[transformationIndex].nodeName + ">");
                     continue;
                 }
 
                 var transfMatrix = mat4.create();
 
-                if (grandgrandChildren.nodeName != "transref") {
+                if (grandgrandChildren[0].nodeName != "transref") {
 
                     for (var j = 0; j < grandgrandChildren.length; j++) {
                         switch (grandgrandChildren[j].nodeName) {
@@ -993,16 +1061,42 @@ class MySceneGraph {
                         }
                     }
                 }
+                else
+                {
+                    transfMatrix = this.transformations[this.reader.getString(grandgrandchildren[0], 'id')];
+                }
+                
                 node.mat = transfMatrix;
-            }
-
             this.log("Parsed transformations");
             // Materials
 
+            if (grandChildren[materialsIndex].nodeName != "materials") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[materialsIndex].nodeName + ">");
+                continue;
+            }
+
+            grandgrandChildren = grandChildren[materialsIndex].children;
+
+            var materialID = [];
+
+            for (var j = 0; j < grandgrandChildren.length; j++) {
+
+                materialID.push(this.reader.getString(grandgrandchildren[j], 'id'));
+            }
+
+            node.material = materialID;
             // Texture
 
-            // Children
+            if (grandChildren[textureIndex].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[textureIndex].nodeName + ">");
+                continue;
+            }
 
+            node.texture = this.reader.getString(grandchildren[textureIndex], 'id');
+            node.length_s = this.reader.getString(grandchildren[textureIndex], 'length_s');
+            node.length_t = this.reader.getString(grandchildren[textureIndex], 'length_t');
+
+            // Children
             var childrenID = [];
 
             if (grandChildren[childrenIndex].nodeName != "children") {
@@ -1010,15 +1104,20 @@ class MySceneGraph {
                 continue;
             }
 
-            if (grandgrandChildren.nodeName != "primitiveref" || grandgrandChildren.nodeName != "componentref") {
+            grandgrandChildren = grandChildren[childrenIndex].children;
 
-            }
-            else {
-                for (var j = 0; j < grandgrandChildren.length; j++) {
-                    childrenID.push(this.reader.getString(grandgrandchildren[j], 'id'));
+            for (var j = 0; j < grandgrandChildren.length; j++) {
+
+                if (grandgrandChildren[j].nodeName != "primitiveref" || grandgrandChildren[j].nodeName != "componentref") 
+                {
+                    this.onXMLMinorError("unknown tag <" + grandgrandChildren[j].nodeName + ">");
                 }
-            }
+                else {
+                   
+                    childrenID.push(this.reader.getString(grandgrandchildren[j], 'id')); 
+                }
 
+            }
             node.descendants = childrenID;
             this.vecNodes.push(node);
         }

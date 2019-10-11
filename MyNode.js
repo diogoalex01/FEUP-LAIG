@@ -8,9 +8,11 @@ class GraphNode {
     constructor(nodeID) {
         this.nodeID = nodeID;
         this.mat = null;
-        this.material = null;
+        this.material = [];
         this.texture = null;
         this.descendants = [];
         this.primitive = null;
+        this.length_s = null;
+        this.length_t = null;
     }
 }
