@@ -1,17 +1,17 @@
 /**
- * GraphNode class, representing a graph node.
+ * Node class, representing a graph node.
  */
-class GraphNode {
+class MyNode {
     /**
      * @constructor
      */
-    constructor(nodeID) {
+    constructor(nodeID, primitive) {
         this.nodeID = nodeID;
-        this.mat = null;
+        this.matrix = null;
         this.material = [];
         this.texture = null;
         this.descendants = [];
-        this.primitive = null;
+        this.primitive = primitive;
         this.length_s = null;
         this.length_t = null;
     }

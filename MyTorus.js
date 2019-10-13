@@ -6,6 +6,7 @@
 class MyTorus extends CGFobject {
 	constructor(scene, id, inner, outer, slices, loops) {
 		super(scene);
+		this.id = id;
 		this.slices = slices;
 		this.inner = inner;
 		this.outer = outer;

@@ -6,6 +6,7 @@
 class MySphere extends CGFobject {
 	constructor(scene, id, radius, slices, stacks) {
 		super(scene);
+		this.id = id;
 		this.slices = slices;
 		this.radius = radius;
 		this.stacks = stacks;
@@ -34,13 +35,13 @@ class MySphere extends CGFobject {
 				var normalY = Math.cos(theta) * Math.sin(phi);
 				var normalZ = Math.sin(theta);
 
-				this.vertices.push(normalX * this.radius, normalY * this.radius, normalZ*this.radius);
-				this.normals.push(normalX,normalY,normalZ);
+				this.vertices.push(normalX * this.radius, normalY * this.radius, normalZ * this.radius);
+				this.normals.push(normalX, normalY, normalZ);
 
 
 				if (theta > 0) {
-					this.vertices.push(normalX * this.radius, normalY * this.radius, -normalZ*this.radius);
-					this.normals.push(normalX,normalY,-normalZ);
+					this.vertices.push(normalX * this.radius, normalY * this.radius, -normalZ * this.radius);
+					this.normals.push(normalX, normalY, -normalZ);
 				}
 
 				//this.texCoords.push(ang / (Math.PI * 2), 1);
@@ -57,28 +58,26 @@ class MySphere extends CGFobject {
 		this.normals.push(0, 0, 1);
 		this.normals.push(0, 0, -1);
 
-
 		for (var j = 0; j < this.stacks; j++) {
 
 			if (j == 0) {
 				for (var i = 0; i < this.slices; i++) {
 
 					this.indices.push((this.slices + 1) + 2 * i + 2, i, i + 1);
-					this.indices.push((this.slices + 1) + 2 * i, i,(this.slices + 1) + 2 * i + 2);
+					this.indices.push((this.slices + 1) + 2 * i, i, (this.slices + 1) + 2 * i + 2);
 
 					this.indices.push((this.slices + 1) + 2 * i + 1, i + 1, i);
 					this.indices.push((this.slices + 1) + 2 * i + 3, i + 1, (this.slices + 1) + 2 * i + 1);
 				}
 			}
 			else {
-
 				for (var i = 0; i < this.stacks; i++) {
 
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 2, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i + 2);//
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j + 1) + 2 * i + 2);//
 
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 1, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 1);
-					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 3 ,(this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j + 1) + 2 * i + 1);
+					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j + 1) + 2 * i + 1);
 				}
 			}
 		}
