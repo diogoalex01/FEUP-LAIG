@@ -541,14 +541,30 @@ class MySceneGraph {
                 return "unknown tag <" + grandChildren[i].nodeName + ">";
             }
 
-            var emission = [];
-            var ambient = [];
-            var diffuse = [];
-            var specular = [];
+            // var emission = [];
+            // var ambient = [];
+            //var diffuse = [];
+            //var specular = [];
+
+            var emission = this.parseColor(grandChildren[emissionIndex], "emission for material " + materialID);
+            if (emission == null)
+                return "no emission defined for material";
+
+            var ambient = this.parseColor(grandChildren[ambientIndex], "ambient for material " + materialID);
+            if (ambient == null)
+                return "no ambient defined for material";
+
+            var diffuse = this.parseColor(grandChildren[diffuseIndex], "diffuse for material " + materialID);
+            if (diffuse == null)
+                return "no diffuse defined for material";
+
+            var specular = this.parseColor(grandChildren[specularIndex], "specular for material " + materialID);
+            if (specular == null)
+                return "no specular defined for material";
 
             /* emission */
             // R
-            var r = this.reader.getFloat(grandChildren[emissionIndex], 'r');
+            /*var r = this.reader.getFloat(grandChildren[emissionIndex], 'r');
             if (r == null)
                 return "missing component R of the emission parameter for material with ID = " + materialID;
             else if (isNaN(r))
@@ -582,11 +598,11 @@ class MySceneGraph {
                 return "component A of the emission parameter is non-numeric on the 'materials' block";
             else if (a < 0 || a > 1)
                 return "component A of the emission parameter must be a value between 0 and 1 on the 'materials' block"
-            emission.push(a);
+            emission.push(a);*/
 
             /* ambient */
             // R
-            var r = this.reader.getFloat(grandChildren[ambientIndex], 'r');
+            /*var r = this.reader.getFloat(grandChildren[ambientIndex], 'r');
             if (r == null)
                 return "missing component R of the ambient parameter for material with ID = " + materialID;
             else if (isNaN(r))
@@ -620,11 +636,11 @@ class MySceneGraph {
                 return "component A of the ambient parameter is non-numeric on the 'materials' block";
             else if (a < 0 || a > 1)
                 return "component A of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
-            ambient.push(a);
+            ambient.push(a);*/
 
             /* diffuse */
             // R
-            var r = this.reader.getFloat(grandChildren[diffuseIndex], 'r');
+            /*var r = this.reader.getFloat(grandChildren[diffuseIndex], 'r');
             if (r == null)
                 return "missing component R of the diffuse parameter for material with ID = " + materialID;
             else if (isNaN(r))
@@ -662,7 +678,7 @@ class MySceneGraph {
 
             /* specular */
             // R
-            var r = this.reader.getFloat(grandChildren[specularIndex], 'r');
+            /*var r = this.reader.getFloat(grandChildren[specularIndex], 'r');
             if (r == null)
                 return "missing component R of the specular parameter for material with ID = " + materialID;
             else if (isNaN(r))
@@ -696,10 +712,11 @@ class MySceneGraph {
                 return "component A of the specular parameter is non-numeric on the 'materials' block";
             else if (a < 0 || a > 1)
                 return "component A of the specular parameter must be a value between 0 and 1 on the 'materials' block"
-            specular.push(a);
+            specular.push(a);*/
 
             var material = new CGFappearance(this.scene);
-            material.setEmission(shininess);
+            material.setShininess(shininess);
+            material.setEmission(emission[0],emission[1],emission[2]);
             material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
             material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
             material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
@@ -1263,18 +1280,29 @@ class MySceneGraph {
             return;
 
         if (node.primitive) {
-            this.materials[mat].setTexture(this.textures[text]);
-            this.materials[mat].setTextureWrap('REPEAT', 'REPEAT');
-            this.materials[mat].apply();
+
+            if (mat != null && text != null) {
+                this.materials[mat].setTexture(this.textures[text]);
+                this.materials[mat].setTextureWrap('REPEAT', 'REPEAT');
+                this.materials[mat].apply();
+            }
+
             this.primitives[node.nodeID].display();
         }
         else {
             if (node.material[0] != null) {
-                mat = node.material[0];
+                if (node.material[0] != 'inherit') {
+                    mat = node.material[0];
+                }
             }
 
             if (node.texture != null) {
-                text = node.texture;
+                if (node.texture != 'inherit') {
+                    text = node.texture;
+                }
+                else if (node.texture == 'none') {
+                    text = null;
+                }
             }
 
             if (node.matrix != null) {
