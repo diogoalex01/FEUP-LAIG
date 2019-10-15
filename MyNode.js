@@ -9,6 +9,7 @@ class MyNode {
         this.nodeID = nodeID;
         this.matrix = null;
         this.material = [];
+        this.currentMat = null;
         this.texture = null;
         this.descendants = [];
         this.primitive = primitive;

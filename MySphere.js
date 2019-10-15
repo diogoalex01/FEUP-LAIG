@@ -54,7 +54,7 @@ class MySphere extends CGFobject {
 		}
 
 		this.vertices.push(0, 0, this.radius);
-		this.vertices.push(0, 0, - this.radius);
+		this.vertices.push(0, 0, -this.radius);
 		this.normals.push(0, 0, 1);
 		this.normals.push(0, 0, -1);
 
@@ -68,16 +68,20 @@ class MySphere extends CGFobject {
 
 					this.indices.push((this.slices + 1) + 2 * i + 1, i + 1, i);
 					this.indices.push((this.slices + 1) + 2 * i + 3, i + 1, (this.slices + 1) + 2 * i + 1);
+
+					this.texCoords.push(i / this.slices, 0.5 + j / (2 * this.stacks));
 				}
 			}
 			else {
 				for (var i = 0; i < this.stacks; i++) {
 
-					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 2, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i + 2);//
-					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j + 1) + 2 * i + 2);//
+					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 2, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i + 2);
+					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j + 1) + 2 * i + 2);
 
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 1, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 1);
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j + 1) + 2 * i + 1);
+
+					this.texCoords.push(i / this.slices, 0.5 - j / (2 * this.stacks));
 				}
 			}
 		}
@@ -92,5 +96,14 @@ class MySphere extends CGFobject {
 		// reinitialize buffers
 		this.initBuffers();
 		this.initNormalVizBuffers();
+	}
+
+	updateTexCoords(coords) {
+	}
+
+	updateLengthT(l) {
+	}
+
+	updateLengthS(l) {
 	}
 }

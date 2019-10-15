@@ -226,7 +226,7 @@ class MySceneGraph {
      */
     parseView(viewsNode) {
         this.views = [];
-        this.defaulView = this.reader.getString(viewsNode, 'default');
+        this.defaultView = this.reader.getString(viewsNode, 'default');
         var children = viewsNode.children;
         var grandChildren = [];
 
@@ -237,14 +237,15 @@ class MySceneGraph {
             this.onXMLError("define at least one view");
         }
 
-        for (var i = 0; i < children.lenght; i++) {
+        for (var i = 0; i < children.length; i++) {
             if (children[i].nodeName == "perspective") {
                 pID = this.reader.getString(children[i], 'id');
                 nearP = this.reader.getFloat(children[i], 'near');
                 farP = this.reader.getFloat(children[i], 'far');
-                angle = this.reader.getFloat(children[i], 'angle') * Math.PI / 180; //To radians
+                angle = this.reader.getFloat(children[i], 'angle') * Math.PI / 180; // To radians
 
-                grandchildren = children[i].children;
+                grandChildren = children[i].children;
+
                 for (var j = 0; j < grandChildren.length; j++) {
                     if (grandChildren[j].nodeName == "from") {
                         fromP = this.parseCoordinates3D(grandChildren[j], "from component of perspective of ID " + pID);
@@ -258,19 +259,24 @@ class MySceneGraph {
                 }
 
                 var perspectiveCam = new CGFcamera(angle, nearP, farP, fromP, toPersp);
-                this.views.push(perspectiveCam);
+                this.views[pID] = perspectiveCam;
+
+                if (pID == this.defaulView) {
+                    this.scene.camera = perspectiveCam;
+                    this.scene.interface.setActiveCamera(this.scene.camera);
+                }
             }
 
             if (children[i].nodeName == "ortho") {
                 oID = this.reader.getString(children[i], 'id');
                 nearO = this.reader.getFloat(children[i], 'near');
                 farO = this.reader.getFloat(children[i], 'far');
-                left = this.reader.getFloat(children[i], 'letf');
+                left = this.reader.getFloat(children[i], 'left');
                 right = this.reader.getFloat(children[i], 'right');
                 top = this.reader.getFloat(children[i], 'top');
                 bottom = this.reader.getFloat(children[i], 'bottom');
 
-                grandchildren = children[i].children;
+                grandChildren = children[i].children;
 
                 for (var j = 0; j < grandChildren.length; j++) {
                     if (grandChildren[j].nodeName == "from") {
@@ -286,8 +292,14 @@ class MySceneGraph {
                         this.onXMLError("not valid perspective child node type");
                     }
                 }
+
                 var orthoCam = new CGFcameraOrtho(left, right, bottom, top, nearO, farO, fromO, toO, up);
-                this.views.push(orthoCam);
+                this.views[oID] = orthoCam;
+
+                if (pID == this.defaulView) {
+                    this.scene.camera = orthoCam;
+                    this.scene.interface.setActiveCamera(this.scene.camera);
+                }
             }
         }
 
@@ -541,11 +553,6 @@ class MySceneGraph {
                 return "unknown tag <" + grandChildren[i].nodeName + ">";
             }
 
-            // var emission = [];
-            // var ambient = [];
-            //var diffuse = [];
-            //var specular = [];
-
             var emission = this.parseColor(grandChildren[emissionIndex], "emission for material " + materialID);
             if (emission == null)
                 return "no emission defined for material";
@@ -562,161 +569,9 @@ class MySceneGraph {
             if (specular == null)
                 return "no specular defined for material";
 
-            /* emission */
-            // R
-            /*var r = this.reader.getFloat(grandChildren[emissionIndex], 'r');
-            if (r == null)
-                return "missing component R of the emission parameter for material with ID = " + materialID;
-            else if (isNaN(r))
-                return "component R of the emission parameter is non-numeric on the 'materials' block";
-            else if (r < 0 || r > 1)
-                return "component R of the emission parameter must be a value between 0 and 1 on the 'materials' block"
-            emission.push(r);
-            // G
-            var g = this.reader.getFloat(grandChildren[emissionIndex], 'g');
-            if (g == null)
-                return "missing component G of the emission parameter for material with ID = " + materialID;
-            else if (isNaN(g))
-                return "component G of the emission parameter is non-numeric on the 'materials' block";
-            else if (g < 0 || g > 1)
-                return "component G of the emission parameter must be a value between 0 and 1 on the 'materials' block"
-            emission.push(g);
-            // B
-            var b = this.reader.getFloat(grandChildren[emissionIndex], 'b');
-            if (b == null)
-                return "missing component B of the emission parameter for material with ID = " + materialID;
-            else if (isNaN(b))
-                return "component B of the emission parameter is non-numeric on the 'materials' block";
-            else if (b < 0 || b > 1)
-                return "component B of the emission parameter must be a value between 0 and 1 on the 'materials' block"
-            emission.push(b);
-            // A
-            var a = this.reader.getFloat(grandChildren[emissionIndex], 'a');
-            if (a == null)
-                return "missing component A of the emission parameter for material with ID = " + materialID;
-            else if (isNaN(a))
-                return "component A of the emission parameter is non-numeric on the 'materials' block";
-            else if (a < 0 || a > 1)
-                return "component A of the emission parameter must be a value between 0 and 1 on the 'materials' block"
-            emission.push(a);*/
-
-            /* ambient */
-            // R
-            /*var r = this.reader.getFloat(grandChildren[ambientIndex], 'r');
-            if (r == null)
-                return "missing component R of the ambient parameter for material with ID = " + materialID;
-            else if (isNaN(r))
-                return "component R of the ambient parameter is non-numeric on the 'materials' block";
-            else if (r < 0 || r > 1)
-                return "component R of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
-            ambient.push(r);
-            // G
-            var g = this.reader.getFloat(grandChildren[ambientIndex], 'g');
-            if (g == null)
-                return "missing component G of the ambient parameter for material with ID = " + materialID;
-            else if (isNaN(g))
-                return "component G of the ambient parameter is non-numeric on the 'materials' block";
-            else if (g < 0 || g > 1)
-                return "component G of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
-            ambient.push(g);
-            // B
-            var b = this.reader.getFloat(grandChildren[ambientIndex], 'b');
-            if (b == null)
-                return "missing component B of the ambient parameter for material with ID = " + materialID;
-            else if (isNaN(b))
-                return "component B of the ambient parameter is non-numeric on the 'materials' block";
-            else if (b < 0 || b > 1)
-                return "component B of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
-            ambient.push(b);
-            // A
-            var a = this.reader.getFloat(grandChildren[ambientIndex], 'a');
-            if (a == null)
-                return "missing component A of the ambient parameter for material with ID = " + materialID;
-            else if (isNaN(a))
-                return "component A of the ambient parameter is non-numeric on the 'materials' block";
-            else if (a < 0 || a > 1)
-                return "component A of the ambient parameter must be a value between 0 and 1 on the 'materials' block"
-            ambient.push(a);*/
-
-            /* diffuse */
-            // R
-            /*var r = this.reader.getFloat(grandChildren[diffuseIndex], 'r');
-            if (r == null)
-                return "missing component R of the diffuse parameter for material with ID = " + materialID;
-            else if (isNaN(r))
-                return "component R of the diffuse parameter is non-numeric on the 'materials' block";
-            else if (r < 0 || r > 1)
-                return "component R of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
-            diffuse.push(r);
-            // G
-            var g = this.reader.getFloat(grandChildren[diffuseIndex], 'g');
-            if (g == null)
-                return "missing component G of the diffuse parameter for material with ID = " + materialID;
-            else if (isNaN(g))
-                return "component G of the diffuse parameter is non-numeric on the 'materials' block";
-            else if (g < 0 || g > 1)
-                return "component G of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
-            diffuse.push(g);
-            // B
-            var b = this.reader.getFloat(grandChildren[diffuseIndex], 'b');
-            if (b == null)
-                return "missing component B of the diffuse parameter for material with ID = " + materialID;
-            else if (isNaN(b))
-                return "component B of the diffuse parameter is non-numeric on the 'materials' block";
-            else if (b < 0 || b > 1)
-                return "component B of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
-            diffuse.push(b);
-            // A
-            var a = this.reader.getFloat(grandChildren[diffuseIndex], 'a');
-            if (a == null)
-                return "missing component A of the diffuse parameter for material with ID = " + materialID;
-            else if (isNaN(a))
-                return "component A of the diffuse parameter is non-numeric on the 'materials' block";
-            else if (a < 0 || a > 1)
-                return "component A of the diffuse parameter must be a value between 0 and 1 on the 'materials' block"
-            diffuse.push(a);
-
-            /* specular */
-            // R
-            /*var r = this.reader.getFloat(grandChildren[specularIndex], 'r');
-            if (r == null)
-                return "missing component R of the specular parameter for material with ID = " + materialID;
-            else if (isNaN(r))
-                return "component R of the specular parameter is non-numeric on the 'materials' block";
-            else if (r < 0 || r > 1)
-                return "component R of the specular parameter must be a value between 0 and 1 on the 'materials' block"
-            specular.push(r);
-            // G
-            var g = this.reader.getFloat(grandChildren[specularIndex], 'g');
-            if (g == null)
-                return "missing component G of the specular parameter for material with ID = " + materialID;
-            else if (isNaN(g))
-                return "component G of the specular parameter is non-numeric on the 'materials' block";
-            else if (g < 0 || g > 1)
-                return "component G of the specular parameter must be a value between 0 and 1 on the 'materials' block"
-            specular.push(g);
-            // B
-            var b = this.reader.getFloat(grandChildren[specularIndex], 'b');
-            if (b == null)
-                return "missing component B of the specular parameter for material with ID = " + materialID;
-            else if (isNaN(b))
-                return "component B of the specular parameter is non-numeric on the 'materials' block";
-            else if (b < 0 || b > 1)
-                return "component B of the specular parameter must be a value between 0 and 1 on the 'materials' block"
-            specular.push(b);
-            // A
-            var a = this.reader.getFloat(grandChildren[specularIndex], 'a');
-            if (a == null)
-                return "missing component A of the specular parameter for material with ID = " + materialID;
-            else if (isNaN(a))
-                return "component A of the specular parameter is non-numeric on the 'materials' block";
-            else if (a < 0 || a > 1)
-                return "component A of the specular parameter must be a value between 0 and 1 on the 'materials' block"
-            specular.push(a);*/
-
             var material = new CGFappearance(this.scene);
             material.setShininess(shininess);
-            material.setEmission(emission[0],emission[1],emission[2]);
+            material.setEmission(emission[0], emission[1], emission[2]);
             material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
             material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
             material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
@@ -1094,6 +949,7 @@ class MySceneGraph {
             }
 
             node.material = materialID;
+            node.currentMat = 0;
 
             // Texture
             if (grandChildren[textureIndex].nodeName != "texture") {
@@ -1102,8 +958,15 @@ class MySceneGraph {
             }
 
             node.texture = this.reader.getString(grandChildren[textureIndex], 'id');
-            node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
-            node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
+
+            if (grandChildren[textureIndex].length > 1) {
+                node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
+                node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
+            }
+            else {
+                node.length_s = 1;
+                node.length_t = 1;
+            }
 
             // Children
             var childrenID = [];
@@ -1160,6 +1023,11 @@ class MySceneGraph {
         return position;
     }
 
+    /**
+     * 
+     * @param {block element} node 
+     * @param {message to be displayed in case of error} messageError 
+     */
     parseRotation2D(node, messageError) {
         var rotation = [];
 
@@ -1281,6 +1149,16 @@ class MySceneGraph {
 
         if (node.primitive) {
 
+            if (node.length_t != 1) {
+                this.primitives[node.nodeID].updateLengthT(node.length_t);
+                this.primitives[node.nodeID].updateTexCoords();
+            }
+
+            if (node.length_s != 1) {
+                this.primitives[node.nodeID].updateLengthS(node.length_s);
+                this.primitives[node.nodeID].updateTexCoords();
+            }
+
             if (mat != null && text != null) {
                 this.materials[mat].setTexture(this.textures[text]);
                 this.materials[mat].setTextureWrap('REPEAT', 'REPEAT');
@@ -1290,18 +1168,18 @@ class MySceneGraph {
             this.primitives[node.nodeID].display();
         }
         else {
-            if (node.material[0] != null) {
-                if (node.material[0] != 'inherit') {
-                    mat = node.material[0];
+            if (node.material[node.currentMat] != null) {
+                if (node.material[node.currentMat] != 'inherit') {
+                    mat = node.material[node.currentMat];
                 }
             }
 
             if (node.texture != null) {
-                if (node.texture != 'inherit') {
-                    text = node.texture;
-                }
-                else if (node.texture == 'none') {
+                if (node.texture == 'none') {
                     text = null;
+                }
+                else if (node.texture != 'inherit') {
+                    text = node.texture;
                 }
             }
 
@@ -1324,7 +1202,6 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
         //To test the parsing/creation of the primitives, call the display function directly
 
-        //console.log(this.vecNodes[this.idRoot]);
-        this.processNode(this.idRoot, this.vecNodes[this.idRoot].material[0], this.vecNodes[this.idRoot].texture);
+        this.processNode(this.idRoot, this.vecNodes[this.idRoot].currentMat, this.vecNodes[this.idRoot].texture);
     }
 }

@@ -12,6 +12,7 @@ class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.lightGroup = [];
     }
 
     /**
@@ -34,6 +35,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
+
+        this.displayAxis = true;
     }
 
     /**
@@ -71,11 +74,11 @@ class XMLscene extends CGFscene {
                 this.lights[i].setVisible(true);
                 if (light[0])
                     this.lights[i].enable();
-                else
+                else {
                     this.lights[i].disable();
+                }
 
                 this.lights[i].update();
-
                 i++;
             }
         }
@@ -87,6 +90,7 @@ class XMLscene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -100,6 +104,17 @@ class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+
+        this.cameraIDs = Object.keys(this.graph.views);
+        this.currentCamera = this.graph.defaultView;
+
+        this.interface.setUpCameras();
+        this.interface.setUpLights(this.graph.lights);
+    }
+
+    //
+    updateAppliedCamera() {
+        this.interface.setActiveCamera(this.graph.views[this.currentCamera]);
     }
 
     /**
@@ -120,12 +135,6 @@ class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
 
         if (this.sceneInited) {
             // Draw axis
@@ -133,6 +142,37 @@ class XMLscene extends CGFscene {
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
+
+            if (this.interface.isKeyPressed('KeyM')) {
+                for (var key in this.graph.vecNodes) {
+                    var obj = this.graph.vecNodes[key];
+                    if (!obj.primitive) {
+                        var index = (obj.currentMat + 1) % obj.material.length;
+                        obj.currentMat = index;
+                    }
+                }
+            }
+        }
+
+        // Draw axis
+        if (this.displayAxis)
+            this.axis.display();
+
+        var j = 0;
+
+        for (var key in this.lightGroup) {
+            if (this.lightGroup.hasOwnProperty(key)) {
+                if (this.lightGroup[key]) {
+                    this.lights[j].setVisible(true);
+                    this.lights[j].enable();
+                }
+                else {
+                    this.lights[j].setVisible(false);
+                    this.lights[j].disable();
+                }
+                this.lights[j].update();
+                j++;
+            }
         }
 
         this.popMatrix();

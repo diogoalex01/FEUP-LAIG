@@ -52,9 +52,10 @@ class MyTorus extends CGFobject {
 				// push normal once for each vertex of this triangle
 				this.normals.push(...normal);
 
+				this.texCoords.push(i / this.slices, j / this.loops);
 				theta += deltaTheta;
 			}
-			
+
 			phi += deltaPhi;
 		}
 
@@ -77,5 +78,14 @@ class MyTorus extends CGFobject {
 		// reinitialize buffers
 		this.initBuffers();
 		this.initNormalVizBuffers();
+	}
+
+	updateTexCoords(coords) {
+	}
+
+	updateLengthT(l) {
+	}
+
+	updateLengthS(l) {
 	}
 }

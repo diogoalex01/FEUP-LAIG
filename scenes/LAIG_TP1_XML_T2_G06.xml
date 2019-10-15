@@ -10,12 +10,19 @@
 
     <globals>
         <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
-        <background r="1.0" g="1.0" b="1.0" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </globals>
 
     <lights>
-        <omni id="light" enabled="1">
+        <omni id="mainLight" enabled="1">
             <location x="2" y="6" z="-6" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="1" quadratic="0" />
+        </omni>
+        <omni id="secondaryLight" enabled="1">
+            <location x="-2" y="-6" z="6" w="1.0" />
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -42,6 +49,12 @@
             <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        </material>
+        <material id="materialWood" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1" g="0" b="0" a="1.0" />
+            <diffuse r="1" g="0" b="0" a="1.0" />
+            <specular r="1" g="0" b="0" a="1.0" />
         </material>
     </materials>
 
@@ -81,6 +94,7 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
+                <material id="materialRubber" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
@@ -94,7 +108,9 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
-            </materials>
+                <material id="materialRubber" />
+                <material id="materialWood" />
+                </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="rectangle" />
@@ -108,6 +124,7 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
+                <material id="materialRubber" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
@@ -122,6 +139,7 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
+                <material id="materialRubber" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
@@ -135,6 +153,7 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
+                <material id="materialRubber" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
@@ -149,6 +168,7 @@
             </transformation>
             <materials>
                 <material id="materialMetal" />
+                <material id="materialRubber" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
