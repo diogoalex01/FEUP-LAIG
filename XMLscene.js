@@ -34,9 +34,14 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(80);
 
         this.displayAxis = true;
+    }
+
+    update() {
+        if (this.sceneInited)
+            this.keyInput();
     }
 
     /**
@@ -45,6 +50,7 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -65,10 +71,22 @@ class XMLscene extends CGFscene {
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
+                switch (light[6]) {
+                    case "constant":
+                        this.lights[i].setConstantAttenuation(1.0);
+                        break;
+                    case "linear":
+                        this.lights[i].setLinearAttenuation(1.0);
+                        break;
+                    case "quadratic":
+                        this.lights[i].setQuadraticAttenuation(1.0);
+                        break;
+                }
+
                 if (light[1] == "spot") {
-                    this.lights[i].setSpotCutOff(light[6]);
-                    this.lights[i].setSpotExponent(light[7]);
-                    this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
+                    this.lights[i].setSpotCutOff(light[7]);
+                    this.lights[i].setSpotExponent(light[8]);
+                    this.lights[i].setSpotDirection(light[9][0], light[9][1], light[9][2]);
                 }
 
                 this.lights[i].setVisible(true);
@@ -142,16 +160,6 @@ class XMLscene extends CGFscene {
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
-
-            if (this.interface.isKeyPressed('KeyM')) {
-                for (var key in this.graph.vecNodes) {
-                    var obj = this.graph.vecNodes[key];
-                    if (!obj.primitive) {
-                        var index = (obj.currentMat + 1) % obj.material.length;
-                        obj.currentMat = index;
-                    }
-                }
-            }
         }
 
         // Draw axis
@@ -177,5 +185,17 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    keyInput() {
+        if (this.interface.isKeyPressed('KeyM')) {
+            for (var key in this.graph.vecNodes) {
+                var obj = this.graph.vecNodes[key];
+                if (!obj.primitive) {
+                    var index = (obj.currentMat + 1) % obj.material.length;
+                    obj.currentMat = index;
+                }
+            }
+        }
     }
 }

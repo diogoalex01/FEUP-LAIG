@@ -367,8 +367,8 @@ class MySceneGraph {
                 continue;
             }
             else {
-                attributeNames.push(...["location", "ambient", "diffuse", "specular"]);
-                attributeTypes.push(...["position", "color", "color", "color"]);
+                attributeNames.push(...["location", "ambient", "diffuse", "specular", "attenuation"]);
+                attributeTypes.push(...["position", "color", "color", "color", "value"]);
             }
 
             // Get id of the current light.
@@ -404,10 +404,40 @@ class MySceneGraph {
                 var attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
                 if (attributeIndex != -1) {
-                    if (attributeTypes[j] == "position")
+                    if (attributeTypes[j] == "position") {
                         var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
-                    else
+                    }
+                    // parse attenuation
+                    else if (attributeTypes[j] == "value") {
+                        var constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant');
+                        var linear = this.reader.getFloat(grandChildren[attributeIndex], 'linear');
+                        var quadratic = this.reader.getFloat(grandChildren[attributeIndex], 'quadratic');
+
+                        if (!(constant != null && !isNaN(constant)))
+                            return "unable to parse attenuation of the light for ID = " + lightId;
+
+                        if (!(linear != null && !isNaN(linear)))
+                            return "unable to parse attenuation of the light for ID = " + lightId;
+
+                        if (!(quadratic != null && !isNaN(quadratic)))
+                            return "unable to parse attenuation of the light for ID = " + lightId;
+
+                        if (constant == 1 && linear == 0 && quadratic == 0) {
+                            global.push("constant");
+                        }
+                        else if (constant == 0 && linear == 1 && quadratic == 0) {
+                            global.push("linear");
+                        }
+                        else if (constant == 0 && linear == 0 && quadratic == 1) {
+                            global.push("quadratic");
+                        }
+                        else {
+                            this.onXMLMinorError("unable to parse light attenuation " + lightId);
+                        }
+                    }
+                    else {
                         var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                    }
 
                     if (!Array.isArray(aux))
                         return aux;
@@ -1149,12 +1179,13 @@ class MySceneGraph {
 
         if (node.primitive) {
 
-            if (node.length_t != 1) {
+            if (node.length_t != null) {
+                console.log(node.length_t);
                 this.primitives[node.nodeID].updateLengthT(node.length_t);
                 this.primitives[node.nodeID].updateTexCoords();
             }
 
-            if (node.length_s != 1) {
+            if (node.length_s != null) {
                 this.primitives[node.nodeID].updateLengthS(node.length_s);
                 this.primitives[node.nodeID].updateTexCoords();
             }
