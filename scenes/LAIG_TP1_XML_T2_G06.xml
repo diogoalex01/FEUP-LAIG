@@ -6,6 +6,11 @@
             <from x="6" y="3" z="6" />
             <to x="0" y="2" z="0" />
         </perspective>
+        <ortho id="front_view" near="0.1" far="70" left="-10.0" right="10.0" top="10.0" bottom="-10.0">
+            <from x="5" y="5" z="20" />
+            <to x="5" y="5" z="0" />
+            <up x="0" y="1" z="0" />
+        </ortho>
     </views>
 
     <globals>
@@ -96,7 +101,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -110,7 +115,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
                 </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -125,7 +130,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -140,7 +145,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -154,7 +159,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -169,7 +174,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -199,7 +204,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -215,7 +220,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -259,7 +264,7 @@
                 <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -287,7 +292,7 @@
             <materials>
                 <material id="materialMetal" />
             </materials>
-            <texture id="textureCopper" />
+            <texture id="textureCopper" length_s="1" length_t="1" />
             <children>
                 <componentref id="boardMain" />
                 <componentref id="boardBow" />
@@ -316,7 +321,7 @@
             <materials>
                 <material id="materialRubber" />
             </materials>
-            <texture id="textureRubber" />
+            <texture id="textureRubber" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -330,7 +335,7 @@
             <materials>
                 <material id="materialRubber" />
             </materials>
-            <texture id="textureRubber" />
+            <texture id="textureRubber" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -356,7 +361,7 @@
             <materials>
                 <material id="materialRubber" />
             </materials>
-            <texture id="textureBell" />
+            <texture id="textureBell" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -410,7 +415,7 @@
             <materials>
                 <material id="materialMetal" />
             </materials>
-            <texture id="textureCopper" />
+            <texture id="textureCopper" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -463,7 +468,7 @@
             <materials>
                 <material id="materialRubber" />
             </materials>
-            <texture id="textureBell" />
+            <texture id="textureBell" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -476,7 +481,7 @@
             <materials>
                 <material id="materialRubber" />
             </materials>
-            <texture id="textureRubber" />
+            <texture id="textureRubber" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -525,7 +530,7 @@
             <materials>
                 <material id="materialMetal" />
             </materials>
-            <texture id="textureMetal" />
+            <texture id="textureMetal" length_s="1" length_t="1" />
             <children>
                 <componentref id="bodySet" />
                 <componentref id="wheelSet" />

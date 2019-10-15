@@ -231,7 +231,7 @@ class MySceneGraph {
         var grandChildren = [];
 
         var pID, nearP, farP, angle, fromP, toPersp;
-        var oID, nearO, farO, left, right, top, bottom, fromO, toO, up;
+        var oID, nearO, farO, left, right, top, bottom, fromO, toO, up = [0, 1, 0];
 
         if (children.length < 1) {
             this.onXMLError("define at least one view");
@@ -260,11 +260,6 @@ class MySceneGraph {
 
                 var perspectiveCam = new CGFcamera(angle, nearP, farP, fromP, toPersp);
                 this.views[pID] = perspectiveCam;
-
-                if (pID == this.defaulView) {
-                    this.scene.camera = perspectiveCam;
-                    this.scene.interface.setActiveCamera(this.scene.camera);
-                }
             }
 
             if (children[i].nodeName == "ortho") {
@@ -285,7 +280,7 @@ class MySceneGraph {
                     else if (grandChildren[j].nodeName == "to") {
                         toO = this.parseCoordinates3D(grandChildren[j], "to component of ortho of ID " + oID);
                     }
-                    else if (grandChildren[j].nodeName == "up") {
+                    else if (grandChildren.length == 3 && grandChildren[j].nodeName == "up") {
                         up = this.parseCoordinates3D(grandChildren[j], "to component of ortho of ID " + oID);
                     }
                     else {
@@ -295,11 +290,6 @@ class MySceneGraph {
 
                 var orthoCam = new CGFcameraOrtho(left, right, bottom, top, nearO, farO, fromO, toO, up);
                 this.views[oID] = orthoCam;
-
-                if (pID == this.defaulView) {
-                    this.scene.camera = orthoCam;
-                    this.scene.interface.setActiveCamera(this.scene.camera);
-                }
             }
         }
 
@@ -989,7 +979,8 @@ class MySceneGraph {
 
             node.texture = this.reader.getString(grandChildren[textureIndex], 'id');
 
-            if (grandChildren[textureIndex].length > 1) {
+            console.log(grandChildren[textureIndex].id);
+            if (grandChildren[textureIndex].id != 'none' && grandChildren[textureIndex].id != 'inherit') {
                 node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
                 node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
             }

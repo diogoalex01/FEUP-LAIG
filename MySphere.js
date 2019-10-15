@@ -37,16 +37,18 @@ class MySphere extends CGFobject {
 
 				this.vertices.push(normalX * this.radius, normalY * this.radius, normalZ * this.radius);
 				this.normals.push(normalX, normalY, normalZ);
-
+				this.texCoords.push(i / this.slices, 0.5 - j / (2 * this.stacks));
 
 				if (theta > 0) {
 					this.vertices.push(normalX * this.radius, normalY * this.radius, -normalZ * this.radius);
 					this.normals.push(normalX, normalY, -normalZ);
+					this.texCoords.push(i / this.slices, 0.5 + j / (2 * this.stacks));
+
 				}
 
-				//this.texCoords.push(ang / (Math.PI * 2), 1);
-				//this.texCoords.push(phi / (Math.PI * 2), phi);
-
+				if (j == this.stacks) {
+					break;
+				}
 				phi += deltaPhi;
 			}
 
@@ -68,8 +70,6 @@ class MySphere extends CGFobject {
 
 					this.indices.push((this.slices + 1) + 2 * i + 1, i + 1, i);
 					this.indices.push((this.slices + 1) + 2 * i + 3, i + 1, (this.slices + 1) + 2 * i + 1);
-
-					this.texCoords.push(i / this.slices, 0.5 + j / (2 * this.stacks));
 				}
 			}
 			else {
@@ -81,9 +81,21 @@ class MySphere extends CGFobject {
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 1, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 1);
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j + 1) + 2 * i + 1);
 
-					this.texCoords.push(i / this.slices, 0.5 - j / (2 * this.stacks));
 				}
 			}
+		}
+
+		var vN = this.stacks * (this.slices + 1) * 2 + 1 //(this.stacks + 1) * (this.slices + 1) * 2 + this.slices + 1;   //North pole vertex
+		var vS = vN + 1;                                                        //South pole vertex
+
+		for (var i = 0; i < this.slices; i++) {
+			//Vertices indexes
+			//var v1 = (this.slices + 1) * (2 * (this.stacks - 1) - 1) + 2 * i;  
+			var v1 = this.stacks * this.slices + i;
+			var v2 = v1 + 2;
+
+			this.indices.push(v1, v2, vN);
+			this.indices.push(v1 + 1, vS, v2 + 1);
 		}
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
