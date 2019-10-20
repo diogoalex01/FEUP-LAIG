@@ -41,8 +41,6 @@ class MyTorus extends CGFobject {
 
 				this.vertices.push(x, y, normalZ * this.inner);
 
-				//this.texCoords.push(ang / (Math.PI * 2), 1);
-
 				var normal = [
 					normalX,
 					normalY,

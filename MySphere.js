@@ -85,12 +85,12 @@ class MySphere extends CGFobject {
 			}
 		}
 
-		var vN = this.stacks * (this.slices + 1) * 2 + 1 //(this.stacks + 1) * (this.slices + 1) * 2 + this.slices + 1;   //North pole vertex
-		var vS = vN + 1;                                                        //South pole vertex
+		var vN = this.stacks * (this.slices + 1) * 2 + 1  //North pole vertex
+		var vS = vN + 1;                                  //South pole vertex
 
 		for (var i = 0; i < this.slices; i++) {
 			//Vertices indexes
-			//var v1 = (this.slices + 1) * (2 * (this.stacks - 1) - 1) + 2 * i;  
+
 			var v1 = this.stacks * this.slices + i;
 			var v2 = v1 + 2;
 
