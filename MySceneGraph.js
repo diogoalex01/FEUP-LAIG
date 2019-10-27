@@ -1165,24 +1165,26 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
-    processNode(nodeID, material, texture) {
+    processNode(nodeID, material, texture, leng_s, leng_t) {
         var node = this.vecNodes[nodeID];
         var mat = material;
         var text = texture;
+        var len_s = leng_s;
+        var len_t = leng_t;
 
         if (nodeID == null)
             return;
 
         if (node.primitive) {
-
-            if (node.length_t != null) {
-                console.log(node.length_t);
-                this.primitives[node.nodeID].updateLengthT(node.length_t);
+            if (len_s != 1) {
+                console.log(len_s);
+                this.primitives[node.nodeID].updateLengthS(len_s);
                 this.primitives[node.nodeID].updateTexCoords();
             }
 
-            if (node.length_s != null) {
-                this.primitives[node.nodeID].updateLengthS(node.length_s);
+            if (len_t != 1) {
+                //console.log(len_t);
+                this.primitives[node.nodeID].updateLengthT(len_t);
                 this.primitives[node.nodeID].updateTexCoords();
             }
 
@@ -1207,6 +1209,8 @@ class MySceneGraph {
                 }
                 else if (node.texture != 'inherit') {
                     text = node.texture;
+                    len_s = node.length_s;
+                    len_t = node.length_t;
                 }
             }
 
@@ -1216,7 +1220,7 @@ class MySceneGraph {
 
             for (var i = 0; i < node.descendants.length; i++) {
                 this.scene.pushMatrix();
-                this.processNode(node.descendants[i], mat, text);
+                this.processNode(node.descendants[i], mat, text, len_s, len_t);
                 this.scene.popMatrix();
             }
         }
@@ -1229,6 +1233,7 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
         //To test the parsing/creation of the primitives, call the display function directly
 
-        this.processNode(this.idRoot, this.vecNodes[this.idRoot].currentMat, this.vecNodes[this.idRoot].texture);
+        this.processNode(this.idRoot, this.vecNodes[this.idRoot].currentMat, this.vecNodes[this.idRoot].texture,
+            this.vecNodes[this.idRoot].length_s, this.vecNodes[this.idRoot].length_t);
     }
 }

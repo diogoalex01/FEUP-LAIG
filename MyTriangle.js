@@ -17,7 +17,7 @@ class MyTriangle extends CGFobject {
 		this.z2 = z2;
 		this.z3 = z3;
 
-		this.length_u = 1;
+		this.length_s = 1;
 		this.length_t = 1;
 
 		this.initBuffers();
@@ -60,8 +60,8 @@ class MyTriangle extends CGFobject {
 
 		this.texCoords = [
 			0.0, 0.0,
-			1 / this.length_u, 0.0,
-			this.c * this.cosAlpha / this.length_u, this.c * this.senAlpha / this.length_t
+			1 / this.length_s, 0.0,
+			this.c * this.cosAlpha / this.length_s, this.c * this.senAlpha / this.length_t
 		];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
@@ -76,8 +76,8 @@ class MyTriangle extends CGFobject {
 	updateTexCoords(coords) {
 		this.texCoords = [
 			0.0, 0.0,
-			1 / this.length_u, 0.0,
-			this.c * this.cosAlpha / this.length_u, this.c * this.senAlpha / this.length_t
+			1 / this.length_s, 0.0,
+			this.c * this.cosAlpha / this.length_s, this.c * this.senAlpha / this.length_t
 		]
 
 		this.updateTexCoordsGLBuffers();
