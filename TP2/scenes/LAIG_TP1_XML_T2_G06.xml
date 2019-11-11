@@ -128,6 +128,28 @@
         <primitive id="torus">
             <torus inner="0.35" outer="1" slices="25" loops="25" />
         </primitive>
+        <primitive id="plane">
+            <plane npartsU="5" npartsV="8"/>
+        </primitive>
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="4" npartsU="20" npartsV="20">
+                <controlpoint xx="-2" yy="-2" zz="1" />
+                <controlpoint xx="-2" yy="-1" zz="-2" />
+                <controlpoint xx="-2" yy="1" zz="5" />
+                <controlpoint xx="-2" yy="2" zz="-1" />
+                <controlpoint xx="0" yy="-2" zz="0" />
+                <controlpoint xx="0" yy="-1" zz="-1" />
+                <controlpoint xx="0" yy="1" zz="1.5" />
+                <controlpoint xx="0" yy="2" zz="0" />
+                <controlpoint xx="2" yy="-2" zz="-1" />
+                <controlpoint xx="2" yy="-1" zz="2" />
+                <controlpoint xx="2" yy="1" zz="-5" />
+                <controlpoint xx="2" yy="2" zz="1" />
+            </patch>
+        </primitive>    
+        <primitive id="cylinder2">
+            <cylinder2 base="0.5" top="0.5" height="1" slices="10" stacks="10" />
+        </primitive>
     </primitives>
 
     <components>
@@ -574,9 +596,9 @@
             </materials>
             <texture id="textureMetal" length_s="1" length_t="1" />
             <children>
-                <componentref id="bodySet" />
-                <componentref id="wheelSet" />
-                <componentref id="board" />
+                <componentref id="bodySet"/>
+                <componentref id="wheelSet"/>
+                <componentref id="board"/>
             </children>
         </component>
     </components>

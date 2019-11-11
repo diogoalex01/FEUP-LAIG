@@ -47,20 +47,12 @@ class XMLscene extends CGFscene {
 
             var delta_time = time - this.last_time;
 
-            //console.dir(this.graph.vecNodes)
-            /*for (var node in this.graph.vecNodes) {
-                console.dir(this.graph.vecNodes);
-
-                //console.dir(node);ƒ
-                if (node.animation != null) {
-                    node.animation.update(delta_time / 1000);
-                    console.log(delta_time/1000);
+            for (var node in this.graph.vecNodes) {
+                if (this.graph.vecNodes[node].animation != null) {
+                    this.graph.vecNodes[node].animation.update(this.time / 1000);
                 }
-            }*/
-            //console.log('ola' + this.time / 1000);
-            this.graph.vecNodes['frontWheel'].animation.update(this.time / 1000);
-            this.graph.vecNodes['backWheel'].animation.update(this.time / 1000);
-            this.graph.vecNodes['scooter'].animation.update(this.time / 1000);
+            }
+
             this.time += delta_time;
         }
 
