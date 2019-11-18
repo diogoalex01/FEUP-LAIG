@@ -34,6 +34,9 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        this.secCam = new MySecurityCamera(this);
+
         this.setUpdatePeriod(80);
 
         this.displayAxis = true;
@@ -42,6 +45,7 @@ class XMLscene extends CGFscene {
     }
 
     update(time) {
+        this.secCam.update(time);
         if (this.sceneInited) {
             this.keyInput();
 
@@ -63,7 +67,9 @@ class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.defaultCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.securityCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, -15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = this.defaultCamera;
     }
 
     /**
@@ -147,17 +153,30 @@ class XMLscene extends CGFscene {
         this.interface.setUpLights(this.graph.lights);
     }
 
-    //
     updateAppliedCamera() {
         this.camera = this.graph.views[this.currentCamera];
         this.interface.setActiveCamera(this.camera);
     }
 
-    /**
-     * Displays the scene.
-     */
     display() {
+        this.RTT.attachToFrameBuffer();
+        this.render(this.securityCamera);
+        this.RTT.detachFromFrameBuffer();
+        this.render(this.defaultCamera);
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.secCam.display(this.RTT);
+        this.gl.enable(this.gl.DEPTH_TEST);
+    }
+
+    /**
+     * Renders the scene.
+     */
+    render(camera) {
+
         // ---- BEGIN Background, camera and axis setup
+
+        this.camera = camera;
+        this.interface.setActiveCamera(this.camera);
 
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);

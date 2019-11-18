@@ -20,7 +20,7 @@ class MyRectangle extends CGFobject {
 		this.initBuffers();
 	}
 
-		initBuffers() {
+	initBuffers() {
 		this.vertices = [
 			this.x1, this.y1, 0,	//0
 			this.x2, this.y1, 0,	//1
@@ -53,11 +53,12 @@ class MyRectangle extends CGFobject {
         */
 
 		this.texCoords = [
-			0, 1,
-			1, 1,
 			0, 0,
-			1, 0
+			1, 0,
+			0, 1,
+			1, 1
 		]
+
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}
@@ -86,4 +87,3 @@ class MyRectangle extends CGFobject {
 		this.length_s = l;
 	}
 }
-
