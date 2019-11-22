@@ -427,6 +427,46 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
+        <component id="flagSurface">
+            <transformation>
+                <translate x="0.8" y="4.8" z="0" />
+                <scale x="0.20" y="0.1" z="0.1" />
+                <rotate axis="z" angle="90" />
+            </transformation>
+            <materials>
+                <material id="materialRubber" />
+            </materials>
+            <texture id="textureBell" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="patch" />
+            </children>
+        </component>
+        <component id="flagCylinder">
+            <transformation>
+                <translate x="0.5" y="5" z="0" />
+                <scale x="0.05" y="1" z="0.05" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="textureMetal" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder2" />
+            </children>
+        </component>
+        <component id="flag">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="flagCylinder" />
+                <componentref id="flagSurface" />
+            </children>
+        </component>
         <component id="handleSet">
             <transformation>
             </transformation>
@@ -436,6 +476,7 @@
             <texture id="inherit" />
             <children>
                 <componentref id="bell" />
+                <componentref id="flag" />
                 <componentref id="handle" />
             </children>
         </component>
