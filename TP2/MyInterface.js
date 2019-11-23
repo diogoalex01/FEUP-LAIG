@@ -32,13 +32,14 @@ class MyInterface extends CGFinterface {
 
     setUpCameras() {
         //Dropdown for cameras
-        this.gui.add(this.scene, 'currentCamera', this.scene.cameraIDs).name('Selected Camera').onChange(this.scene.updateAppliedCamera.bind(this.scene));
+        this.gui.add(this.scene, 'currentCamera', this.scene.cameraIDs).name('Camera').onChange(this.scene.updateAppliedCamera.bind(this.scene));
+        this.gui.add(this.scene, 'currentSecCam', this.scene.secCamIDs).name('Security Camera').onChange(this.scene.updateAppliedCamera.bind(this.scene));
     }
 
     setUpLights(lights) {
         var group = this.gui.addFolder("Lights");
         group.open();
-        
+
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
                 //Checkbox for lights

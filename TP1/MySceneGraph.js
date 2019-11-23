@@ -984,7 +984,7 @@ class MySceneGraph {
 
             node.texture = this.reader.getString(grandChildren[textureIndex], 'id');
 
-            console.log(grandChildren[textureIndex].id);
+            //console.log(grandChildren[textureIndex].id);
             if (grandChildren[textureIndex].id != 'none' && grandChildren[textureIndex].id != 'inherit') {
                 node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
                 node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
@@ -1177,7 +1177,7 @@ class MySceneGraph {
 
         if (node.primitive) {
             if (len_s != 1) {
-                console.log(len_s);
+                //console.log(len_s);
                 this.primitives[node.nodeID].updateLengthS(len_s);
                 this.primitives[node.nodeID].updateTexCoords();
             }

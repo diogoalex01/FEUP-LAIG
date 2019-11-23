@@ -68,7 +68,7 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.defaultCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-        this.securityCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, -15, 15), vec3.fromValues(0, 0, 0));
+        this.securityCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, -15), vec3.fromValues(0, 0, 0));
         this.camera = this.defaultCamera;
     }
 
@@ -141,20 +141,27 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
-        this.camera = this.graph.views[this.graph.defaultView];
+        this.defaultCamera = this.graph.views[this.graph.defaultView];
+        this.securityCamera = this.graph.secCamViews[this.graph.defaultView];
+        this.camera = this.defaultCamera;
         this.interface.setActiveCamera(this.camera);
 
-        this.sceneInited = true;
-
         this.cameraIDs = Object.keys(this.graph.views);
+        this.secCamIDs = Object.keys(this.graph.secCamViews);
         this.currentCamera = this.graph.defaultView;
-
+        this.currentSecCam = this.graph.defaultView;
+        
         this.interface.setUpCameras();
         this.interface.setUpLights(this.graph.lights);
+
+        this.sceneInited = true;
     }
 
     updateAppliedCamera() {
-        this.camera = this.graph.views[this.currentCamera];
+        this.graph.defaultView = this.currentCamera;
+        this.defaultCamera = this.graph.views[this.graph.defaultView];
+        this.securityCamera = this.graph.secCamViews[this.currentSecCam];
+        this.camera = this.defaultCamera;
         this.interface.setActiveCamera(this.camera);
     }
 
@@ -162,6 +169,7 @@ class XMLscene extends CGFscene {
         this.RTT.attachToFrameBuffer();
         this.render(this.securityCamera);
         this.RTT.detachFromFrameBuffer();
+
         this.render(this.defaultCamera);
         this.gl.disable(this.gl.DEPTH_TEST);
         this.secCam.display(this.RTT);
@@ -202,6 +210,8 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
         }
+        
+        this.popMatrix();
 
         var j = 0;
 
@@ -220,7 +230,6 @@ class XMLscene extends CGFscene {
             }
         }
 
-        this.popMatrix();
         // ---- END Background, camera and axis setup
     }
 

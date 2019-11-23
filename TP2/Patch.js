@@ -23,13 +23,6 @@ class Patch extends CGFobject {
 	}
 
 	initBuffers() {
-
-		for (var i; i < this.controlPoints; i++) {
-			console.log('-----------------\n');
-			console.log(this.controlPoints);
-			console.log('-----------------\n');
-		}
-
 		this.makeSurface(
 			this.npointsU - 1, // degree on U
 			this.npointsV - 1, // degree on V

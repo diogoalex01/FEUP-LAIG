@@ -241,6 +241,7 @@ class MySceneGraph {
      */
     parseView(viewsNode) {
         this.views = [];
+        this.secCamViews = [];
         this.defaultView = this.reader.getString(viewsNode, 'default');
         var children = viewsNode.children;
         var grandChildren = [];
@@ -275,6 +276,7 @@ class MySceneGraph {
 
                 var perspectiveCam = new CGFcamera(angle, nearP, farP, fromP, toPersp);
                 this.views[pID] = perspectiveCam;
+                this.secCamViews[pID] = perspectiveCam;
             }
 
             if (children[i].nodeName == "ortho") {
@@ -305,6 +307,7 @@ class MySceneGraph {
 
                 var orthoCam = new CGFcameraOrtho(left, right, bottom, top, nearO, farO, fromO, toO, up);
                 this.views[oID] = orthoCam;
+                this.secCamViews[oID] = orthoCam;
             }
         }
 
@@ -716,8 +719,8 @@ class MySceneGraph {
 
             grandChildren = children[i].children;
 
-            console.log(animationID);
-            console.dir(grandChildren);
+            //console.log(animationID);
+            //console.dir(grandChildren);
 
             if (grandChildren[0].nodeName != "keyframe") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
@@ -801,7 +804,7 @@ class MySceneGraph {
 
                 keyFrameAnimation.keyFrames.push(keyFrame);
             }
-            console.log(keyFrameAnimation.keyFrames);
+            //console.log(keyFrameAnimation.keyFrames);
             this.vecKeyFrameAnimations[animationID] = keyFrameAnimation;
         }
 
@@ -1013,7 +1016,6 @@ class MySceneGraph {
                 this.primitives[primitiveId] = plane;
             }
             else if (primitiveType == 'patch') {
-                console.log('2-----------------\n');
                 // npointsU
                 var npointsU = this.reader.getFloat(grandChildren[0], 'npointsU');
                 if (!(npartsU != null && !isNaN(npointsU)))
@@ -1226,7 +1228,7 @@ class MySceneGraph {
 
             node.texture = this.reader.getString(grandChildren[textureIndex], 'id');
 
-            console.log(grandChildren[textureIndex].id);
+            //console.log(grandChildren[textureIndex].id);
             if (grandChildren[textureIndex].id != 'none' && grandChildren[textureIndex].id != 'inherit') {
                 node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
                 node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
@@ -1419,7 +1421,7 @@ class MySceneGraph {
 
         if (node.primitive) {
             if (len_s != 1) {
-                console.log(len_s);
+                //console.log(len_s);
                 this.primitives[node.nodeID].updateLengthS(len_s);
                 this.primitives[node.nodeID].updateTexCoords();
             }

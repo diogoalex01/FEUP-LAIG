@@ -96,10 +96,67 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </animation>
-        <animation id="animationMoving" >
+        <animation id="animationMovingAndLooping" >
+            <keyframe instant="0.5">
+                    <translate x="0" y="2" z="-0.5" />
+                    <rotate angle_x="36" angle_y="0" angle_z="0" />
+                    <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2.5">
+                    <translate x="0" y="6" z="-2.5" />
+                    <rotate angle_x="180" angle_y="0" angle_z="0" />
+                    <scale x="1" y="1" z="1" />
+            </keyframe>
             <keyframe instant="5">
                 <translate x="0" y="0" z="-5" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <rotate angle_x="360" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
+        <animation id="animationFlag" >
+            <keyframe instant="1">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-45" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="30" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-45" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="30" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-45" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="30" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-45" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="30" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-45" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="10">
@@ -430,9 +487,10 @@
         <component id="flagSurface">
             <transformation>
                 <translate x="0.8" y="4.8" z="0" />
-                <scale x="0.20" y="0.1" z="0.1" />
+                <scale x="0.15" y="0.1" z="0.1" />
                 <rotate axis="z" angle="90" />
             </transformation>
+            <animationref id="animationFlag" />
             <materials>
                 <material id="materialRubber" />
             </materials>
@@ -631,15 +689,15 @@
         <component id="scooter">
             <transformation>
             </transformation>
-            <animationref id="animationMoving" />
+            <animationref id="animationMovingAndLooping" />
             <materials>
                 <material id="materialMetal" />
             </materials>
             <texture id="textureMetal" length_s="1" length_t="1" />
             <children>
-                <componentref id="bodySet"/>
-                <componentref id="wheelSet"/>
-                <componentref id="board"/>
+                <componentref id="bodySet" />
+                <componentref id="wheelSet" />
+                <componentref id="board" />
             </children>
         </component>
     </components>
