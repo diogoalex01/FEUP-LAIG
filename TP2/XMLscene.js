@@ -158,8 +158,7 @@ class XMLscene extends CGFscene {
     }
 
     updateAppliedCamera() {
-        this.graph.defaultView = this.currentCamera;
-        this.defaultCamera = this.graph.views[this.graph.defaultView];
+        this.defaultCamera = this.graph.views[this.currentCamera];
         this.securityCamera = this.graph.secCamViews[this.currentSecCam];
         this.camera = this.defaultCamera;
         this.interface.setActiveCamera(this.camera);
