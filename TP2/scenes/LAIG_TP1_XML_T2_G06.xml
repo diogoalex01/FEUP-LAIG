@@ -85,15 +85,10 @@
 
     <animations>
         <animation id="animationWheelFront" >
-            <keyframe instant="5">
+            <keyframe instant="21">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-720" angle_y="0" angle_z="0" />
+                <rotate angle_x="-4320" angle_y="0" angle_z="0" />
                 <scale x="2" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="10">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
             </keyframe>
         </animation>
         <animation id="animationWheelBack" >
