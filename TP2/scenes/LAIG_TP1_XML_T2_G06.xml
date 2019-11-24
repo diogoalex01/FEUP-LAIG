@@ -1,9 +1,9 @@
 <lxs>
-    <scene root="scooter" axis_length="5"/>
+    <scene root="scene" axis_length="5"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="6" y="3" z="6" />
+            <from x="30" y="35" z="20" />
             <to x="0" y="2" z="0" />
         </perspective>
         <ortho id="front_view" near="0.1" far="70" left="-10.0" right="10.0" top="10.0" bottom="-10.0">
@@ -40,6 +40,10 @@
         <texture id="textureRubber" file="scenes/images/rubber.jpg" />
         <texture id="textureBell" file="scenes/images/bell.jpg" />
         <texture id="textureCopper" file="scenes/images/copper.jpg" />
+        <texture id="cubMap" file="scenes/images/other.jpg" />
+        <texture id="cubMapFront" file="scenes/images/room.jpg" />
+        <texture id="track" file="scenes/images/track.jpg" />
+        <texture id="roof" file="scenes/images/roof.jpg" />
     </textures>
 
     <materials>
@@ -97,21 +101,116 @@
             </keyframe>
         </animation>
         <animation id="animationMovingAndLooping" >
-            <keyframe instant="0.5">
-                    <translate x="0" y="2" z="-0.5" />
-                    <rotate angle_x="36" angle_y="0" angle_z="0" />
-                    <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="2.5">
-                    <translate x="0" y="6" z="-2.5" />
-                    <rotate angle_x="180" angle_y="0" angle_z="0" />
-                    <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="5">
+            <keyframe instant="1">
                 <translate x="0" y="0" z="-5" />
-                <rotate angle_x="360" angle_y="0" angle_z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
+            <!--<keyframe instant="10">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe> -->
+            <keyframe instant="2">
+                <translate x="-3" y="0" z="-9" />
+                <rotate angle_x="0" angle_y="90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translate x="-9" y="0" z="-9" />
+                <rotate angle_x="0" angle_y="90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translate x="-18" y="0" z="-14" />
+                <rotate angle_x="0" angle_y="10" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translate x="-15" y="0" z="-19" />
+                <rotate angle_x="0" angle_y="-90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="-10" y="0" z="-18" />
+                <rotate angle_x="0" angle_y="-90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="-4" y="0" z="-18" />
+                <rotate angle_x="0" angle_y="-90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translate x="0" y="0" z="-22" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translate x="-1" y="0" z="-27" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="-2" y="0" z="-30" />
+                <rotate angle_x="0" angle_y="80" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="11">
+                <translate x="-7" y="0" z="-31" />
+                <rotate angle_x="0" angle_y="90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="12">
+                <translate x="-12" y="0" z="-25" />
+                <rotate angle_x="0" angle_y="150" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="13">
+                <translate x="-17" y="0" z="-23" />
+                <rotate angle_x="0" angle_y="80" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="14">
+                <translate x="-25" y="0" z="-28" />
+                <rotate angle_x="0" angle_y="50" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translate x="-33" y="0" z="-26" />
+                <rotate angle_x="0" angle_y="180" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="16">
+                <translate x="-33" y="0" z="-9" />
+                <rotate angle_x="0" angle_y="180" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="17">
+                <translate x="-28" y="0" z="-4" />
+                <rotate angle_x="0" angle_y="240" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="18">
+                <translate x="-23" y="0" z="-3" />
+                <rotate angle_x="0" angle_y="250" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="19">
+                <translate x="-15" y="0" z="6" />
+                <rotate angle_x="0" angle_y="220" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translate x="-3" y="0" z="6" />
+                <rotate angle_x="0" angle_y="290" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="21">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>-->
         </animation>
         <animation id="animationFlag" >
             <keyframe instant="1">
@@ -688,6 +787,7 @@
         </component>
         <component id="scooter">
             <transformation>
+                <translate x="13.5" y="0.55" z="10" /> 
             </transformation>
             <animationref id="animationMovingAndLooping" />
             <materials>
@@ -698,6 +798,120 @@
                 <componentref id="bodySet" />
                 <componentref id="wheelSet" />
                 <componentref id="board" />
+            </children>
+        </component>
+        <component id="backPlane">
+            <transformation>            
+                <translate x="-25" y="25" z="0" />    
+                <scale x="50" y="50" z="50" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="z" angle="-90" />              
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="cubMapFront" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="downPlane">
+            <transformation>              
+                <scale x="50" y="50" z="50" />   
+                <rotate axis="y" angle="90" />        
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="track" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="upPlane">
+            <transformation>     
+                <translate x="0" y="50" z="0" />          
+                <scale x="50" y="50" z="50" />  
+                <rotate axis="z" angle="180" />           
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="roof" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="frontPlane">
+            <transformation>     
+                <translate x="25" y="25" z="0" />    
+                <scale x="50" y="50" z="50" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="z" angle="90" />             
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="rightPlane">
+            <transformation>     
+                <translate x="0" y="25" z="-25" />    
+                <scale x="50" y="50" z="50" />
+                <rotate axis="z" angle="180" />
+                <rotate axis="x" angle="90" />             
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="leftPlane">
+            <transformation>     
+                <translate x="0" y="25" z="25" />    
+                <scale x="50" y="50" z="50" />
+                <rotate axis="x" angle="-90" />             
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="cubeMap">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="cubMap" length_s="1" length_t="1" />
+            <children>
+                <componentref id="backPlane" />
+                <componentref id="downPlane" />
+                <componentref id="upPlane" />
+                <componentref id="frontPlane" />
+                <componentref id="rightPlane" />
+                <componentref id="leftPlane" />
+            </children>
+        </component>
+        <component id="scene">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="textureMetal" length_s="1" length_t="1" />
+            <children>
+                <componentref id="scooter" />
+                <componentref id="cubeMap" />
             </children>
         </component>
     </components>
