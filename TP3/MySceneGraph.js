@@ -241,7 +241,6 @@ class MySceneGraph {
      */
     parseView(viewsNode) {
         this.views = [];
-        this.secCamViews = [];
         this.defaultView = this.reader.getString(viewsNode, 'default');
         var children = viewsNode.children;
         var grandChildren = [];
@@ -275,9 +274,7 @@ class MySceneGraph {
                 }
 
                 var perspectiveCam = new CGFcamera(angle, nearP, farP, fromP, toPersp);
-                var perspectiveCamSec = new CGFcamera(angle, nearP, farP, fromP, toPersp);
                 this.views[pID] = perspectiveCam;
-                this.secCamViews[pID] = perspectiveCamSec;
             }
 
             if (children[i].nodeName == "ortho") {
@@ -307,9 +304,7 @@ class MySceneGraph {
                 }
 
                 var orthoCam = new CGFcameraOrtho(left, right, bottom, top, nearO, farO, fromO, toO, up);
-                var orthoCamSec = new CGFcameraOrtho(left, right, bottom, top, nearO, farO, fromO, toO, up);
                 this.views[oID] = orthoCam;
-                this.secCamViews[oID] = orthoCamSec;
             }
         }
 
