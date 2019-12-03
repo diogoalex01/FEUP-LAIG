@@ -44,7 +44,6 @@ class XMLscene extends CGFscene {
     }
 
     update(time) {
-        this.secCam.update(time);
         if (this.sceneInited) {
             this.keyInput();
 

@@ -126,13 +126,118 @@
         </primitive>
     </primitives>
 
-    <components>    
+    <components>
+        <component id="rectangleBottomRectCuboid">
+            <transformation>
+                <translate x="0" y="-0.25" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rectangleTopRectCuboid">
+            <transformation>
+                <translate x="0" y="0.25" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+                </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rectangleRightRectCuboid">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <scale x="1" y="0.25" z="2" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rectangleLeftRectCuboid">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <scale x="1" y="0.25" z="2" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rectangleFrontRectCuboid">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <scale x="1" y="0.25" z="1" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rectangleBackRectCuboid">
+            <transformation>
+                <translate x="0" y="0" z="-1" />
+                <scale x="1" y="0.25" z="1" />
+                <rotate axis="y" angle="-180" />
+            </transformation>
+            <materials>
+                <material id="materialWood" />
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="boardTable">
+            <transformation>
+                <translate x="0" y="0.2" z="0" />
+                <scale x="30" y="1" z="15" />
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="rectangleBottomRectCuboid" />
+                <componentref id="rectangleTopRectCuboid" />
+                <componentref id="rectangleRightRectCuboid" />
+                <componentref id="rectangleLeftRectCuboid" />
+                <componentref id="rectangleFrontRectCuboid" />
+                <componentref id="rectangleBackRectCuboid" />
+            </children>
+        </component>
         <component id="backPlane">
             <transformation>            
-                <translate x="-25" y="25" z="0" />    
+                <translate x="-25" y="25" z="0" />
                 <scale x="50" y="50" z="50" />
                 <rotate axis="x" angle="-90" />
-                <rotate axis="z" angle="-90" />              
+                <rotate axis="z" angle="-90" />
             </transformation>
             <materials>
                 <material id="materialMetal" />
@@ -150,7 +255,7 @@
             <materials>
                 <material id="materialMetal" />
             </materials>
-            <texture id="track" length_s="1" length_t="1" />
+            <texture id="cubMap" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="plane" />
             </children>
@@ -230,15 +335,31 @@
             </children>
         </component>
         <component id="board">
-            <transformation>       
-                <scale x="10" y="10" z="10" />            
+            <transformation>
+                <rotate axis="y" angle="-90" />   
+                <translate x="0" y= "0.5" z="0" />
+                <scale x="30" y="0" z="30" />
             </transformation>
             <materials>
+                <material id="materialWood" />
                 <material id="materialMetal" />
             </materials>
             <texture id="board" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="plane" />
+            </children>
+        </component>
+        <component id="bell">
+            <transformation>
+                <translate x="5" y="10" z="5" />
+                <scale x="10" y="1" z="10" />
+            </transformation>
+            <materials>
+                <material id="materialRubber" />
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
             </children>
         </component>
         <component id="scene">
@@ -249,9 +370,10 @@
             </materials>
             <texture id="textureMetal" length_s="1" length_t="1" />
             <children>
-                <componentref id="scooter" />
+                <componentref id="boardTable" />
                 <componentref id="cubeMap" />
                 <componentref id="board" />
+                <componentref id="bell" />
             </children>
         </component>
     </components>

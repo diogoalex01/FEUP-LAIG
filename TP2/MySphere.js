@@ -43,12 +43,12 @@ class MySphere extends CGFobject {
 					this.vertices.push(normalX * this.radius, normalY * this.radius, -normalZ * this.radius);
 					this.normals.push(normalX, normalY, -normalZ);
 					this.texCoords.push(i / this.slices, 0.5 + j / (2 * this.stacks));
-
 				}
 
 				if (j == this.stacks) {
 					break;
 				}
+
 				phi += deltaPhi;
 			}
 
@@ -80,7 +80,6 @@ class MySphere extends CGFobject {
 
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 1, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 1);
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 3, (this.slices + 1) * (2 * j - 1) + 2 * i + 3, (this.slices + 1) * (2 * j + 1) + 2 * i + 1);
-
 				}
 			}
 		}

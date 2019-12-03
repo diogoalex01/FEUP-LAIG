@@ -30,7 +30,6 @@ class Cylinder2 extends CGFobject {
 				[
 					[-this.top, 0, this.height, 1],
 					[-this.base, 0, 0, 1]
-
 				],
 				[
 					[- this.top, this.top / 0.75, this.height, 1],
