@@ -35,12 +35,15 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.RTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        this.pickingBoard = new PickingBoard(this);
 
         this.setUpdatePeriod(80);
 
         this.displayAxis = true;
         this.last_time = 0;
         this.time = 0;
+
+
     }
 
     update(time) {
@@ -144,11 +147,13 @@ class XMLscene extends CGFscene {
 
         this.cameraIDs = Object.keys(this.graph.views);
         this.currentCamera = this.graph.defaultView;
-        
+
         this.interface.setUpCameras();
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
+
+        this.setPickEnabled(true);
     }
 
     updateAppliedCamera() {
@@ -164,6 +169,26 @@ class XMLscene extends CGFscene {
         this.render(this.defaultCamera);
         this.gl.disable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.DEPTH_TEST);
+
+        this.logPicking();
+        this.clearPickRegistration();
+
+        this.pickingBoard.display();
+    }
+
+    logPicking() {
+        if (this.pickMode == false) {
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (var i = 0; i < this.pickResults.length; i++) {
+                    var obj = this.pickResults[i][0];
+                    if (obj) {
+                        var customId = this.pickResults[i][1];
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                    }
+                }
+                this.pickResults.splice(0, this.pickResults.length);
+            }
+        }
     }
 
     /**
@@ -200,7 +225,7 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
         }
-        
+
         this.popMatrix();
 
         var j = 0;
