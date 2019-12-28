@@ -50,6 +50,8 @@
         <texture id="cubMapFront" file="scenes/images/room.jpg" />
         <texture id="roof" file="scenes/images/roof.jpg" />
         <texture id="board" file="scenes/images/board.png" />
+        <texture id="white" file="scenes/images/white.jpg" />
+        <texture id="black" file="scenes/images/black.jpg" />
     </textures>
 
     <materials>
@@ -349,58 +351,6 @@
                 <primitiveref id="plane" />
             </children>
         </component>
-        <component id="whitePiece1">
-            <transformation>
-                <translate x="6" y="1" z="6" />
-                <scale x="2" y="0.3" z="2" />
-            </transformation>
-            <materials>
-                <material id="materialWood" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="sphere" />
-            </children>
-        </component>
-        <component id="whitePiece2">
-            <transformation>
-                <translate x="6" y="1" z="-6" />
-                <scale x="2" y="0.3" z="2" />
-            </transformation>
-            <materials>
-                <material id="materialWood" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="sphere" />
-            </children>
-        </component>
-        <component id="whitePiece3">
-            <transformation>
-                <translate x="6" y="1" z="0" />
-                <scale x="2" y="0.3" z="2" />
-            </transformation>
-            <materials>
-                <material id="materialWood" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="sphere" />
-            </children>
-        </component>
-        <component id="pieces">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="materialWood" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <componentref id="whitePiece1" />
-                <componentref id="whitePiece2" />
-                <componentref id="whitePiece3" />
-            </children>
-        </component>
         <component id="scene">
             <transformation>
             </transformation>
@@ -412,7 +362,6 @@
                 <componentref id="boardTable" />
                 <componentref id="cubeMap" />
                 <componentref id="board" />
-                <componentref id="pieces" />
             </children>
         </component>
     </components>

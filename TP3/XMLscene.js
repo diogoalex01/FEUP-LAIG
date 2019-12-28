@@ -6,7 +6,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface
      */
     constructor(myinterface) {
         super();
@@ -36,14 +36,13 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.RTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         this.pickingBoard = new PickingBoard(this);
+        this.nudge = new Nudge(this);
 
         this.setUpdatePeriod(80);
 
         this.displayAxis = true;
         this.last_time = 0;
         this.time = 0;
-
-
     }
 
     update(time) {
@@ -174,6 +173,7 @@ class XMLscene extends CGFscene {
         this.clearPickRegistration();
 
         this.pickingBoard.display();
+        this.nudge.display();
     }
 
     logPicking() {
@@ -183,6 +183,7 @@ class XMLscene extends CGFscene {
                     var obj = this.pickResults[i][0];
                     if (obj) {
                         var customId = this.pickResults[i][1];
+                        this.nudge.checkPick(customId);
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                     }
                 }
