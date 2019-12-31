@@ -43,6 +43,8 @@ class XMLscene extends CGFscene {
         this.displayAxis = true;
         this.selectedGameMode = -1;
         this.gameModes = { 'Player VS Player': 0, 'Player VS AI': 1, 'AI VS AI': 2 };
+        this.selectedGameDifficulty = -1;
+        this.gameDifficulty = { 'Easy': 0, 'Hard': 1 };
         this.last_time = 0;
         this.time = 0;
     }
@@ -151,6 +153,7 @@ class XMLscene extends CGFscene {
 
         this.interface.setUpCameras();
         this.interface.setUpGameModes();
+        this.interface.setUpGameDifficulty();
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
@@ -165,6 +168,10 @@ class XMLscene extends CGFscene {
 
     updateGameMode() {
         this.nudge.updateGameMode(this.selectedGameMode);
+    }
+
+    updateGameDifficulty() {
+        this.nudge.updateGameDifficulty(this.selectedGameDifficulty);
     }
 
     display() {

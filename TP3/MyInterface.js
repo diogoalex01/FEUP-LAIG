@@ -53,6 +53,11 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'selectedGameMode', this.scene.gameModes).name('Game Mode').onChange(this.scene.updateGameMode.bind(this.scene));
     }
 
+    setUpGameDifficulty() {
+        //Dropdown for game difficulty
+        this.gui.add(this.scene, 'selectedGameDifficulty', this.scene.gameDifficulty).name('Game Difficulty').onChange(this.scene.updateGameDifficulty.bind(this.scene));
+    }
+
     /**
      * initKeys
      */

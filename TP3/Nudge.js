@@ -10,7 +10,7 @@ class Nudge extends CGFobject {
 		this.player = 1;
 		this.row;
 		this.col;
-		this.gameMode; // 0 - P/P | 1- P/AI | 2 - AI/AI
+		this.gameMode = 0; // 0 - P/P | 1- P/AI | 2 - AI/AI
 		this.scene = scene;
 		this.initBuffers();
 	}
@@ -23,7 +23,12 @@ class Nudge extends CGFobject {
 
 	updateGameMode(mode) {
 		console.log(mode);
-		this.gameMode = 1;
+		this.gameMode = mode;
+	}
+
+	updateGameDifficulty(difficulty) {
+		console.log(difficulty);
+		//this.gameDifficulty = difficulty;
 	}
 
 	checkPick(id) { // nudges
