@@ -129,8 +129,8 @@ GameStatus = 0,
 Nudge = no,
 FinalBoard = [[]]).
 
-parse_input(ai(Color, Adversary, Board, PreviousBoard), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, BoardAI]):-
-	aiTurn(PreviousBoard, Board, _, Adversary, Color, Adversary, 0, BoardAI, 2, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2).
+parse_input(ai(Color, Adversary, Board, PreviousBoard), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, GameStatus, BoardAI]):-
+	aiTurn(PreviousBoard, Board, _, Adversary, Color, Adversary, GameStatus, BoardAI, 2, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2).
 
 
 test(_,[],N) :- N =< 0.

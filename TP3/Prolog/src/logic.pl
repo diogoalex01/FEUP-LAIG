@@ -60,6 +60,7 @@ game(Board, Player1, Player2, GameStatus, GameChoice, GameLevel) :-
 % ai's double turn
 aiTurn(PreviousBoard, Board, _, Player2, Color, Adversary, GameStatus, BoardAI, GameLevel, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2) :-
     % finds all possible plays with just one movement
+    GameStatus = 0,
     write('why20'),
     once(findall(FinalBoard-Row-Column-NewRow-NewColumn, moveAI(PreviousBoard, Board, FinalBoard, Color, Adversary, GameStatus, Row, Column, NewRow, NewColumn), AllBoards1)),
     % if there's any chance to win, those boards are put on NewWin1
