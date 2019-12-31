@@ -24,8 +24,8 @@ class MyPiece extends CGFobject {
 	display() {
 
 		this.scene.pushMatrix();
-		this.scene.scale(2, 0.5, 2);
-		this.scene.translate(-6+3*this.posX, 1, -6+3*this.posZ);	
+		this.scene.scale(2, 1, 2);
+		this.scene.translate(-6+3*this.posX, 1.5, 6-3*this.posZ);	
 		this.sphere.display();
 		this.scene.popMatrix();
 	
