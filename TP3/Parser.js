@@ -32,38 +32,38 @@ class Parser extends CGFobject {
 	answerAi() {
 		let ans = this.data;
 		console.log(ans);
-		let i = 1, vec = [];
+		let i = 1, reply = [];
 
 		let currentRow1 = ans.substring(i, i + 1);
-		vec.push(currentRow1);
+		reply.push(currentRow1);
 		i += 2;
 		let currentColumn1 = ans.substring(i, i + 1);
-		vec.push(currentColumn1);
+		reply.push(currentColumn1);
 		i += 2;
 		let newRow1 = ans.substring(i, i + 1);
-		vec.push(newRow1);
+		reply.push(newRow1);
 		i += 2;
 		let newColumn1 = ans.substring(i, i + 1);
-		vec.push(newColumn1);
+		reply.push(newColumn1);
 		i += 2;
 		let currentRow2 = ans.substring(i, i + 1);
-		vec.push(currentRow2);
+		reply.push(currentRow2);
 		i += 2;
 		let currentColumn2 = ans.substring(i, i + 1);
-		vec.push(currentColumn2);
+		reply.push(currentColumn2);
 		i += 2;
 		let newRow2 = ans.substring(i, i + 1);
-		vec.push(newRow2);
+		reply.push(newRow2);
 		i += 2;
 		let newColumn2 = ans.substring(i, i + 1);
-		vec.push(newColumn2);
+		reply.push(newColumn2);
 		i += 2;
 		this.gameOver = ans.substring(i, i + 1);
 		this.previousBoard = this.board;
 		let board = ans.match(/\[{2}.*\]{2}/)[0];
 		this.board = board.substring(0, board.length - 1);
 
-		return vec;
+		return reply;
 	}
 
 	answer() {

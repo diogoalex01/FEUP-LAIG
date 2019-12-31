@@ -41,6 +41,8 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(80);
 
         this.displayAxis = true;
+        this.selectedGameMode = -1;
+        this.gameModes = { 'Player VS Player': 0, 'Player VS AI': 1, 'AI VS AI': 2 };
         this.last_time = 0;
         this.time = 0;
     }
@@ -148,10 +150,10 @@ class XMLscene extends CGFscene {
         this.currentCamera = this.graph.defaultView;
 
         this.interface.setUpCameras();
+        this.interface.setUpGameModes();
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
-
         this.setPickEnabled(true);
     }
 
@@ -159,6 +161,10 @@ class XMLscene extends CGFscene {
         this.defaultCamera = this.graph.views[this.currentCamera];
         this.camera = this.defaultCamera;
         this.interface.setActiveCamera(this.camera);
+    }
+
+    updateGameMode() {
+        this.nudge.updateGameMode(this.selectedGameMode);
     }
 
     display() {

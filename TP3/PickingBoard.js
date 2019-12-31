@@ -15,9 +15,7 @@ class PickingBoard extends CGFobject {
 	}
 
 	display() {
-
-		if(this.scene.pickMode == true)
-		{
+		if (this.scene.pickMode == true) {
 			for (var i = 0; i < 5; i++) {
 				for (var j = 0; j < 5; j++) {
 					this.scene.registerForPick(i * 5 + j, this.rectangle);
@@ -30,7 +28,6 @@ class PickingBoard extends CGFobject {
 				}
 			}
 		}
-
 	}
 
 	/**

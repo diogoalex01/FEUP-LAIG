@@ -16,21 +16,19 @@ class Board extends CGFobject {
 	initMaterials() {
 		// Colors
 		this.white = new CGFappearance(this.scene);
-		this.white.setAmbient(1, 1, 1, 1);
-		this.white.setDiffuse(1, 1, 1, 1);
-		this.white.setSpecular(1, 1, 1, 1.0);
+		this.white.setAmbient(0.5, 0.5, 0.5, 1);
+		this.white.setDiffuse(0.5, 0.5, 0.5, 1);
+		this.white.setSpecular(0.3, 0.3, 0.3, 1.0);
 		this.white.setShininess(10.0);
 
 		this.black = new CGFappearance(this.scene);
 		this.black.setAmbient(0, 0, 0, 1);
-		this.black.setDiffuse(0, 0, 0, 1);
-		this.black.setSpecular(1, 1, 1, 1.0);
+		this.black.setDiffuse(0.05, 0.05, 0.05, 1);
+		this.black.setSpecular(0.3, 0.3, 0.3, 1.0);
 		this.black.setShininess(10.0);
 	}
 
 	initBuffers() {
-		//row-Z
-		//col-X
 		this.white1 = new MyPiece(this.scene, 1, 25, 25, 1, 1, 3);
 		this.whiteVec.push(this.white1);
 		this.white2 = new MyPiece(this.scene, 1, 25, 25, 1, 1, 2);

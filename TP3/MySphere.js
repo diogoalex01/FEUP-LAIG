@@ -26,11 +26,9 @@ class MySphere extends CGFobject {
 		var deltaTheta = (Math.PI / 2) / this.stacks;
 
 		for (var j = 0; j <= this.stacks; j++) {
-
 			phi = 0;
 
 			for (var i = 0; i <= this.slices; i++) {
-
 				var normalX = Math.cos(theta) * Math.cos(phi);
 				var normalY = Math.cos(theta) * Math.sin(phi);
 				var normalZ = Math.sin(theta);
@@ -64,7 +62,6 @@ class MySphere extends CGFobject {
 
 			if (j == 0) {
 				for (var i = 0; i < this.slices; i++) {
-
 					this.indices.push((this.slices + 1) + 2 * i + 2, i, i + 1);
 					this.indices.push((this.slices + 1) + 2 * i, i, (this.slices + 1) + 2 * i + 2);
 
@@ -74,7 +71,6 @@ class MySphere extends CGFobject {
 			}
 			else {
 				for (var i = 0; i < this.stacks; i++) {
-
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i + 2, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i + 2);
 					this.indices.push((this.slices + 1) * (2 * j + 1) + 2 * i, (this.slices + 1) * (2 * j - 1) + 2 * i, (this.slices + 1) * (2 * j + 1) + 2 * i + 2);
 
@@ -89,7 +85,6 @@ class MySphere extends CGFobject {
 
 		for (var i = 0; i < this.slices; i++) {
 			//Vertices indexes
-
 			var v1 = this.stacks * this.slices + i;
 			var v2 = v1 + 2;
 

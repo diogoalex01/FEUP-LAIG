@@ -10,7 +10,7 @@ class Nudge extends CGFobject {
 		this.player = 1;
 		this.row;
 		this.col;
-		this.gameState = 1; //1 - P/P 2- P/M 3- M/M
+		this.gameMode; // 0 - P/P | 1- P/AI | 2 - AI/AI
 		this.scene = scene;
 		this.initBuffers();
 	}
@@ -21,13 +21,22 @@ class Nudge extends CGFobject {
 		this.movie = new Movie(this.scene);
 	}
 
+	updateGameMode(mode) {
+		console.log(mode);
+		this.gameMode = 1;
+	}
+
 	checkPick(id) { // nudges
-		switch (this.gameState) {
-			case 1:
+		console.log(this.gameMode);
+		switch (this.gameMode) {
+			case 0:
+				console.log('entrei');
 				this.playerVsPlayer(id);
 				break;
-			case 2:
+			case 1:
 				this.playerVsAI(id);
+				break;
+			case 2:
 				break;
 		}
 	}
@@ -71,15 +80,14 @@ class Nudge extends CGFobject {
 		for (var i = 0; i < pieces.length; i++) {
 			if (pieces[i].posX == this.row && pieces[i].posZ == this.col) {
 				this.parser.makeMove(this.row + 1, this.col + 1, posX + 1, posZ + 1, player, other);
-				if(this.parser.nudge =='yes')
-				{
+				if (this.parser.nudge == 'yes') {
 					console.log("nudge");
 					this.makeNudge(this.row, this.col, posX, posZ);
 					this.player++;
 				}
 				else if (this.parser.valid == 'yes') {
 					pieces[i].updatePosition(posX, 1, posZ);
-					this.movie.newMove(player,this.row,this.col,posX,posZ);
+					this.movie.newMove(player, this.row, this.col, posX, posZ);
 					this.player++;
 					console.log("select update: " + this.selectN);
 				}
@@ -91,135 +99,120 @@ class Nudge extends CGFobject {
 		}
 	}
 
-	makeNudge(lastRow, lastCol, newRow, newCol){
-
+	makeNudge(lastRow, lastCol, newRow, newCol) {
 		var hor;
 		var type;
-		
 
 		//left nudge
-		if(lastRow == newRow && lastCol > newCol)
-		{
+		if (lastRow == newRow && lastCol > newCol) {
 			hor = -1;
-			type="hor";
+			type = "hor";
 			console.log("here");
 			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
 		}
 		//right nudge
-		else if(lastRow == newRow && lastCol < newCol)
-		{
-			hor =1;
-			type="hor";
+		else if (lastRow == newRow && lastCol < newCol) {
+			hor = 1;
+			type = "hor";
 			console.log("here2");
 			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
 		}
 		//up nudge
-		else if(lastRow > newRow && lastCol == newCol)
-		{
+		else if (lastRow > newRow && lastCol == newCol) {
 			hor = -1;
-			type="vert";
+			type = "vert";
 			console.log("here3");
 			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
 		}
 		//down nudge
-		else if(lastRow < newRow && lastCol == newCol)
-		{
+		else if (lastRow < newRow && lastCol == newCol) {
 			hor = 1;
-			type="vert";
+			type = "vert";
 			console.log("here4");
 			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
 		}
-
-
 	}
 
-	makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol){
+	makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol) {
 		var pieceCounter = 0;
 		var found = false;
 		var pieces = this.board.whiteVec;
 		var pieces2 = this.board.blackVec;
 
-		while(true)
-		{
+		while (true) {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == newRow && pieces[i].posZ == newCol || pieces2[i].posX == newRow && pieces2[i].posZ == newCol) {
 					found = true;
 				}
 			}
-			if(found)
-			{
+
+			if (found) {
 
 				found = false;
 				pieceCounter++;
 				console.log("found" + pieceCounter);
-				if(type == "hor")
-				{
-					newCol+=hor;
+				if (type == "hor") {
+					newCol += hor;
 				}
-				else{
-					newRow+=hor;
+				else {
+					newRow += hor;
 				}
-				
+
 			}
-			else{
+			else {
 				break;
 			}
-			
 		}
-		if(type == "hor")
-		{
-			var firstCol = lastCol + hor* pieceCounter;
-			this.makeNudgeMoveHor(firstCol,newRow, pieces, pieces2, pieceCounter, hor);
+
+		if (type == "hor") {
+			var firstCol = lastCol + hor * pieceCounter;
+			this.makeNudgeMoveHor(firstCol, newRow, pieces, pieces2, pieceCounter, hor);
 		}
-		else{
-			var firstRow = lastRow + hor* pieceCounter;
+		else {
+			var firstRow = lastRow + hor * pieceCounter;
 			this.makeNudgeMoveVert(firstRow, newCol, pieces, pieces2, pieceCounter, hor);
 		}
-		
 	}
 
-	makeNudgeMoveHor(firstCol, newRow, pieces, pieces2, pieceCounter, hor)
-	{
+	makeNudgeMoveHor(firstCol, newRow, pieces, pieces2, pieceCounter, hor) {
 		console.log("piece count" + pieceCounter);
-		for(var j = 0; j <= pieceCounter; j++){
+		for (var j = 0; j <= pieceCounter; j++) {
 
-			for (var  i= 0; i < pieces.length; i++) {
+			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == newRow && pieces[i].posZ == firstCol) {
-					console.log("change white" );
-					pieces[i].updatePosition(newRow, 1, firstCol+hor);
+					console.log("change white");
+					pieces[i].updatePosition(newRow, 1, firstCol + hor);
 				}
+
 				if (pieces2[i].posX == newRow && pieces2[i].posZ == firstCol) {
-					console.log("change black" );
-					pieces2[i].updatePosition(newRow, 1, firstCol+hor);
+					console.log("change black");
+					pieces2[i].updatePosition(newRow, 1, firstCol + hor);
 				}
 			}
-				firstCol-=hor;
-	
-	
+
+			firstCol -= hor;
 			console.log("piece count!" + pieceCounter);
 			console.log("i!" + i);
 		}
 	}
 
-	makeNudgeMoveVert(firstRow, newCol, pieces, pieces2, pieceCounter, hor)
-	{
+	makeNudgeMoveVert(firstRow, newCol, pieces, pieces2, pieceCounter, hor) {
 		console.log("piece count" + pieceCounter);
-		for(var j = 0; j <= pieceCounter; j++){
+		for (var j = 0; j <= pieceCounter; j++) {
 
-			for (var  i= 0; i < pieces.length; i++) {
+			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == firstRow && pieces[i].posZ == newCol) {
-					console.log("change white" );
-					pieces[i].updatePosition(firstRow+hor, 1, newCol);
+					console.log("change white");
+					pieces[i].updatePosition(firstRow + hor, 1, newCol);
 				}
+
 				if (pieces2[i].posX == firstRow && pieces2[i].posZ == newCol) {
-					console.log("change black" );
-					pieces2[i].updatePosition(firstRow+hor, 1, newCol);
+					console.log("change black");
+					pieces2[i].updatePosition(firstRow + hor, 1, newCol);
 				}
 			}
 
-			firstRow-=hor;
-			
-
+			firstRow -= hor;
 			console.log("piece count!" + pieceCounter);
 			console.log("i!" + i);
 		}
@@ -238,14 +231,13 @@ class Nudge extends CGFobject {
 			this.firstClick(id);
 		}
 		else if (this.player < 3) {
-
 			if (this.player == 1) {
 				this.selectN = 0;
 			}
 			console.log("hello4");
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
-
 		}
+
 		if (this.player == 3) {
 			console.log("hello3");
 			this.aiMove(this.board.blackVec, 'black', 'white');
@@ -260,42 +252,39 @@ class Nudge extends CGFobject {
 		var newRow = moves[2] - 1;
 		var newCol = moves[3] - 1;
 		console.dir(moves);
-		if(this.hasPiece(newRow, newCol))
-		{
+		if (this.hasPiece(newRow, newCol)) {
 			this.makeNudge(lastRow, lastCol, newRow, newCol);
 		}
-		else{
+		else {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == lastRow && pieces[i].posZ == lastCol) {
 					pieces[i].updatePosition(newRow, 1, newCol);
 				}
 			}
-			this.movie.newMove(color,lastRow,lastCol,newRow,newCol);
+			this.movie.newMove(color, lastRow, lastCol, newRow, newCol);
 		}
-		
+
 		var lastRow2 = moves[4] - 1;
 		var lastCol2 = moves[5] - 1;
 		var newRow2 = moves[6] - 1;
 		var newCol2 = moves[7] - 1;
 
-		if(this.hasPiece(newRow2, newCol2))
-		{
+		if (this.hasPiece(newRow2, newCol2)) {
 			this.makeNudge(lastRow2, lastCol2, newRow2, newCol2);
 		}
-		else{
+		else {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
 					pieces[i].updatePosition(newRow2, 1, newCol2);
 				}
 			}
-			this.movie.newMove(color,lastRow2,lastCol2,newRow2,newCol2);
+			this.movie.newMove(color, lastRow2, lastCol2, newRow2, newCol2);
 		}
-		
+
 		this.player++;
 	}
 
-	hasPiece(row, col)
-	{
+	hasPiece(row, col) {
 		var pieces = this.board.whiteVec;
 		var pieces2 = this.board.blackVec;
 

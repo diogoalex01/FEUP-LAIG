@@ -112,28 +112,33 @@ parse_input(play, Board):-
 	board_beg(Board),
 	write(Board).
 
-
 parse_input(board(Board),good):-
 	board_beg(Board).
 
-parse_input(move(CRow, CColumn, NRow, NColumn, Color, Adversary, Board, PreviousBoard), [Valid, Nudge, GameStatus, FinalBoard]):-
-(checkPosition(CRow, CColumn, Color, Board),
-checkSamePosition(CRow, NRow, CColumn, NColumn),
-checkNudge1(CRow, CColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board, FinalBoard, 0, GameStatus, 1, Nudge),
-checkDiagonal(CRow, CColumn, NRow, NColumn),
-checkReturnPosition(PreviousBoard, FinalBoard, 1
-),
-GameStatus = 0,
-Valid = yes);
-(
-Valid = no,
-GameStatus = 0,
-Nudge = no,
-FinalBoard = [[]]).
+parse_input(move(CRow, CColumn, NRow, NColumn, Color, Adversary, Board, PreviousBoard), [Valid, Nudge, GameStatus, FinalBoard]) :-
+	(
+		checkPosition(CRow, CColumn, Color, Board),
+		checkSamePosition(CRow, NRow, CColumn, NColumn),
+		checkNudge1(CRow, CColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board, FinalBoard, 0, GameStatus, 1, Nudge),
+		checkDiagonal(CRow, CColumn, NRow, NColumn),
+		checkReturnPosition(PreviousBoard, FinalBoard, 1),
+		(
+			GameStatus == 1
+			;
+			GameStatus = 0
+		),
+		Valid = yes
+	)
+	;
+	(
+		Valid = no,
+		GameStatus = 0,
+		Nudge = no,
+		FinalBoard = [[]]
+).
 
-parse_input(ai(Color, Adversary, Board, PreviousBoard), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, GameStatus, BoardAI]):-
+parse_input(ai(Color, Adversary, Board, PreviousBoard), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, GameStatus, BoardAI]) :-
 	aiTurn(PreviousBoard, Board, _, Adversary, Color, Adversary, GameStatus, BoardAI, 2, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2).
-
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
@@ -164,7 +169,6 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         setPiece(NRow, NColumn, Color, MidBoard, FinalBoard),
         findCoordinates(CRow, CColumn, NRow, NColumn, TRow, TColumn),
         (TRow < 1 ; TColumn < 1 ; TRow > 5 ; TColumn > 5),
-		write('entrei!2'),
         GameStatus = 1,
 		Nudge = yes
         ;
@@ -177,7 +181,6 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         setPiece(NRow, NColumn, Color, MidBoard, MidBoard1),
         setPiece(TRow, TColumn, empty, MidBoard1, MidBoard2),
         setPiece(TTRow, TTColumn, Color, MidBoard2, FinalBoard),
-		write('entrei!1'),
         GameStatus = 1,
 		Nudge = yes
         ;

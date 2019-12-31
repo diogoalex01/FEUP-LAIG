@@ -48,6 +48,11 @@ class MyInterface extends CGFinterface {
         }
     }
 
+    setUpGameModes() {
+        //Dropdown for game modes
+        this.gui.add(this.scene, 'selectedGameMode', this.scene.gameModes).name('Game Mode').onChange(this.scene.updateGameMode.bind(this.scene));
+    }
+
     /**
      * initKeys
      */
