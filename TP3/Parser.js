@@ -23,7 +23,7 @@ class Parser extends CGFobject {
 	}
 
 	makeMoveAi(color, other) {
-		var req = 'ai(' + color + ',' + other + ',' + this.board + ',' + this.PreviousBoard + ')';
+		var req = 'ai(' + color + ',' + other + ',' + this.board + ',' + this.previousBoard + ')';
 		this.makeRequest(req);
 		var moves = this.answerAi();
 		return moves;

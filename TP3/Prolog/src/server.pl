@@ -121,7 +121,9 @@ parse_input(move(CRow, CColumn, NRow, NColumn, Color, Adversary, Board, Previous
 checkSamePosition(CRow, NRow, CColumn, NColumn),
 checkNudge1(CRow, CColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board, FinalBoard, 0, GameStatus, 1, Nudge),
 checkDiagonal(CRow, CColumn, NRow, NColumn),
-checkReturnPosition(PreviousBoard, FinalBoard, 1),
+checkReturnPosition(PreviousBoard, FinalBoard, 1
+),
+GameStatus = 0,
 Valid = yes);
 (
 Valid = no,
@@ -142,8 +144,7 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         checkPosition(NRow, NColumn, empty, Board),
         setPiece(IRow, IColumn, empty, Board, MidBoard),
         setPiece(NRow, NColumn, Color, MidBoard, FinalBoard),
-		Nudge = no,
-		GameStatus = 0
+		Nudge = no
         ;
         % nudging opponents
         checkPosition(NRow, NColumn, Adversary, Board),
@@ -154,8 +155,7 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         checkPosition(TRow, TColumn, empty, Board),
         checkLimits(TRow, TColumn),
         setPiece(TRow, TColumn, Adversary, MidBoard1, FinalBoard),
-		Nudge = yes,
-		GameStatus = 0
+		Nudge = yes
         ;
         % nudging out of the board (2 to 1)
         checkPosition(NRow, NColumn, Adversary, Board),
@@ -164,6 +164,7 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         setPiece(NRow, NColumn, Color, MidBoard, FinalBoard),
         findCoordinates(CRow, CColumn, NRow, NColumn, TRow, TColumn),
         (TRow < 1 ; TColumn < 1 ; TRow > 5 ; TColumn > 5),
+		write('entrei!2'),
         GameStatus = 1,
 		Nudge = yes
         ;
@@ -176,6 +177,7 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         setPiece(NRow, NColumn, Color, MidBoard, MidBoard1),
         setPiece(TRow, TColumn, empty, MidBoard1, MidBoard2),
         setPiece(TTRow, TTColumn, Color, MidBoard2, FinalBoard),
+		write('entrei!1'),
         GameStatus = 1,
 		Nudge = yes
         ;
@@ -185,8 +187,7 @@ checkNudge1(IRow, IColumn, CRow, CColumn, NRow, NColumn, Color, Adversary, Board
         Next is N + 1, % counts the number of pieces nudging
         checkNudge(IRow, IColumn, NRow, NColumn, NNRow, NNColumn, Color, Adversary, Board, MidBoard, Next, GameStatus, MessageOn),
         setPiece(IRow, IColumn, empty, MidBoard, FinalBoard),
-		Nudge = yes,
-		GameStatus = 0
+		Nudge = yes
         ;
         % invalid nudge with warning message being displayed
         MessageOn == 1,
