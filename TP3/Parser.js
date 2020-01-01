@@ -31,7 +31,7 @@ class Parser extends CGFobject {
 
 	answerAi() {
 		let ans = this.data;
-		console.log(ans);
+		//console.log(ans);
 		let i = 1, reply = [];
 
 		let currentRow1 = ans.substring(i, i + 1);
@@ -59,7 +59,7 @@ class Parser extends CGFobject {
 		reply.push(newColumn2);
 		i += 2;
 		this.gameOver = ans.substring(i, i + 1);
-		console.log("GameOver: "+this.gameOver);
+		//console.log("GameOver: " + this.gameOver);
 		this.previousBoard = this.board;
 		let board = ans.match(/\[{2}.*\]{2}/)[0];
 		this.board = board.substring(0, board.length - 1);
@@ -69,11 +69,11 @@ class Parser extends CGFobject {
 
 	answer() {
 		var ans = this.data;
-		console.log("asss");
-		console.log(ans);
+		//console.log("asss");
+		//console.log(ans);
 
 		var valid = ans.match(/\[.{2,3}\,/)[0];
-		console.log(valid.length - 1);
+		//console.log(valid.length - 1);
 		this.valid = valid.substring(1, valid.length - 1);
 		var nudge = ans.match(/\,.{2,3}\,/)[0];
 		this.nudge = nudge.substring(1, nudge.length - 1);
@@ -102,7 +102,7 @@ class Parser extends CGFobject {
 
 	makeRequest(command) {
 		// Get Parameter Values
-		console.log("Req " + command);
+		//console.log("Req " + command);
 		// Make Request
 		this.getPrologRequest(command, this.handleReply.bind(this));
 	}
@@ -110,8 +110,8 @@ class Parser extends CGFobject {
 	//Handle the Reply
 	handleReply(data) {
 		this.data = data.target.response;
-		console.log("kkkk");
-		console.log(this.data);
+		//console.log("kkkk");
+		//console.log(this.data);
 	}
 
 	/**
