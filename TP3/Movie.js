@@ -19,7 +19,7 @@ class Movie extends CGFobject {
 		let len = this.moves.length;
 		
 		if (len <= 0) {
-			alert('You\'re in the original state');
+			alert('You\'re in the original state!');
 			return;
 		}
 

@@ -3,12 +3,12 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="40" z="20" />
-            <to x="0" y="2" z="0" />
+            <from x="35" y="45" z="25" />
+            <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="otherCamera" near="0.1" far="500" angle="45">
-            <from x="-30" y="40" z="-20" />
-            <to x="0" y="-2" z="0" />
+            <from x="-35" y="45" z="-25" />
+            <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="birdsEye" near="0.1" far="500" angle="45">
             <from x="1" y="61" z="0" />
@@ -234,171 +234,70 @@
                 <componentref id="rectangleBackRectCuboid" />
             </children>
         </component>
-              <component id="leg1" >
-            <transformation>
-                <translate x="-11" y="-10" z="11" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id = "leg"/>
-            </children>
-        </component>
-
-        <component id="leg2" >
-            <transformation>
-                <translate x="-11" y="-10" z="-11" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id = "leg"/>
-            </children>
-        </component>
-
-        <component id="leg3" >
-            <transformation>
-                <translate x="11" y="-10" z="-11" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id = "leg"/>
-            </children>
-        </component>
-
-        <component id="leg4" >
-            <transformation>
-                <translate x="11" y="-10" z="11" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id = "leg"/>
-            </children>
-        </component>
-
         <component id="leg" >
             <transformation>
-                <rotate axis="z" angle="90" />
-                <scale x="4" y="0.2" z="0.2"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id = "prism"/>
-            </children>
-        </component>
-        <component id="prismLeft" >
-            <transformation>
-                <translate x="-2.5" y="0" z="0" />
-                <rotate axis="y" angle="-90" />
-                <scale x="5" y="5" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id = "rectangle"/>
-            </children>
-        </component>
-        <component id="prismRight" >
-            <transformation>
-                <translate x="2.5" y="0" z="0" />
-                <rotate axis="y" angle="90" />
-                <scale x="5" y="5" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id = "rectangle"/>
-            </children>
-        </component>
-
-        <component id="prismFront" >
-            <transformation>
-                <translate x="0" y="0" z="2.5" />
-                <scale x="5" y="5" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id = "rectangle"/>
-            </children>
-        </component>
-
-        <component id="prismBack" >
-            <transformation>
-                <translate x="0" y="0" z="-2.5" />
-                <rotate axis="y" angle="180" />
-                <scale x="5" y="5" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id = "rectangle"/>
-            </children>
-        </component>
-
-        <component id="prismTop" >
-            <transformation>
-                <translate x="0" y="2.5" z="0" />
-                <rotate axis="x" angle="-90" />
-                <scale x="5" y="5" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id = "rectangle"/>
-            </children>
-        </component>
-        <component id="prismBottom" >
-            <transformation>
-                <translate x="0" y="-2.5" z="0" />
                 <rotate axis="x" angle="90" />
-                <scale x="5" y="5" z="5"/>
+                <scale x="2.5" y="3" z="8"/>
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id = "rectangle"/>
+                <componentref id="rectangleBottomRectCuboid" />
+                <componentref id="rectangleTopRectCuboid" />
+                <componentref id="rectangleRightRectCuboid" />
+                <componentref id="rectangleLeftRectCuboid" />
+                <componentref id="rectangleFrontRectCuboid" />
+                <componentref id="rectangleBackRectCuboid" />
             </children>
         </component>
-        <component id="prism" >
+        <component id="leg1" >
             <transformation>
+                <translate x="-13.2" y="-10" z="14.1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <componentref id = "prismLeft"/>
-                <componentref id = "prismRight"/>
-                <componentref id = "prismFront"/>
-                <componentref id = "prismBack"/>
-                <componentref id = "prismTop"/>
-                <componentref id = "prismBottom"/>
+                <componentref id = "leg"/>
+            </children>
+        </component>
+        <component id="leg2" >
+            <transformation>
+                <translate x="-13.2" y="-10" z="-14.3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id = "leg"/>
+            </children>
+        </component>
+        <component id="leg3" >
+            <transformation>
+                <translate x="14.2" y="-10" z="-14.3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id = "leg"/>
+            </children>
+        </component>
+        <component id="leg4" >
+            <transformation>
+                <translate x="14.2" y="-10" z="14.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id = "leg"/>
             </children>
         </component>
         <component id="table">

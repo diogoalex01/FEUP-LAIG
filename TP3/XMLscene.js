@@ -63,12 +63,9 @@ class XMLscene extends CGFscene {
         }
 
         this.last_time = time;
-       
-        if(this.nudge.gameMode == 2)
-        {
-            if(time%5 == 0)
-            {
-                console.log("sss");
+
+        if (this.nudge.gameMode == 2) {
+            if (time % 5 == 0 && !this.nudge.gameOver) {
                 this.nudge.aIVsAI();
             }
         }
@@ -161,6 +158,7 @@ class XMLscene extends CGFscene {
         this.interface.setUpCameras();
         this.interface.setUpGameModes();
         this.interface.setUpGameDifficulty();
+        this.interface.setUpGameStart();
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
@@ -181,8 +179,12 @@ class XMLscene extends CGFscene {
         this.nudge.updateGameDifficulty(this.selectedGameDifficulty);
     }
 
-    undo = function undo() {
+    undoMovement = function undoMovement() {
         this.nudge.movie.undo();
+    }
+
+    startGame = function startGame() {
+        this.start = true;
     }
 
     display() {
@@ -201,7 +203,7 @@ class XMLscene extends CGFscene {
     }
 
     logPicking() {
-        if (this.pickMode == false) {
+        if (this.pickMode == false && this.start) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];

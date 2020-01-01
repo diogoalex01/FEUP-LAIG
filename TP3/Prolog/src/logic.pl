@@ -35,10 +35,7 @@ game(Board, Player1, Player2, GameStatus, GameChoice, GameLevel) :-
         once(game_over(GameStatus, '1'))
         ;
         GameChoice == 3, % Computer vs Computer
-        write('30'),
-        aiTurn(Board, Board, Player1, Player2, white, black, GameStatus, BoardWhite2, GameLevel, _,_,_,_,_,_,_,_),
-        write('31'),
-        write(BoardWhite2)
+        aiTurn(Board, Board, Player1, Player2, white, black, GameStatus, BoardWhite2, GameLevel, _,_,_,_,_,_,_,_)
     ),
     (
         GameChoice \== 2, % Computer vs Player or Computer vs Computer
@@ -60,45 +57,30 @@ game(Board, Player1, Player2, GameStatus, GameChoice, GameLevel) :-
 % ai's double turn
 aiTurn(PreviousBoard, Board, _, Player2, Color, Adversary, GameStatus, BoardAI, GameLevel, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2) :-
     % finds all possible plays with just one movement
-    GameStatus = 0,
-    write('why20'),
     once(findall(FinalBoard-Row-Column-NewRow-NewColumn, moveAI(PreviousBoard, Board, FinalBoard, Color, Adversary, GameStatus, Row, Column, NewRow, NewColumn), AllBoards1)),
     % if there's any chance to win, those boards are put on NewWin1
     once(value(AllBoards1, _, NewWin1, _, _, Adversary)),
-    write('why21'),
     length(NewWin1, L),
     (
         % if on hard level, it makes a win move if possible
-        write('why22'),
         GameLevel == 2,
         L \== 0,
         random_member(BoardAIII, NewWin1),
-        write('why23'),
         [BoardAI-Row-Column-NewRow-NewColumn] = BoardAIII
         ;
         % if on easy level or no winning moves found with just one movement, it finds all possible plays with a second movement
         once(valid_moves(AllBoards1, PreviousBoard, Color, Adversary, GameStatus, _, AllBoards)),
-        %[Boar1|_] = AllBoards,
-        %[Head-A-B-C-D-E-F-G-H] = Boar1,
-        write('why24'),
-        %write(AllBoards),
         once(value2(AllBoards, _, NewWin, _, NewOther, Adversary)),
-        write('why25'),
         % according to the gameLevel it either chooses randomnly or a winning movement
         once(choose_move(NewWin, NewOther, BoardAIII, GameLevel)),
-        write('why26'),
-        write(BoardAIII),
-        BoardAI-Row-Column-NewRow-NewColumn-Row2-Column2-NewRow2-NewColumn2 = BoardAIII,
-        write('why27')
+        BoardAI-Row-Column-NewRow-NewColumn-Row2-Column2-NewRow2-NewColumn2 = BoardAIII
     ),
     once(display_game(BoardAI, Player2, Adversary)),
     (
-            write('why27'),
         once(gameOverAI(BoardAI, Adversary, 1))
-       % sleep(1)
+        %sleep(1)
         ;
         !,
-            write('why28'),
         fail
 ).
 

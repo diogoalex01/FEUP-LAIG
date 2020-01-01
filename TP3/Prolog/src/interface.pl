@@ -10,10 +10,10 @@ board_beg(
 board_mid(
 [
     [empty, empty, empty, empty, empty],
-    [empty, empty,  empty, empty, empty],
     [empty, empty, empty, empty, empty],
-    [empty,   empty,  black, white,  white],
-    [empty,   empty,  black,  black,  white]
+    [empty, empty, empty, empty, empty],
+    [empty, empty, black, white, white],
+    [empty, empty, black, black, white]
 ]).
 
 board_end(

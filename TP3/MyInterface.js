@@ -26,7 +26,7 @@ class MyInterface extends CGFinterface {
 
         //Checkbox element in GUI
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
-        this.gui.add(this.scene, 'undo').name('Undo Movement');
+        this.gui.add(this.scene, 'undoMovement').name('Undo Movement');
 
         return true;
     }
@@ -57,6 +57,10 @@ class MyInterface extends CGFinterface {
     setUpGameDifficulty() {
         //Dropdown for game difficulty
         this.gui.add(this.scene, 'selectedGameDifficulty', this.scene.gameDifficulty).name('Game Difficulty').onChange(this.scene.updateGameDifficulty.bind(this.scene));
+    }
+
+    setUpGameStart() {
+        this.gui.add(this.scene, 'startGame').name('Start Game');
     }
 
     /**
