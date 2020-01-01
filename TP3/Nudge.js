@@ -10,7 +10,7 @@ class Nudge extends CGFobject {
 		this.player = 1;
 		this.row;
 		this.col;
-		this.gameMode = 0; // 0 - P/P | 1- P/AI | 2 - AI/AI
+		this.gameMode; // 0 - P/P | 1- P/AI | 2 - AI/AI
 		this.scene = scene;
 		this.initBuffers();
 	}
@@ -22,8 +22,8 @@ class Nudge extends CGFobject {
 	}
 
 	updateGameMode(mode) {
-		console.log(mode);
-		this.gameMode = mode;
+		console.log('update: ' + mode);
+		this.gameMode = parseInt(mode);
 	}
 
 	updateGameDifficulty(difficulty) {
@@ -32,24 +32,27 @@ class Nudge extends CGFobject {
 	}
 
 	checkPick(id) { // nudges
-		console.log(this.gameMode);
+		console.log('check: ' + this.gameMode);
 		switch (this.gameMode) {
 			case 0:
-				console.log('entrei');
+				console.log('pVp');
 				this.playerVsPlayer(id);
 				break;
 			case 1:
+				console.log('pVai');
 				this.playerVsAI(id);
 				break;
 			case 2:
+				console.log('aiVai');
 				break;
+			default:
+				alert('Start by selecting the Game Mode!');
 		}
 	}
 
 	// Player vs Player
 	playerVsPlayer(id) {
-		console.log("player");
-		console.log(this.player);
+		console.log("player: " + this.player);
 
 		if (this.player > 4) {
 			this.player = 1;
@@ -59,12 +62,12 @@ class Nudge extends CGFobject {
 			this.firstClick(id);
 		}
 		else if (this.player <= 2) {
-			console.log("hello3");
+			//console.log("hello3");
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
 			this.selectN = 0;
 		}
 		else if (this.player > 2) {
-			console.log("hello4");
+			//console.log("hello4");
 			this.pieceMove(id, this.board.blackVec, 'black', 'white');
 			this.selectN = 0;
 		}
@@ -76,7 +79,7 @@ class Nudge extends CGFobject {
 		this.col = id % 5;
 	}
 
-	pieceMove(id, pieces, player, other) { //add to movie.js
+	pieceMove(id, pieces, player, other) { // add to movie.js
 		var posX = Math.floor(id / 5);
 		var posZ = id % 5;
 		console.log(posX);
@@ -222,7 +225,6 @@ class Nudge extends CGFobject {
 			console.log("i!" + i);
 		}
 	}
-
 
 	// Player vs AI
 	playerVsAI(id) {

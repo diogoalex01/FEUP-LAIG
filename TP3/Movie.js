@@ -12,18 +12,24 @@ class Movie extends CGFobject {
 	}
 
 	newMove(color, lastRow, lastColumn, newRow, newColumn) {
-		var move = new Move(this.scene, color, lastRow, lastColumn, newRow, newColumn);
+		let move = new Move(this.scene, color, lastRow, lastColumn, newRow, newColumn);
 		this.moves.push(move);
 	}
 
 	undo() {
-		var moves = [];
-		var len = this.move.length;
-		moves.push(this.move[len].newRow);
-		moves.push(this.move[len].newCol);
-		moves.push(this.move[len].lastRow);
-		moves.push(this.move[len].lastRow);
-		this.move.pop();
+		let len = this.moves.length;
+		
+		if (len <= 0) {
+			alert('You\'re in the original state');
+			return;
+		}
+
+		let moves = [];
+		moves.push(this.moves[len - 1].newRow);
+		moves.push(this.moves[len - 1].newCol);
+		moves.push(this.moves[len - 1].lastRow);
+		moves.push(this.moves[len - 1].lastRow);
+		this.moves.pop();
 
 		return moves;
 	}

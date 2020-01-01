@@ -23,9 +23,7 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
-
         this.initCameras();
-
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -40,7 +38,7 @@ class XMLscene extends CGFscene {
 
         this.setUpdatePeriod(80);
 
-        this.displayAxis = true;
+        this.displayAxis = false;
         this.selectedGameMode = -1;
         this.gameModes = { 'Player VS Player': 0, 'Player VS AI': 1, 'AI VS AI': 2 };
         this.selectedGameDifficulty = -1;
@@ -174,6 +172,10 @@ class XMLscene extends CGFscene {
         this.nudge.updateGameDifficulty(this.selectedGameDifficulty);
     }
 
+    undo = function undo() {
+        this.nudge.movie.undo();
+    }
+
     display() {
         this.RTT.attachToFrameBuffer();
         this.RTT.detachFromFrameBuffer();
@@ -197,7 +199,7 @@ class XMLscene extends CGFscene {
                     if (obj) {
                         var customId = this.pickResults[i][1];
                         this.nudge.checkPick(customId);
-                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                        //console.log("Picked object: " + obj + ", with pick id " + customId);
                     }
                 }
                 this.pickResults.splice(0, this.pickResults.length);
