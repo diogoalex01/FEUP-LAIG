@@ -4,6 +4,7 @@ moveAI(PreviousBoard, Board, FinalBoard, Color, Adversary, GameStatus, Row, Colu
     checkPosition(Row, Column, Color, Board),
     checkMoveAI(PreviousBoard, Row, Column, NewRow, NewColumn, Board, FinalBoard, Color, Adversary, GameStatus).
 
+
 % confirms the direction each piece can move
 checkMoveAI(PreviousBoard, Row, Column, R, C, Board, FinalBoard, Color, Adversary, GameStatus) :-
     % up movement
@@ -95,3 +96,29 @@ gameOverAI(Board, Adversary, EndGame) :-
     % used to check if it's a winner board, but not ending the game
     !, 
     fail.
+
+    gameOverAIT(Board, Adversary, EndGame, GameStatus) :-
+    % finds number of pieces of the opponent on the board
+    findall(FinalBoard, pieceCounter(Board, FinalBoard, Adversary), AllPieces),
+    length(AllPieces, Length),
+    write('here7'),
+    Length == 3
+    ;
+    % black wins because white has less than 3 pieces on the board
+    EndGame == 1,
+    write('please'),
+    Adversary == white,
+    write('here4'),
+    GameStatus = 1,
+    write('here2'),
+    playerTwoWins
+        
+    ;
+    % white wins because black has less than 3 pieces on the board
+    EndGame == 1,
+        write('please'),
+    Adversary == black,
+    write('here1'),
+    GameStatus =1,
+    write('here3'),
+    playerOneWins.

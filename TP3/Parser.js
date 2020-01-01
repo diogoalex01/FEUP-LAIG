@@ -59,6 +59,7 @@ class Parser extends CGFobject {
 		reply.push(newColumn2);
 		i += 2;
 		this.gameOver = ans.substring(i, i + 1);
+		console.log("GameOver: "+this.gameOver);
 		this.previousBoard = this.board;
 		let board = ans.match(/\[{2}.*\]{2}/)[0];
 		this.board = board.substring(0, board.length - 1);

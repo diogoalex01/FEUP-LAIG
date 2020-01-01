@@ -264,11 +264,7 @@ class Nudge extends CGFobject {
 		var newCol = moves[3] - 1;
 		console.dir(moves);
 
-		if (this.parser.gameOver == 1) {
-			this.gameOver = true;
-			alert('Game Over!');
-		}
-		else if (this.hasPiece(newRow, newCol)) {
+		if (this.hasPiece(newRow, newCol)) {
 			this.makeNudge(lastRow, lastCol, newRow, newCol);
 			var nudge = 1;
 			this.movie.newMove(color, lastRow, lastCol, newRow, newCol, nudge, this.parser.board);
@@ -283,27 +279,32 @@ class Nudge extends CGFobject {
 			this.movie.newMove(color, lastRow, lastCol, newRow, newCol, nudge, this.parser.board);
 		}
 
+		if (this.parser.gameOver == 1) {
+			this.gameOver = true;
+			alert('Game Over!'); 
+		}
+
 		var lastRow2 = moves[4] - 1;
 		var lastCol2 = moves[5] - 1;
 		var newRow2 = moves[6] - 1;
 		var newCol2 = moves[7] - 1;
 
-		if (this.parser.gameOver == 1) {
-			this.gameOver = true;
-			alert('Game Over!');
-		}
-		else if (this.hasPiece(newRow2, newCol2)) {
-			this.makeNudge(lastRow2, lastCol2, newRow2, newCol2);
-		}
-		else {
-			for (var i = 0; i < pieces.length; i++) {
-				if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
-					pieces[i].updatePosition(newRow2, 1, newCol2);
-				}
+		if (this.parser.gameOver != 1) {
+				
+			if (this.hasPiece(newRow2, newCol2)) {
+				this.makeNudge(lastRow2, lastCol2, newRow2, newCol2);
 			}
-			this.movie.newMove(color, lastRow2, lastCol2, newRow2, newCol2);
+			else {
+				for (var i = 0; i < pieces.length; i++) {
+					if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
+						pieces[i].updatePosition(newRow2, 1, newCol2);
+					}
+				}
+				this.movie.newMove(color, lastRow2, lastCol2, newRow2, newCol2);
+				}
 		}
 	}
+
 
 	hasPiece(row, col) {
 		var pieces = this.board.whiteVec;
