@@ -6,13 +6,12 @@
 class Movie extends CGFobject {
 	constructor(scene) {
 		super(scene);
-		this.initBuffers();
 		this.scene = scene;
 		this.moves = [];
 	}
 
-	newMove(color, lastRow, lastColumn, newRow, newColumn) {
-		let move = new Move(this.scene, color, lastRow, lastColumn, newRow, newColumn);
+	newMove(color, lastRow, lastColumn, newRow, newColumn, nudge, board) {
+		let move = new Move(this.scene, color, lastRow, lastColumn, newRow, newColumn, nudge, board);
 		this.moves.push(move);
 	}
 
@@ -29,6 +28,8 @@ class Movie extends CGFobject {
 		moves.push(this.moves[len - 1].newCol);
 		moves.push(this.moves[len - 1].lastRow);
 		moves.push(this.moves[len - 1].lastRow);
+
+		//mudar a board do parser 
 		this.moves.pop();
 
 		return moves;

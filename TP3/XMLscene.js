@@ -63,6 +63,15 @@ class XMLscene extends CGFscene {
         }
 
         this.last_time = time;
+       
+        if(this.nudge.gameMode == 2)
+        {
+            if(time%5 == 0)
+            {
+                console.log("sss");
+                this.nudge.aIVsAI();
+            }
+        }
     }
 
     /**
