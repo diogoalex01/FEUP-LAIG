@@ -45,6 +45,8 @@ class XMLscene extends CGFscene {
         this.gameDifficulty = { 'Easy': 0, 'Hard': 1 };
         this.last_time = 0;
         this.time = 0;
+        this.startingTime = 0;
+        this.savedTurn = 0;
     }
 
     update(time) {
@@ -64,8 +66,20 @@ class XMLscene extends CGFscene {
 
         this.last_time = time;
 
+<<<<<<< HEAD
         if (this.nudge.gameMode == 2 && !this.nudge.gameOver) {
             if (time % 5 == 0 && !this.nudge.gameOver) {
+=======
+        if (this.startingTime == 0 && this.start && this.nudge.gameMode == 2) {
+            this.startingTime = time;
+        }
+
+        if (this.nudge.gameMode == 2) {
+            this.elapsedTime = time - this.startingTime;
+            let turnTime = Math.round(this.elapsedTime / 1000);
+            if (turnTime != this.savedTurn && turnTime % 2 == 0 && !this.nudge.gameOver && this.start) {
+                this.savedTurn = turnTime;
+>>>>>>> f24ec72eded58571306d91633bd5d17d0cb00b39
                 this.nudge.aIVsAI();
             }
         }
@@ -203,7 +217,7 @@ class XMLscene extends CGFscene {
     }
 
     logPicking() {
-        if (this.pickMode == false && this.start) {
+        if (this.pickMode == false && this.start && this.nudge.gameMode != 2) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];

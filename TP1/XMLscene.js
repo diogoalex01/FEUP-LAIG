@@ -130,7 +130,6 @@ class XMLscene extends CGFscene {
 
         this.interface.setUpCameras();
         this.interface.setUpLights(this.graph.lights);
-        this.interface.setUpGameModes();
     }
 
     //
