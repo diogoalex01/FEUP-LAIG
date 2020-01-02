@@ -47,22 +47,34 @@ class Nudge extends CGFobject {
 
 	// Player vs Player
 	playerVsPlayer(id) {
-		//console.log("player: " + this.player);
-
+		console.log("player: " + this.player);
+		
 		if (this.player > 4) {
 			this.player = 1;
 		}
 
 		if (this.selectN == 0) {
+			console.log("first click");
 			this.firstClick(id);
 		}
 		else if (this.player <= 2) {
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
 			this.selectN = 0;
+			if(this.player == 3)
+			{
+				console.log("==3");
+				this.scene.rotateCamera = true;
+			}
 		}
 		else if (this.player > 2) {
 			this.pieceMove(id, this.board.blackVec, 'black', 'white');
+			console.log("entrei");
 			this.selectN = 0;
+			if(this.player == 5)
+			{
+				console.log("==4");
+				this.scene.rotateCamera = true;
+			}
 		}
 	}
 
@@ -70,6 +82,10 @@ class Nudge extends CGFobject {
 		this.selectN = 1;
 		this.row = Math.floor(id / 5);
 		this.col = id % 5;
+		console.log(id);
+		console.log("first click row", this.row);
+		console.log("first click col", this.col);
+
 	}
 
 	pieceMove(id, pieces, player, other) { // add to movie.js
@@ -77,7 +93,12 @@ class Nudge extends CGFobject {
 		var posZ = id % 5;
 
 		for (var i = 0; i < pieces.length; i++) {
+			console.log("pox " + this.row);
+			console.log("poZ " +  this.col);
+			console.log("newR " + posX);
+			console.log("newC " + posZ);
 			if (pieces[i].posX == this.row && pieces[i].posZ == this.col) {
+				console.log("entrei!");
 				this.parser.makeMove(this.row + 1, this.col + 1, posX + 1, posZ + 1, player, other);
 				if (this.parser.gameOver == 1) {
 					this.gameOver = true;
@@ -88,6 +109,7 @@ class Nudge extends CGFobject {
 					this.player++;
 				}
 				else if (this.parser.valid == 'yes') {
+
 					pieces[i].updatePosition(posX, 1, posZ);
 					this.movie.newMove(player, this.row + 1, this.col + 1, posX + 1, posZ + 1, 0, this.parser.board, this.player);
 					this.player++;
@@ -222,6 +244,10 @@ class Nudge extends CGFobject {
 			}
 
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
+			if(this.player == 2)
+			{
+				this.scene.rotateCamera = true;
+			}
 		}
 
 		if (this.player == 3) {
@@ -229,6 +255,7 @@ class Nudge extends CGFobject {
 			this.secondAiMove(this.board.blackVec, 'black', this.parser.makeMoveAi('black', 'white'));
 			this.selectN = 0;
 			this.player++;
+			this.scene.rotateCamera = true;
 		}
 	}
 

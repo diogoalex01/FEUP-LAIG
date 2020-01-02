@@ -47,6 +47,8 @@ class XMLscene extends CGFscene {
         this.time = 0;
         this.startingTime = 0;
         this.savedTurn = 0;
+
+        this.cameraAngle = Math.PI;
     }
 
     update(time) {
@@ -82,6 +84,19 @@ class XMLscene extends CGFscene {
             if (turnTime != this.savedTurn && turnTime % 2 == 0 && !this.nudge.gameOver && this.start) {
                 this.savedTurn = turnTime;
                 this.nudge.aIVsAI();
+            }
+        }
+
+        if(this.rotateCamera){
+            var deltaAngle = Math.PI * delta_time / 1000;
+            this.cameraAngle -= deltaAngle;
+            if(this.cameraAngle < 0){
+                this.rotateCamera = false;
+                this.cameraAngle = Math.PI;
+                this.camera.orbit([0,1,0], 0);
+            }
+            else{
+                this.camera.orbit([0,1,0], deltaAngle);
             }
         }
     }
@@ -223,6 +238,7 @@ class XMLscene extends CGFscene {
     }
 
     logPicking() {
+        
         if (this.pickMode == false && this.start && this.nudge.gameMode != 2) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
@@ -230,7 +246,7 @@ class XMLscene extends CGFscene {
                     if (obj) {
                         var customId = this.pickResults[i][1];
                         this.nudge.checkPick(customId);
-                        //console.log("Picked object: " + obj + ", with pick id " + customId);
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
                     }
                 }
                 this.pickResults.splice(0, this.pickResults.length);

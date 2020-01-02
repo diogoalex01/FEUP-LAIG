@@ -18,7 +18,7 @@ class Parser extends CGFobject {
 
 	makeMove(lastRow, lastCol, newRow, newCol, player, other) {
 		var req = 'move(' + lastRow + ',' + lastCol + ',' + newRow + ',' + newCol + ',' + player + ',' + other + ',' + this.board + ',' + this.previousBoard + ')';
-		console.log(this.board);
+		console.log(req);
 		this.makeRequest(req);
 		this.answer();
 	}
@@ -70,6 +70,7 @@ class Parser extends CGFobject {
 
 	answer() {
 		var ans = this.data;
+		console.log(ans);
 		var valid = ans.match(/\[.{2,3}\,/)[0];
 		this.valid = valid.substring(1, valid.length - 1);
 		var nudge = ans.match(/\,.{2,3}\,/)[0];
