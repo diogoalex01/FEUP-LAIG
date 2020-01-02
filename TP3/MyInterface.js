@@ -59,8 +59,9 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'selectedGameDifficulty', this.scene.gameDifficulty).name('Game Difficulty').onChange(this.scene.updateGameDifficulty.bind(this.scene));
     }
 
-    setUpGameStart() {
+    setUpOther() {
         this.gui.add(this.scene, 'startGame').name('Start Game');
+        this.gui.add(this.scene, 'playMovie').name('Play Movie');
     }
 
     /**

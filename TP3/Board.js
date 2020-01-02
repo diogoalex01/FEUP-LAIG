@@ -44,6 +44,16 @@ class Board extends CGFobject {
 		this.blackVec.push(this.black3);
 	}
 
+	setOriginal() {
+		this.white1.updatePosition(1, 1, 3);
+		this.white2.updatePosition(1, 1, 2);
+		this.white3.updatePosition(1, 1, 1);
+
+		this.black1.updatePosition(3, 1, 3);
+		this.black2.updatePosition(3, 1, 2);
+		this.black3.updatePosition(3, 1, 1);
+	}
+
 	display() {
 		this.white.apply();
 		this.white1.display();

@@ -1454,13 +1454,11 @@ class MySceneGraph {
 
         if (node.primitive) {
             if (len_s != 1) {
-                //console.log(len_s);
                 this.primitives[node.nodeID].updateLengthS(len_s);
                 this.primitives[node.nodeID].updateTexCoords();
             }
 
             if (len_t != 1) {
-                //console.log(len_t);
                 this.primitives[node.nodeID].updateLengthT(len_t);
                 this.primitives[node.nodeID].updateTexCoords();
             }

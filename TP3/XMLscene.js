@@ -40,9 +40,9 @@ class XMLscene extends CGFscene {
 
         this.displayAxis = false;
         this.selectedGameMode = -1;
-        this.gameModes = { 'Player VS Player': 0, 'Player VS AI': 1, 'AI VS AI': 2 };
-        this.selectedGameDifficulty = -1;
-        this.gameDifficulty = { 'Easy': 0, 'Hard': 1 };
+        this.gameModes = { 'Player vs Player': 0, 'Player vs AI': 1, 'AI vs AI': 2 };
+        this.selectedGameDifficulty = 1;
+        this.gameDifficulty = { 'Easy': 1, 'Hard': 2 };
         this.last_time = 0;
         this.time = 0;
         this.startingTime = 0;
@@ -66,20 +66,21 @@ class XMLscene extends CGFscene {
 
         this.last_time = time;
 
-<<<<<<< HEAD
-        if (this.nudge.gameMode == 2 && !this.nudge.gameOver) {
-            if (time % 5 == 0 && !this.nudge.gameOver) {
-=======
-        if (this.startingTime == 0 && this.start && this.nudge.gameMode == 2) {
+        if (this.startingTime == 0 && this.start) {
             this.startingTime = time;
         }
 
+        this.elapsedTime = time - this.startingTime;
+        let turnTime = Math.round(this.elapsedTime / 1000);
+
+        if (turnTime != this.savedTurn && turnTime % 2 == 0 && this.nudge.playMovie) {
+            this.savedTurn = turnTime;
+            this.nudge.gameMovie();
+        }
+
         if (this.nudge.gameMode == 2) {
-            this.elapsedTime = time - this.startingTime;
-            let turnTime = Math.round(this.elapsedTime / 1000);
             if (turnTime != this.savedTurn && turnTime % 2 == 0 && !this.nudge.gameOver && this.start) {
                 this.savedTurn = turnTime;
->>>>>>> f24ec72eded58571306d91633bd5d17d0cb00b39
                 this.nudge.aIVsAI();
             }
         }
@@ -172,7 +173,7 @@ class XMLscene extends CGFscene {
         this.interface.setUpCameras();
         this.interface.setUpGameModes();
         this.interface.setUpGameDifficulty();
-        this.interface.setUpGameStart();
+        this.interface.setUpOther();
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
@@ -190,7 +191,7 @@ class XMLscene extends CGFscene {
     }
 
     updateGameDifficulty() {
-        this.nudge.updateGameDifficulty(this.selectedGameDifficulty);
+        this.nudge.parser.updateGameDifficulty(this.selectedGameDifficulty);
     }
 
     undoMovement() {
@@ -199,6 +200,10 @@ class XMLscene extends CGFscene {
 
     startGame() {
         this.start = true;
+    }
+
+    playMovie() {
+        this.nudge.playMovie = 1;
     }
 
     display() {

@@ -63,7 +63,10 @@ class Movie extends CGFobject {
 		moves.push(this.moves[len - 1].player);
 		//mudar a board do parser 
 		this.moves.pop();
-
 		return moves;
+	}
+	
+	getMoves() {
+		return this.moves;
 	}
 }

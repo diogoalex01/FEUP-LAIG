@@ -137,8 +137,8 @@ parse_input(move(CRow, CColumn, NRow, NColumn, Color, Adversary, Board, Previous
 		FinalBoard = [[]]
 ).
 
-parse_input(ai(Color, Adversary, Board, PreviousBoard), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, GameStatus, BoardAI]) :-
-	aiTurn(PreviousBoard, Board, _, Adversary, Color, Adversary, GameStatus, BoardAI, 2, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2),
+parse_input(ai(Color, Adversary, Board, PreviousBoard, Level), [Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2, GameStatus, BoardAI]) :-
+	aiTurn(PreviousBoard, Board, _, Adversary, Color, Adversary, GameStatus, BoardAI, Level, Row, Column, NewRow, NewColumn, Row2, Column2, NewRow2, NewColumn2),
 	(
 		GameStatus == 1
 		;
