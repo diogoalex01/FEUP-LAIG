@@ -15,6 +15,7 @@ class Nudge extends CGFobject {
 		this.gameOver = false;
 		this.playMovie = 0;
 		this.movieIndex = 0;
+		this.movieStart = 0;
 		this.initBuffers();
 	}
 
@@ -237,19 +238,16 @@ class Nudge extends CGFobject {
 		var newRow = moves[2] - 1;
 		var newCol = moves[3] - 1;
 
-		console.log('enrteu');
-
 		if (this.hasPiece(newRow, newCol)) {
 			this.makeNudge(lastRow, lastCol, newRow, newCol, saveState, color);
 			var nudge = 1;
-			console.log('enrteu2');
 		}
 		else {
 			for (var i = 0; i < pieces.length; i++) {
-				console.log("posX: " + pieces[i].posX);
-				console.log("lastRow: " + lastRow);
-				console.log("posZ: " + pieces[i].posZ);
-				console.log("lastCol: " + lastCol);
+				//console.log("posX: " + pieces[i].posX);
+				//console.log("lastRow: " + lastRow);
+				//console.log("posZ: " + pieces[i].posZ);
+				//console.log("lastCol: " + lastCol);
 				if (pieces[i].posX == lastRow && pieces[i].posZ == lastCol) {
 					pieces[i].updatePosition(newRow, 1, newCol);
 					if (saveState) {
@@ -345,14 +343,18 @@ class Nudge extends CGFobject {
 	}
 
 	gameMovie() {
-		if (this.movieIndex == 0) {
+		if (this.movieStart == 0) {
+			this.movieStart = 1;
 			this.board.setOriginal();
+			return;
 		}
 
-		console.log("right place");
 		var moves = this.movie.getMoves();
 
-		if (this.movieIndex == moves.length - 1) {
+		if (this.movieIndex == moves.length) {
+			this.movieIndex = 0;
+			this.playMovie = 0;
+			this.movieStart = 0;
 			return;
 		}
 
@@ -374,6 +376,17 @@ class Nudge extends CGFobject {
 
 		this.aiMove(pieces, color, mov, 0);
 		this.movieIndex++;
+	}
+
+	restartGame() {
+		this.movie.resetMoves();
+		this.board.setOriginal();
+		this.movieIndex = 0;
+		this.playMovie = 0;
+		this.movieStart = 0;
+		this.selectN = 0;
+		this.player = 1;
+		this.initBuffers();
 	}
 
 	display() {

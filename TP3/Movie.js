@@ -65,6 +65,10 @@ class Movie extends CGFobject {
 		this.moves.pop();
 		return moves;
 	}
+
+	resetMoves() {
+		this.moves = [];
+	}
 	
 	getMoves() {
 		return this.moves;

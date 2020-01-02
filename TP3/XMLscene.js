@@ -199,6 +199,7 @@ class XMLscene extends CGFscene {
     }
 
     startGame() {
+        this.nudge.restartGame();
         this.start = true;
     }
 
