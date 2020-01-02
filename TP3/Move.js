@@ -4,7 +4,7 @@
  * @param scene - Reference to MyScene object
  */
 class Move extends CGFobject {
-	constructor(scene, color, lastRow, lastColumn, newRow, newColumn, nudge, board) {
+	constructor(scene, color, lastRow, lastColumn, newRow, newColumn, nudge, board, player, dir) {
 		super(scene);
 		this.scene = scene;
 		this.color = color;
@@ -14,5 +14,7 @@ class Move extends CGFobject {
 		this.newColumn = newColumn;
 		this.nudge = nudge;
 		this.board = board;
+		this.player = player;
+		this.dir = dir;
 	}
 }

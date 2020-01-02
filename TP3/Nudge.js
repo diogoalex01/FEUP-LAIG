@@ -94,15 +94,12 @@ class Nudge extends CGFobject {
 				}
 				else if (this.parser.nudge == 'yes') {
 					console.log("nudge");
-					this.makeNudge(this.row, this.col, posX, posZ);
-					var nudge = 1;
-					this.movie.newMove(player, this.row, this.col, posX, posZ, nudge, this.parser.board);
+					this.makeNudge(this.row, this.col, posX, posZ, 1, player);
 					this.player++;
 				}
 				else if (this.parser.valid == 'yes') {
 					pieces[i].updatePosition(posX, 1, posZ);
-					var nudge = 0;
-					this.movie.newMove(player, this.row, this.col, posX, posZ, nudge, this.parser.board);
+					this.movie.newMove(player, this.row + 1, this.col + 1, posX + 1, posZ + 1, 0, this.parser.board, this.player);
 					this.player++;
 					console.log("select update: " + this.selectN);
 				}
@@ -110,41 +107,46 @@ class Nudge extends CGFobject {
 					console.log("Invalid");
 				}
 			}
-
 		}
 	}
 
-	makeNudge(lastRow, lastCol, newRow, newCol) {
+	makeNudge(lastRow, lastCol, newRow, newCol, saveState, color) {
 		var hor;
 		var type;
+		var counter;
 
-		//left nudge
+		// left nudge
 		if (lastRow == newRow && lastCol > newCol) {
 			hor = -1;
 			type = "hor";
 			console.log("here");
-			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
+			counter = this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol) * -1;
 		}
-		//right nudge
+		// right nudge
 		else if (lastRow == newRow && lastCol < newCol) {
 			hor = 1;
 			type = "hor";
 			console.log("here2");
-			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
+			counter = this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
 		}
-		//up nudge
+		// up nudge
 		else if (lastRow > newRow && lastCol == newCol) {
 			hor = -1;
 			type = "vert";
 			console.log("here3");
-			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
+			counter = this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol) * -1;
 		}
-		//down nudge
+		// down nudge
 		else if (lastRow < newRow && lastCol == newCol) {
 			hor = 1;
 			type = "vert";
 			console.log("here4");
-			this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
+			counter = this.makeNudgeCounter(hor, type, lastRow, lastCol, newRow, newCol);
+		}
+		console.log(saveState);
+		if (saveState) {
+			console.log("entered");
+			this.movie.newMove(color, lastRow + 1, lastCol + 1, newRow + 1, newCol + 1, counter, this.parser.board, this.player, type);
 		}
 	}
 
@@ -185,6 +187,8 @@ class Nudge extends CGFobject {
 			var firstRow = lastRow + hor * pieceCounter;
 			this.makeNudgeMoveVert(firstRow, newCol, pieces, pieces2, pieceCounter, hor);
 		}
+
+		return pieceCounter;
 	}
 
 	makeNudgeMoveHor(firstCol, newRow, pieces, pieces2, pieceCounter, hor) {
@@ -250,61 +254,57 @@ class Nudge extends CGFobject {
 
 		if (this.player == 3) {
 			console.log("hello3");
-			this.aiMove(this.board.blackVec, 'black', 'white');
+			this.aiMove(this.board.blackVec, 'black', this.parser.makeMoveAi('black', 'white'), 1);
+			this.secondAiMove(this.board.blackVec, 'black', this.parser.makeMoveAi('black', 'white'));
 			this.selectN = 0;
 			this.player++;
 		}
 	}
 
-	aiMove(pieces, color, other) {
-		var moves = this.parser.makeMoveAi(color, other);
+	aiMove(pieces, color, moves, saveState) {
 		var lastRow = moves[0] - 1;
 		var lastCol = moves[1] - 1;
 		var newRow = moves[2] - 1;
 		var newCol = moves[3] - 1;
-		console.dir(moves);
-
+		console.log("save state" + saveState);
 		if (this.hasPiece(newRow, newCol)) {
-			this.makeNudge(lastRow, lastCol, newRow, newCol);
+			this.makeNudge(lastRow, lastCol, newRow, newCol, saveState, color);
 			var nudge = 1;
-			this.movie.newMove(color, lastRow, lastCol, newRow, newCol, nudge, this.parser.board);
 		}
 		else {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == lastRow && pieces[i].posZ == lastCol) {
 					pieces[i].updatePosition(newRow, 1, newCol);
+					if (saveState) {
+						this.movie.newMove(color, lastRow + 1, lastCol + 1, newRow + 1, newCol + 1, nudge, this.parser.board, this.player);
+					}
 				}
 			}
-			var nudge = 0;
-			this.movie.newMove(color, lastRow, lastCol, newRow, newCol, nudge, this.parser.board);
 		}
+	}
 
-		if (this.parser.gameOver == 1) {
-			this.gameOver = true;
-			alert('Game Over!'); 
-		}
-
+	secondAiMove(pieces, color, moves) {
 		var lastRow2 = moves[4] - 1;
 		var lastCol2 = moves[5] - 1;
 		var newRow2 = moves[6] - 1;
 		var newCol2 = moves[7] - 1;
 
-		if (this.parser.gameOver != 1) {
-				
-			if (this.hasPiece(newRow2, newCol2)) {
-				this.makeNudge(lastRow2, lastCol2, newRow2, newCol2);
+		if (this.parser.gameOver == 1) {
+			this.gameOver = true;
+			console.log('end Over!');
+		}
+		else if (this.hasPiece(newRow2, newCol2)) {
+			this.makeNudge(lastRow2, lastCol2, newRow2, newCol2, 1, color);
+		}
+		else {
+			for (var i = 0; i < pieces.length; i++) {
+				if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
+					pieces[i].updatePosition(newRow2, 1, newCol2);
+					this.movie.newMove(color, lastRow2 + 1, lastCol2 + 1, newRow2 + 1, newCol2 + 1, 0, this.parser.board, this.player);
+				}
 			}
-			else {
-				for (var i = 0; i < pieces.length; i++) {
-					if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
-						pieces[i].updatePosition(newRow2, 1, newCol2);
-					}
-				}
-				this.movie.newMove(color, lastRow2, lastCol2, newRow2, newCol2);
-				}
 		}
 	}
-
 
 	hasPiece(row, col) {
 		var pieces = this.board.whiteVec;
@@ -331,15 +331,41 @@ class Nudge extends CGFobject {
 		console.log("select: " + this.selectN);
 		if (this.player == 1) {
 			console.log("hello2");
-			this.aiMove(this.board.whiteVec, 'white', 'black');
+			var moves = this.parser.makeMoveAi('white', 'black')
+			this.aiMove(this.board.whiteVec, 'white', moves, 1);
+			this.secondAiMove(this.board.whiteVec, 'white', moves);
 			this.player = 2;
 		}
 
 		if (this.player == 2) {
 			console.log("hello3");
-			this.aiMove(this.board.blackVec, 'black', 'white');
+			var moves = this.parser.makeMoveAi('black', 'white')
+			this.aiMove(this.board.blackVec, 'black', moves, 1);
+			this.secondAiMove(this.board.blackVec, 'black', moves);
 			this.player = 1;
 		}
+	}
+
+	undo() {
+		var moves = this.movie.lastMove();
+		if(moves == 0)
+		{
+			return;
+		}
+		var color = moves[4];
+		var pieces;
+
+		if (color == "white") {
+			pieces = this.board.whiteVec;
+		}
+		else {
+			pieces = this.board.blackVec;
+		}
+
+		this.aiMove(pieces, color, moves, 0);
+		this.parser.board = moves[5];
+		this.parser.previousBoard[6];
+		this.player = moves[7];
 	}
 
 	display() {

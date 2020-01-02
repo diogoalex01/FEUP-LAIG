@@ -64,7 +64,7 @@ class XMLscene extends CGFscene {
 
         this.last_time = time;
 
-        if (this.nudge.gameMode == 2) {
+        if (this.nudge.gameMode == 2 && !this.nudge.gameOver) {
             if (time % 5 == 0 && !this.nudge.gameOver) {
                 this.nudge.aIVsAI();
             }
@@ -179,11 +179,11 @@ class XMLscene extends CGFscene {
         this.nudge.updateGameDifficulty(this.selectedGameDifficulty);
     }
 
-    undoMovement = function undoMovement() {
-        this.nudge.movie.undo();
+    undoMovement() {
+        this.nudge.undo();
     }
 
-    startGame = function startGame() {
+    startGame() {
         this.start = true;
     }
 
