@@ -1,5 +1,5 @@
 <lxs>
-    <scene root="scene3" axis_length="5"/>
+    <scene root="scene" axis_length="5"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -443,7 +443,7 @@
                 <primitiveref id="plane" />
             </children>
         </component>
-        <component id="scene">
+        <component id="scene1">
             <transformation>
             </transformation>
             <materials>
@@ -516,15 +516,63 @@
                 <componentref id="leftPlane" />
             </children>
         </component>
-        <component id="boardTable1">
+        <component id="boardTable2">
             <transformation>
-                <translate x="0.5" y="-0.8" z="-0.1" />
-                <scale x="30" y="30" z="15" />
+                <translate x="0.5" y="5" z="-0.1" />
+                <scale x="28.5" y="15" z="14.5" />
             </transformation>
             <materials>
                 <material id="materialMetal" />
             </materials>
             <texture id="top" length_s="1" length_t="1" />
+            <children>
+                <componentref id="rectangleBottomRectCuboid" />
+                <componentref id="rectangleTopRectCuboid" />
+                <componentref id="rectangleRightRectCuboid" />
+                <componentref id="rectangleLeftRectCuboid" />
+                <componentref id="rectangleFrontRectCuboid" />
+                <componentref id="rectangleBackRectCuboid" />
+            </children>
+        </component>
+        <component id="pillow1">
+            <transformation>
+                <translate x="9" y="11" z="7" />
+                <scale x="5" y="8" z="6" />
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="black" length_s="1" length_t="1" />
+            <children>
+                <componentref id="rectangleBottomRectCuboid" />
+                <componentref id="rectangleTopRectCuboid" />
+                <componentref id="rectangleRightRectCuboid" />
+                <componentref id="rectangleLeftRectCuboid" />
+                <componentref id="rectangleFrontRectCuboid" />
+                <componentref id="rectangleBackRectCuboid" />
+            </children>
+        </component>
+        <component id="pillow2">
+            <transformation>
+                <translate x="0" y="0" z="-14" />
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="black" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pillow1" />
+            </children>
+        </component>
+        <component id="boardTable1">
+            <transformation>
+                <translate x="0.5" y="-0.8" z="-0.1" />
+                <scale x="30" y="10" z="15" />
+            </transformation>
+            <materials>
+                <material id="materialMetal" />
+            </materials>
+            <texture id="black" length_s="1" length_t="1" />
             <children>
                 <componentref id="rectangleBottomRectCuboid" />
                 <componentref id="rectangleTopRectCuboid" />
@@ -546,13 +594,16 @@
             <texture id="black" length_s="1" length_t="1" />
             <children>
                 <componentref id="boardTable1" />
+                <componentref id="boardTable2" />
+                <componentref id="pillow1" />
+                <componentref id="pillow2" />
                 <componentref id = "leg1"/>
                 <componentref id = "leg2"/>
                 <componentref id = "leg3"/>
                 <componentref id = "leg4"/>
             </children>
         </component>
-        <component id="scene2">
+        <component id="scene">
             <transformation>
             </transformation>
             <materials>
@@ -560,7 +611,7 @@
             </materials>
             <texture id="textureMetal" length_s="1" length_t="1" />
             <children>
-                <componentref id="table" />
+                <componentref id="table1" />
                 <componentref id="bed" />
                 <componentref id="cubeMap1" />
                 <componentref id="board" />
@@ -696,7 +747,6 @@
                 <componentref id="table3" />
                 <componentref id="table4" />
                 <componentref id="table5" />
-
             </children>
         </component>
         <component id="frontPlane2">
@@ -732,7 +782,7 @@
                 <componentref id="leftPlane" />
             </children>
         </component>
-        <component id="scene3">
+        <component id="scene">
             <transformation>
             </transformation>
             <materials>

@@ -39,6 +39,8 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(80);
 
         this.displayAxis = false;
+        this.allScenes = ['restaurant.xml', 'bedroom.xml', 'minimalistic.xml'];
+        this.selectedScene = this.allScenes[0];
         this.selectedGameMode = -1;
         this.gameModes = { 'Player vs Player': 0, 'Player vs AI': 1, 'AI vs AI': 2 };
         this.selectedGameDifficulty = 1;
@@ -47,6 +49,7 @@ class XMLscene extends CGFscene {
         this.time = 0;
         this.startingTime = 0;
         this.savedTurn = 0;
+        this.player = 1;
 
         this.cameraAngle = Math.PI;
     }
@@ -56,10 +59,24 @@ class XMLscene extends CGFscene {
             this.keyInput();
 
             var delta_time = time - this.last_time;
+            var whitePieces = this.nudge.board.whiteVec;
+            var blackPieces = this.nudge.board.blackVec;
 
-            for (var node in this.graph.vecNodes) {
-                if (this.graph.vecNodes[node].animation != null) {
-                    this.graph.vecNodes[node].animation.update(this.time / 1000);
+            for (var i = 0; i < whitePieces.length; i++) {
+                if (whitePieces[i].moving) {
+                    whitePieces[i].updateAnimation();
+                }
+
+                if (blackPieces[i].moving) {
+                    blackPieces[i].updateAnimation();
+                }
+
+                if (whitePieces[i].jumping) {
+                    whitePieces[i].float();
+                }
+
+                if (blackPieces[i].jumping) {
+                    blackPieces[i].float();
                 }
             }
 
@@ -80,23 +97,57 @@ class XMLscene extends CGFscene {
             this.nudge.gameMovie();
         }
 
-        if (this.nudge.gameMode == 2) {
-            if (turnTime != this.savedTurn && turnTime % 2 == 0 && !this.nudge.gameOver && this.start) {
+        if (this.nudge.gameMode == 1 && this.nudge.movement) {
+            if (turnTime != this.savedTurn && turnTime % 3 == 0 && this.nudge.parser.gameOver == 0 && this.start) {
                 this.savedTurn = turnTime;
-                this.nudge.aIVsAI();
+                if (this.player == 1) {
+                    this.nudge.aIVsAI('black');
+                    this.player = 2;
+                }
+                else if (this.player == 2) {
+                    this.nudge.secAIVsAI('black');
+                    this.nudge.selectN = 0;
+                    this.rotateCamera = true;
+                    this.nudge.player = 1;
+                    this.player = 1;
+                    this.nudge.movement = false;
+                }
             }
         }
 
-        if(this.rotateCamera){
+        if (this.nudge.gameMode == 2) {
+            if (turnTime != this.savedTurn && turnTime % 3 == 0 && !this.nudge.gameOver && this.start) {
+                this.savedTurn = turnTime;
+
+                if (this.player == 1) {
+                    this.nudge.aIVsAI('white');
+                    this.player = 2;
+                }
+                else if (this.player == 2) {
+                    this.nudge.secAIVsAI('white');
+                    this.player = 3;
+                }
+                else if (this.player == 3) {
+                    this.nudge.aIVsAI('black');
+                    this.player = 4;
+                }
+                else if (this.player == 4) {
+                    this.nudge.secAIVsAI('black');
+                    this.player = 1;
+                }
+            }
+        }
+
+        if (this.rotateCamera) {
             var deltaAngle = Math.PI * delta_time / 1000;
             this.cameraAngle -= deltaAngle;
-            if(this.cameraAngle < 0){
+            if (this.cameraAngle < 0) {
                 this.rotateCamera = false;
                 this.cameraAngle = Math.PI;
-                this.camera.orbit([0,1,0], 0);
+                this.camera.orbit([0, 1, 0], 0);
             }
-            else{
-                this.camera.orbit([0,1,0], deltaAngle);
+            else {
+                this.camera.orbit([0, 1, 0], deltaAngle);
             }
         }
     }
@@ -184,6 +235,7 @@ class XMLscene extends CGFscene {
 
         this.cameraIDs = Object.keys(this.graph.views);
         this.currentCamera = this.graph.defaultView;
+        this.interface.reset();
 
         this.interface.setUpCameras();
         this.interface.setUpGameModes();
@@ -193,6 +245,10 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
         this.setPickEnabled(true);
+    }
+
+    updateSelectedScene() {
+        this.selectedScene = this.allScenes[1];
     }
 
     updateAppliedCamera() {
@@ -216,6 +272,12 @@ class XMLscene extends CGFscene {
     startGame() {
         this.nudge.restartGame();
         this.start = true;
+        this.last_time = 0;
+        this.time = 0;
+        this.startingTime = 0;
+        this.savedTurn = 0;
+        this.player = 1;
+        this.cameraAngle = Math.PI;
     }
 
     playMovie() {
@@ -238,7 +300,7 @@ class XMLscene extends CGFscene {
     }
 
     logPicking() {
-        
+
         if (this.pickMode == false && this.start && this.nudge.gameMode != 2) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {

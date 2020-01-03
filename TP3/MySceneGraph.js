@@ -28,7 +28,7 @@ class MySceneGraph {
 
         this.vecNodes = [];
         this.vecKeyFrameAnimations = [];
-        this.idRoot = null;                    // The id of the root element.
+        this.idRoot = null; // The id of the root element.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -43,6 +43,26 @@ class MySceneGraph {
          * After the file is read, the reader calls onXMLReady on this object.
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
+        this.reader.open('scenes/' + filename, this);
+    }
+
+    changeScene(filename) {
+        this.loadedOk = null;
+
+        this.vecNodes = [];
+        this.loadedOk = false;
+        this.vecKeyFrameAnimations = [];
+        this.idRoot = null; // The id of the root element.
+
+        // File reading 
+        this.reader = new CGFXMLreader();
+
+        /*
+         * Read the contents of the xml file, and refer to this class for loading and error handlers.
+         * After the file is read, the reader calls onXMLReady on this object.
+         * If any error occurs, the reader calls onXMLError on this object, with an error message
+         */
+
         this.reader.open('scenes/' + filename, this);
     }
 
@@ -1513,7 +1533,8 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
         //To test the parsing/creation of the primitives, call the display function directly
 
-        this.processNode(this.idRoot, this.vecNodes[this.idRoot].currentMat, this.vecNodes[this.idRoot].texture,
-            this.vecNodes[this.idRoot].length_s, this.vecNodes[this.idRoot].length_t);
+        if (this.idRoot != undefined)
+            this.processNode(this.idRoot, this.vecNodes[this.idRoot].currentMat, this.vecNodes[this.idRoot].texture,
+                this.vecNodes[this.idRoot].length_s, this.vecNodes[this.idRoot].length_t);
     }
 }

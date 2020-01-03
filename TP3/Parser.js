@@ -26,13 +26,14 @@ class Parser extends CGFobject {
 	makeMoveAi(color, other) {
 		var req = 'ai(' + color + ',' + other + ',' + this.board + ',' + this.previousBoard + ',' + this.gameDifficulty + ')';
 		this.makeRequest(req);
+		console.log(req);
 		var moves = this.answerAi();
 		return moves;
 	}
 
 	answerAi() {
 		let ans = this.data;
-		//console.log(ans);
+		console.log(ans);
 		let i = 1, reply = [];
 
 		let currentRow1 = ans.substring(i, i + 1);
@@ -60,8 +61,8 @@ class Parser extends CGFobject {
 		reply.push(newColumn2);
 		i += 2;
 		this.gameOver = ans.substring(i, i + 1);
-		//console.log("GameOver: " + this.gameOver);
 		this.previousBoard = this.board;
+
 		let board = ans.match(/\[{2}.*\]{2}/)[0];
 		this.board = board.substring(0, board.length - 1);
 

@@ -18,7 +18,7 @@ class KeyframeAnimation extends Animation {
 	update(time) {
 		this.count++;
 		var maxim = 1000;
-
+		console.log('Updating animation');
 		if (time == 0) {
 			this.min = this.keyFrames[0];
 			this.max = this.keyFrames[0];

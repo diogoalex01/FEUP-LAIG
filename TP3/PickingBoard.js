@@ -21,8 +21,8 @@ class PickingBoard extends CGFobject {
 				for (var j = 0; j < 5; j++) {
 					this.scene.registerForPick(i * 5 + j, this.rectangle);
 					this.scene.pushMatrix();
-					this.scene.translate(-11.2 + 6 * i, 2, 11.8 - 6 * j);
-					this.scene.scale(5.5, 5.5, 5.5);
+					this.scene.translate(-11.5 + 6 * i, 1, 11.8 - 6 * j);
+					this.scene.scale(5.6, 5.6, 5.6);
 					this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 					this.rectangle.display();
 					this.scene.popMatrix();

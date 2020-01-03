@@ -13,6 +13,7 @@ class Nudge extends CGFobject {
 		this.gameMode; // 0 - P/P | 1- P/AI | 2 - AI/AI
 		this.scene = scene;
 		this.gameOver = false;
+		this.movement = false;
 		this.playMovie = 0;
 		this.movieIndex = 0;
 		this.movieStart = 0;
@@ -47,32 +48,26 @@ class Nudge extends CGFobject {
 
 	// Player vs Player
 	playerVsPlayer(id) {
-		console.log("player: " + this.player);
-		
 		if (this.player > 4) {
 			this.player = 1;
 		}
 
 		if (this.selectN == 0) {
-			console.log("first click");
 			this.firstClick(id);
 		}
 		else if (this.player <= 2) {
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
 			this.selectN = 0;
-			if(this.player == 3)
-			{
-				console.log("==3");
+
+			if (this.player == 3) {
 				this.scene.rotateCamera = true;
 			}
 		}
 		else if (this.player > 2) {
 			this.pieceMove(id, this.board.blackVec, 'black', 'white');
-			console.log("entrei");
 			this.selectN = 0;
-			if(this.player == 5)
-			{
-				console.log("==4");
+
+			if (this.player == 5) {
 				this.scene.rotateCamera = true;
 			}
 		}
@@ -82,10 +77,30 @@ class Nudge extends CGFobject {
 		this.selectN = 1;
 		this.row = Math.floor(id / 5);
 		this.col = id % 5;
+		var pieces = this.board.whiteVec;
+		var pieces2 = this.board.blackVec;
+
+		if (this.player <= 2) {
+			for (var i = 0; i < pieces.length; i++) {
+				if (pieces[i].posX == this.row && pieces[i].posZ == this.col) {
+					console.log("Y : " + pieces[i].posY);
+					pieces[i].jump();
+				}
+			}
+		}
+		else {
+			//console.log("no white");
+			for (var i = 0; i < pieces2.length; i++) {
+				if (pieces2[i].posX == this.row && pieces2[i].posZ == this.col) {
+					console.log("Y : " + pieces2[i].posY);
+					pieces2[i].jump();
+				}
+			}
+		}
+
 		console.log(id);
 		console.log("first click row", this.row);
 		console.log("first click col", this.col);
-
 	}
 
 	pieceMove(id, pieces, player, other) { // add to movie.js
@@ -94,12 +109,13 @@ class Nudge extends CGFobject {
 
 		for (var i = 0; i < pieces.length; i++) {
 			console.log("pox " + this.row);
-			console.log("poZ " +  this.col);
+			console.log("poZ " + this.col);
 			console.log("newR " + posX);
 			console.log("newC " + posZ);
 			if (pieces[i].posX == this.row && pieces[i].posZ == this.col) {
-				console.log("entrei!");
+				pieces[i].land();
 				this.parser.makeMove(this.row + 1, this.col + 1, posX + 1, posZ + 1, player, other);
+
 				if (this.parser.gameOver == 1) {
 					this.gameOver = true;
 					alert('Game Over!');
@@ -109,8 +125,7 @@ class Nudge extends CGFobject {
 					this.player++;
 				}
 				else if (this.parser.valid == 'yes') {
-
-					pieces[i].updatePosition(posX, 1, posZ);
+					pieces[i].moveTo(posX, 1, posZ);
 					this.movie.newMove(player, this.row + 1, this.col + 1, posX + 1, posZ + 1, 0, this.parser.board, this.player);
 					this.player++;
 				}
@@ -201,11 +216,11 @@ class Nudge extends CGFobject {
 		for (var j = 0; j <= pieceCounter; j++) {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == newRow && pieces[i].posZ == firstCol) {
-					pieces[i].updatePosition(newRow, 1, firstCol + hor);
+					pieces[i].moveTo(newRow, 1, firstCol + hor);
 				}
 
 				if (pieces2[i].posX == newRow && pieces2[i].posZ == firstCol) {
-					pieces2[i].updatePosition(newRow, 1, firstCol + hor);
+					pieces2[i].moveTo(newRow, 1, firstCol + hor);
 				}
 			}
 
@@ -217,11 +232,11 @@ class Nudge extends CGFobject {
 		for (var j = 0; j <= pieceCounter; j++) {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == firstRow && pieces[i].posZ == newCol) {
-					pieces[i].updatePosition(firstRow + hor, 1, newCol);
+					pieces[i].moveTo(firstRow + hor, 1, newCol);
 				}
 
 				if (pieces2[i].posX == firstRow && pieces2[i].posZ == newCol) {
-					pieces2[i].updatePosition(firstRow + hor, 1, newCol);
+					pieces2[i].moveTo(firstRow + hor, 1, newCol);
 				}
 			}
 
@@ -229,12 +244,12 @@ class Nudge extends CGFobject {
 		}
 	}
 
+	sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	// Player vs AI
 	playerVsAI(id) {
-		if (this.player > 3) {
-			this.player = 1;
-		}
-
 		if (this.selectN == 0) {
 			this.firstClick(id);
 		}
@@ -244,18 +259,14 @@ class Nudge extends CGFobject {
 			}
 
 			this.pieceMove(id, this.board.whiteVec, 'white', 'black');
-			if(this.player == 2)
-			{
+
+			if (this.player == 3) {
 				this.scene.rotateCamera = true;
 			}
 		}
 
 		if (this.player == 3) {
-			this.aiMove(this.board.blackVec, 'black', this.parser.makeMoveAi('black', 'white'), 1);
-			this.secondAiMove(this.board.blackVec, 'black', this.parser.makeMoveAi('black', 'white'));
-			this.selectN = 0;
-			this.player++;
-			this.scene.rotateCamera = true;
+			this.movement = true;
 		}
 	}
 
@@ -264,19 +275,19 @@ class Nudge extends CGFobject {
 		var lastCol = moves[1] - 1;
 		var newRow = moves[2] - 1;
 		var newCol = moves[3] - 1;
-
+		console.log("lastRow: " + lastRow);
+		console.log("lastCol: " + lastCol);
+		console.log("newRow: " + newRow);
+		console.log("newCol: " + newCol);
 		if (this.hasPiece(newRow, newCol)) {
 			this.makeNudge(lastRow, lastCol, newRow, newCol, saveState, color);
 			var nudge = 1;
 		}
 		else {
 			for (var i = 0; i < pieces.length; i++) {
-				//console.log("posX: " + pieces[i].posX);
-				//console.log("lastRow: " + lastRow);
-				//console.log("posZ: " + pieces[i].posZ);
-				//console.log("lastCol: " + lastCol);
+
 				if (pieces[i].posX == lastRow && pieces[i].posZ == lastCol) {
-					pieces[i].updatePosition(newRow, 1, newCol);
+					pieces[i].moveTo(newRow, 1, newCol);
 					if (saveState) {
 						this.movie.newMove(color, lastRow + 1, lastCol + 1, newRow + 1, newCol + 1, nudge, this.parser.board, this.player);
 					}
@@ -290,7 +301,10 @@ class Nudge extends CGFobject {
 		var lastCol2 = moves[5] - 1;
 		var newRow2 = moves[6] - 1;
 		var newCol2 = moves[7] - 1;
-
+		console.log("lastRow: " + lastRow2);
+		console.log("lastCol: " + lastCol2);
+		console.log("newRow: " + newRow2);
+		console.log("newCol: " + newCol2);
 		if (this.parser.gameOver == 1) {
 			this.gameOver = true;
 			//console.log('end Over!');
@@ -301,7 +315,7 @@ class Nudge extends CGFobject {
 		else {
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].posX == lastRow2 && pieces[i].posZ == lastCol2) {
-					pieces[i].updatePosition(newRow2, 1, newCol2);
+					pieces[i].moveTo(newRow2, 1, newCol2);
 					this.movie.newMove(color, lastRow2 + 1, lastCol2 + 1, newRow2 + 1, newCol2 + 1, 0, this.parser.board, this.player);
 				}
 			}
@@ -323,25 +337,31 @@ class Nudge extends CGFobject {
 				return true;
 			}
 		}
-		//console.log("no black");
+
 		return false;
 	}
 
 	// AI vs AI
-	aIVsAI() {
-		//console.log("player: " + this.player);
+	aIVsAI(color) {
 		//console.log("select: " + this.selectN);
-		if (this.player == 1) {
-			var moves = this.parser.makeMoveAi('white', 'black');
-			this.aiMove(this.board.whiteVec, 'white', moves, 1);
-			this.secondAiMove(this.board.whiteVec, 'white', moves);
+		if (color == "white") {
+			this.moves = this.parser.makeMoveAi('white', 'black');
+			this.aiMove(this.board.whiteVec, 'white', this.moves, 1);
+		}
+		else {
+			this.moves = this.parser.makeMoveAi('black', 'white')
+			this.aiMove(this.board.blackVec, 'black', this.moves, 1);
+		}
+	}
+
+	secAIVsAI(color) {
+		//console.log("select: " + this.selectN);
+		if (color == "white") {
+			this.secondAiMove(this.board.whiteVec, 'white', this.moves);
 			this.player = 2;
 		}
-
-		if (this.player == 2) {
-			var moves = this.parser.makeMoveAi('black', 'white')
-			this.aiMove(this.board.blackVec, 'black', moves, 1);
-			this.secondAiMove(this.board.blackVec, 'black', moves);
+		else {
+			this.secondAiMove(this.board.blackVec, 'black', this.moves);
 			this.player = 1;
 		}
 	}
@@ -349,7 +369,7 @@ class Nudge extends CGFobject {
 	undo() {
 		var moves = this.movie.lastMove();
 
-		if (moves == 0) {
+		if (moves == 0 || this.movieStart == 1) {
 			return;
 		}
 
