@@ -782,7 +782,7 @@
                 <componentref id="leftPlane" />
             </children>
         </component>
-        <component id="scene">
+        <component id="scene1">
             <transformation>
             </transformation>
             <materials>

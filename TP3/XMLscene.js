@@ -55,12 +55,14 @@ class XMLscene extends CGFscene {
     }
 
     update(time) {
+        console.log(this.defaultCamera.position);
         if (this.sceneInited) {
             this.keyInput();
 
             var delta_time = time - this.last_time;
             var whitePieces = this.nudge.board.whiteVec;
             var blackPieces = this.nudge.board.blackVec;
+            
 
             for (var i = 0; i < whitePieces.length; i++) {
                 if (whitePieces[i].moving) {
@@ -91,7 +93,11 @@ class XMLscene extends CGFscene {
 
         this.elapsedTime = time - this.startingTime;
         let turnTime = Math.round(this.elapsedTime / 1000);
+        if(this.start){
+            console.log("Elapsed time: " + Math.floor(this.elapsedTime/10));
+            document.getElementById("time").innerText = "Elapsed time: " + Math.round(this.elapsedTime/1000);
 
+        }
         if (turnTime != this.savedTurn && turnTime % 2 == 0 && this.nudge.playMovie) {
             this.savedTurn = turnTime;
             this.nudge.gameMovie();
@@ -139,15 +145,35 @@ class XMLscene extends CGFscene {
         }
 
         if (this.rotateCamera) {
-            var deltaAngle = Math.PI * delta_time / 1000;
-            this.cameraAngle -= deltaAngle;
+            console.log(this.cameraAngle);
+            if(this.cameraAngle == Math.PI){
+                this.whiteCamera = new CGFcamera(Math.PI/4, 0.1, 500, vec3.fromValues(25, 45, 0), vec3.fromValues(0, 0, 0));
+                this.blackCamera = new CGFcamera(Math.PI/4, 0.1, 500, vec3.fromValues(-25, 45, 0), vec3.fromValues(0, 0, 0));
+                if(this.nudge.currentP == 2){
+                    this.defaultCamera =this.whiteCamera;
+                }
+                else if(this.nudge.currentP == 1){
+                    this.defaultCamera = this.blackCamera;
+                }
+            }
+            if(this.deltaAngle == null){
+                this.deltaAngle = Math.PI/4 * delta_time / 1000;
+            }
+            this.cameraAngle -= this.deltaAngle;
             if (this.cameraAngle < 0) {
                 this.rotateCamera = false;
                 this.cameraAngle = Math.PI;
-                this.camera.orbit([0, 1, 0], 0);
+                if(this.nudge.currentP == 1){
+                    this.defaultCamera =this.whiteCamera;
+                    console.log(this.camera);
+                }
+                else if(this.nudge.currentP == 2){
+                    this.defaultCamera =this.blackCamera;
+                    console.log(this.camera);
+                }
             }
             else {
-                this.camera.orbit([0, 1, 0], deltaAngle);
+                this.camera.orbit([0, 1, 0], this.deltaAngle);
             }
         }
     }
