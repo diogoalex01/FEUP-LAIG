@@ -39,7 +39,7 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(80);
 
         this.displayAxis = false;
-        this.allScenes = ['restaurant.xml', 'bedroom.xml', 'minimalistic.xml'];
+        this.allScenes = ['restaurant', 'bedroom', 'minimalistic'];
         this.selectedScene = this.allScenes[0];
         this.selectedGameMode = -1;
         this.gameModes = { 'Player vs Player': 0, 'Player vs AI': 1, 'AI vs AI': 2 };

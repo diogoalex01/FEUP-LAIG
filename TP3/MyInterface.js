@@ -29,7 +29,7 @@ class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'cameraRotation').name('Camera Rotation');
         //Dropdown for scenes
-        this.gui.add(this.scene, 'selectedScene', this.scene.allScenes).name('Scene').onChange(() => { this.scene.graph.changeScene(this.scene.selectedScene) });
+        this.gui.add(this.scene, 'selectedScene', this.scene.allScenes).name('Scene').onChange(() => { this.scene.graph.changeScene(this.scene.selectedScene + '.xml') });
 
         return true;
     }
