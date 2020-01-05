@@ -32,6 +32,7 @@ class MyPiece extends CGFobject {
 
 	moveTo(newX, newY, newZ) {
 		this.moving = true;
+		this.scene.animation = true;
 		this.jumping = false;
 		this.newX = newX;
 		this.newY = newY;
@@ -76,6 +77,7 @@ class MyPiece extends CGFobject {
 
 		if (Math.abs(this.posX - this.newX) < 0.1 && Math.abs(this.posY - this.newY) < 0.1 && Math.abs(this.posZ - this.newZ) < 0.1) {
 			this.moving = false;
+			this.scene.animation = false;
 			this.posX = this.newX;
 			this.posY = this.newY;
 			this.posZ = this.newZ;

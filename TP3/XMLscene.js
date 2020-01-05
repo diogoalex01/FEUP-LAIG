@@ -48,6 +48,8 @@ class XMLscene extends CGFscene {
         this.last_time = 0;
         this.time = 0;
         this.startingTime = 0;
+        this.cameraRotation= true;
+        this.animation = false;
         // this.elapsedTime2 = 0;
         this.savedTurn = 0;
         // this.savedTurn2 = 0;
@@ -130,9 +132,8 @@ class XMLscene extends CGFscene {
 
         //let turnTime2 = Math.round(this.elapsedTime2 / 1000);
 
-        if (this.nudge.gameMode == 1 && this.nudge.movement) {
+        if (this.nudge.gameMode == 1 && this.nudge.movement && !this.animation) {
             //console.log("turn time1: " + turnTime2);
-
             // if (this.waitTime == 0) {
             //     console.log('hello');
             //     this.waitTime = time;
@@ -140,16 +141,13 @@ class XMLscene extends CGFscene {
             // console.log("wait: " + this.waitTime);
             // this.elapsedTime2 = time - this.waitTime;
             // console.log("elapsed: " + this.elapsedTime2);
-
-            if (turnTime != this.savedTurn2 && turnTime % 5 == 0  && this.nudge.gameOver == 0 && this.start) {
+            if (turnTime != this.savedTurn && turnTime % 3 == 0  && this.nudge.gameOver == 0 && this.start) {
                 //console.log("turn time2: " + turnTime2);
                 if (this.nudge.aiPlayer == 1) {
-                    console.log("entrei no 1");
                     this.nudge.aIVsAI('black');
                     this.nudge.aiPlayer = 2;
                 }
                 else if (this.nudge.aiPlayer == 2) {
-                    console.log("entrei no 2");
                     this.nudge.secAIVsAI('black');
                     this.nudge.selectN = 0;
                     this.nudge.player = 1;
@@ -157,6 +155,7 @@ class XMLscene extends CGFscene {
                     this.nudge.movement = false;
                 }
             }
+                        this.savedTurn = turnTime;
         }
 
         if (this.nudge.gameMode == 2) {
@@ -181,7 +180,7 @@ class XMLscene extends CGFscene {
             }
         }
 
-        if (this.rotateCamera) {
+        if (this.rotateCamera && this.cameraRotation) {
             console.log("player:" + this.nudge.currentP);
             if (this.cameraAngle == Math.PI) {
                 this.whiteCamera = new CGFcamera(Math.PI / 4, 0.1, 500, vec3.fromValues(25, 45, 0), vec3.fromValues(0, 0, 0));

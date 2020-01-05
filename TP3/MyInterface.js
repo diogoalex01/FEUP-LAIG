@@ -26,6 +26,8 @@ class MyInterface extends CGFinterface {
 
         //Checkbox element in GUI
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
+
+        this.gui.add(this.scene, 'cameraRotation').name('Camera Rotation');
         //Dropdown for scenes
         this.gui.add(this.scene, 'selectedScene', this.scene.allScenes).name('Scene').onChange(() => { this.scene.graph.changeScene(this.scene.selectedScene) });
 
