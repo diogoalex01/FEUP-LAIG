@@ -18,20 +18,13 @@ class KeyframeAnimation extends Animation {
 	update(time) {
 		this.count++;
 		var maxim = 1000;
-		//console.log(' counter ' + this.count);
 
 		if (time == 0) {
 			this.min = this.keyFrames[0];
 			this.max = this.keyFrames[0];
 		}
-		//console.log('time = ' + time);
-		this.animation_matrix = mat4.create();
 
-		//if (this.max != null) {
-		//console.log(time);
-		//}
-		//console.log(this.keyFrames.length);
-		//console.log(time);
+		this.animation_matrix = mat4.create();
 
 		for (var i = 0; i < this.keyFrames.length; i++) {
 
@@ -82,18 +75,9 @@ class KeyframeAnimation extends Animation {
 		var ratioY = Math.pow(this.max.scale[1] / this.min.scale[1], 1.0 / ((this.max.instant - this.min.instant) / 0.08));
 		var ratioZ = Math.pow(this.max.scale[2] / this.min.scale[2], 1.0 / ((this.max.instant - this.min.instant) / 0.08));
 
-		//console.log('ratio ' + ratioX);
-		//console.log('nr iter ' + ((this.max.instant - this.min.instant) / 0.08));
-
 		this.scaleM[0] *= ratioX;
 		this.scaleM[1] *= ratioY;
 		this.scaleM[2] *= ratioZ;
-
-		//console.log('SCALE ' + this.scaleM[0]);
-
-		//scaleM[0] = this.min.scale[0] + (this.max.scale[0] - this.min.scale[0]) * (time - this.min.instant) / (this.max.instant - this.min.instant);
-		//scaleM[1] = this.min.scale[1] + (this.max.scale[1] - this.min.scale[1]) * (time - this.min.instant) / (this.max.instant - this.min.instant);
-		//scaleM[2] = this.min.scale[2] + (this.max.scale[2] - this.min.scale[2]) * (time - this.min.instant) / (this.max.instant - this.min.instant);
 
 		this.animation_matrix = mat4.scale(this.animation_matrix, this.animation_matrix, this.scaleM);
 	}

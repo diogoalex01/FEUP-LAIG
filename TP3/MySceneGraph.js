@@ -736,9 +736,6 @@ class MySceneGraph {
 
             grandChildren = children[i].children;
 
-            //console.log(animationID);
-            //console.dir(grandChildren);
-
             if (grandChildren[0].nodeName != "keyframe") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
                 continue;
@@ -821,7 +818,7 @@ class MySceneGraph {
 
                 keyFrameAnimation.keyFrames.push(keyFrame);
             }
-            //console.log(keyFrameAnimation.keyFrames);
+
             this.vecKeyFrameAnimations[animationID] = keyFrameAnimation;
         }
 
@@ -1281,7 +1278,6 @@ class MySceneGraph {
 
             node.texture = this.reader.getString(grandChildren[textureIndex], 'id');
 
-            //console.log(grandChildren[textureIndex].id);
             if (grandChildren[textureIndex].id != 'none' && grandChildren[textureIndex].id != 'inherit') {
                 node.length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
                 node.length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');

@@ -48,14 +48,10 @@ class XMLscene extends CGFscene {
         this.last_time = 0;
         this.time = 0;
         this.startingTime = 0;
-        this.cameraRotation= true;
+        this.cameraRotation = true;
         this.animation = false;
-        // this.elapsedTime2 = 0;
         this.savedTurn = 0;
-        // this.savedTurn2 = 0;
-        // this.waitTime = 0;
         this.delta_time = 0;
-
         this.cameraAngle = Math.PI;
     }
 
@@ -95,6 +91,7 @@ class XMLscene extends CGFscene {
         this.last_time = time;
 
         if (this.startingTime == 0 && this.start) {
+            this.updateGameDifficulty();
             this.startingTime = time;
         }
 
@@ -130,19 +127,8 @@ class XMLscene extends CGFscene {
             this.nudge.gameMovie();
         }
 
-        //let turnTime2 = Math.round(this.elapsedTime2 / 1000);
-
         if (this.nudge.gameMode == 1 && this.nudge.movement && !this.animation) {
-            //console.log("turn time1: " + turnTime2);
-            // if (this.waitTime == 0) {
-            //     console.log('hello');
-            //     this.waitTime = time;
-            // }
-            // console.log("wait: " + this.waitTime);
-            // this.elapsedTime2 = time - this.waitTime;
-            // console.log("elapsed: " + this.elapsedTime2);
-            if (turnTime != this.savedTurn && turnTime % 3 == 0  && this.nudge.gameOver == 0 && this.start) {
-                //console.log("turn time2: " + turnTime2);
+            if (turnTime != this.savedTurn && turnTime % 3 == 0 && this.nudge.gameOver == 0 && this.start) {
                 if (this.nudge.aiPlayer == 1) {
                     this.nudge.aIVsAI('black');
                     this.nudge.aiPlayer = 2;
@@ -155,7 +141,8 @@ class XMLscene extends CGFscene {
                     this.nudge.movement = false;
                 }
             }
-                        this.savedTurn = turnTime;
+
+            this.savedTurn = turnTime;
         }
 
         if (this.nudge.gameMode == 2) {
@@ -263,6 +250,7 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
+
                 if (light[0])
                     this.lights[i].enable();
                 else {

@@ -13,7 +13,7 @@ class Parser extends CGFobject {
 		this.gameOver;
 		this.valid;
 		this.nudge;
-		this.gameDifficulty;
+		this.gameDifficulty = 1;
 	}
 
 	makeMove(lastRow, lastCol, newRow, newCol, player, other) {
