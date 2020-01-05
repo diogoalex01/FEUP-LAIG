@@ -36,9 +36,9 @@ class MyPiece extends CGFobject {
 		this.newX = newX;
 		this.newY = newY;
 		this.newZ = newZ;
-		this.xInc = (this.newX - this.posX) / 20;
-		this.yInc = (this.newY - this.posY) / 20;
-		this.zInc = (this.newZ - this.posZ) / 20;
+		this.xInc = (this.newX - this.posX) / 10;
+		this.yInc = (this.newY - this.posY) / 10;
+		this.zInc = (this.newZ - this.posZ) / 10;
 	}
 
 	jump() {
@@ -48,14 +48,13 @@ class MyPiece extends CGFobject {
 		this.jumpHeight = this.posY + 3;
 	}
 
-	land(){
+	land() {
 		this.jumping = false;
 		this.posY = 1;
 	}
 
 	float() {
 		this.posY += this.jumpVel;
-		console.log("Floating: " + this.posY);
 		if (this.jumpVel > 0 && Math.abs(this.posY - this.jumpHeight) < 0.1) {
 			this.jumpVel *= -1;
 		}

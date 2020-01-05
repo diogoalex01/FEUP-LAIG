@@ -16,7 +16,6 @@ class MyCylinder extends CGFobject {
 	}
 
 	initBuffers() {
-
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];

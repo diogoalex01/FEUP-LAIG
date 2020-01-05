@@ -35,7 +35,6 @@ class Parser extends CGFobject {
 		let ans = this.data;
 		console.log(ans);
 		let i = 1, reply = [];
-
 		let currentRow1 = ans.substring(i, i + 1);
 		reply.push(currentRow1);
 		i += 2;

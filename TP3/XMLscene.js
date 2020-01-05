@@ -48,21 +48,26 @@ class XMLscene extends CGFscene {
         this.last_time = 0;
         this.time = 0;
         this.startingTime = 0;
+        // this.elapsedTime2 = 0;
         this.savedTurn = 0;
-        this.player = 1;
+        // this.savedTurn2 = 0;
+        // this.waitTime = 0;
+        this.delta_time = 0;
 
         this.cameraAngle = Math.PI;
     }
 
     update(time) {
-        console.log(this.defaultCamera.position);
         if (this.sceneInited) {
             this.keyInput();
 
-            var delta_time = time - this.last_time;
+            if (this.last_time == 0) {
+                this.last_time = time;
+            }
+
+            this.delta_time = time - this.last_time;
             var whitePieces = this.nudge.board.whiteVec;
             var blackPieces = this.nudge.board.blackVec;
-            
 
             for (var i = 0; i < whitePieces.length; i++) {
                 if (whitePieces[i].moving) {
@@ -82,7 +87,7 @@ class XMLscene extends CGFscene {
                 }
             }
 
-            this.time += delta_time;
+            this.time += this.delta_time;
         }
 
         this.last_time = time;
@@ -92,30 +97,63 @@ class XMLscene extends CGFscene {
         }
 
         this.elapsedTime = time - this.startingTime;
-        let turnTime = Math.round(this.elapsedTime / 1000);
-        if(this.start){
-            console.log("Elapsed time: " + Math.floor(this.elapsedTime/10));
-            document.getElementById("time").innerText = "Elapsed time: " + Math.round(this.elapsedTime/1000);
 
+        let turnTime = Math.round(this.elapsedTime / 1000);
+        if (this.start && !this.nudge.gameOver && this.nudge.movieStart == 0) {
+            this.nudge.timesUp -= (this.delta_time / 1000);
+            if (!this.nudge.gameOver) {
+                document.getElementById("time").innerText = "Elapsed time: " + Math.round(this.elapsedTime / 1000);
+            }
+
+            if (this.nudge.timesUp < 0.4) {
+                this.nudge.parser.gameOver = 1;
+                this.nudge.gameOver = true;
+                if (this.nudge.currentP == 1) {
+                    this.nudge.updateScore('black');
+                }
+                else {
+                    this.nudge.updateScore('white');
+                }
+            }
+            else if (this.nudge.currentP == 1) {
+                document.getElementById("player").innerText = "Player White: " + Math.round(this.nudge.timesUp);
+            }
+            else {
+                document.getElementById("player").innerText = "Player Black: " + Math.round(this.nudge.timesUp);
+            }
         }
+
         if (turnTime != this.savedTurn && turnTime % 2 == 0 && this.nudge.playMovie) {
             this.savedTurn = turnTime;
             this.nudge.gameMovie();
         }
 
+        //let turnTime2 = Math.round(this.elapsedTime2 / 1000);
+
         if (this.nudge.gameMode == 1 && this.nudge.movement) {
-            if (turnTime != this.savedTurn && turnTime % 3 == 0 && this.nudge.parser.gameOver == 0 && this.start) {
-                this.savedTurn = turnTime;
-                if (this.player == 1) {
+            //console.log("turn time1: " + turnTime2);
+
+            // if (this.waitTime == 0) {
+            //     console.log('hello');
+            //     this.waitTime = time;
+            // }
+            // console.log("wait: " + this.waitTime);
+            // this.elapsedTime2 = time - this.waitTime;
+            // console.log("elapsed: " + this.elapsedTime2);
+
+            if (turnTime != this.savedTurn2 && turnTime % 5 == 0  && this.nudge.gameOver == 0 && this.start) {
+                //console.log("turn time2: " + turnTime2);
+                if (this.nudge.aiPlayer == 1) {
+                    console.log("entrei no 1");
                     this.nudge.aIVsAI('black');
-                    this.player = 2;
+                    this.nudge.aiPlayer = 2;
                 }
-                else if (this.player == 2) {
+                else if (this.nudge.aiPlayer == 2) {
+                    console.log("entrei no 2");
                     this.nudge.secAIVsAI('black');
                     this.nudge.selectN = 0;
-                    this.rotateCamera = true;
                     this.nudge.player = 1;
-                    this.player = 1;
+                    this.nudge.aiPlayer = 1;
                     this.nudge.movement = false;
                 }
             }
@@ -124,52 +162,53 @@ class XMLscene extends CGFscene {
         if (this.nudge.gameMode == 2) {
             if (turnTime != this.savedTurn && turnTime % 3 == 0 && !this.nudge.gameOver && this.start) {
                 this.savedTurn = turnTime;
-
-                if (this.player == 1) {
+                if (this.nudge.aiPlayer == 1) {
                     this.nudge.aIVsAI('white');
-                    this.player = 2;
+                    this.nudge.aiPlayer = 2;
                 }
-                else if (this.player == 2) {
+                else if (this.nudge.aiPlayer == 2) {
                     this.nudge.secAIVsAI('white');
-                    this.player = 3;
+                    this.nudge.aiPlayer = 3;
                 }
-                else if (this.player == 3) {
+                else if (this.nudge.aiPlayer == 3) {
                     this.nudge.aIVsAI('black');
-                    this.player = 4;
+                    this.nudge.aiPlayer = 4;
                 }
-                else if (this.player == 4) {
+                else if (this.nudge.aiPlayer == 4) {
                     this.nudge.secAIVsAI('black');
-                    this.player = 1;
+                    this.nudge.aiPlayer = 1;
                 }
             }
         }
 
         if (this.rotateCamera) {
-            console.log(this.cameraAngle);
-            if(this.cameraAngle == Math.PI){
-                this.whiteCamera = new CGFcamera(Math.PI/4, 0.1, 500, vec3.fromValues(25, 45, 0), vec3.fromValues(0, 0, 0));
-                this.blackCamera = new CGFcamera(Math.PI/4, 0.1, 500, vec3.fromValues(-25, 45, 0), vec3.fromValues(0, 0, 0));
-                if(this.nudge.currentP == 2){
-                    this.defaultCamera =this.whiteCamera;
-                }
-                else if(this.nudge.currentP == 1){
+            console.log("player:" + this.nudge.currentP);
+            if (this.cameraAngle == Math.PI) {
+                this.whiteCamera = new CGFcamera(Math.PI / 4, 0.1, 500, vec3.fromValues(25, 45, 0), vec3.fromValues(0, 0, 0));
+                this.blackCamera = new CGFcamera(Math.PI / 4, 0.1, 500, vec3.fromValues(-25, 45, 0), vec3.fromValues(0, 0, 0));
+                if (this.nudge.currentP == 2) {
+
                     this.defaultCamera = this.blackCamera;
                 }
+                else if (this.nudge.currentP == 1) {
+
+                    this.defaultCamera = this.whiteCamera;
+                }
             }
-            if(this.deltaAngle == null){
-                this.deltaAngle = Math.PI/4 * delta_time / 1000;
+
+            if (this.deltaAngle == null) {
+                this.deltaAngle = Math.PI / 4 * this.delta_time / 1000;
             }
+
             this.cameraAngle -= this.deltaAngle;
             if (this.cameraAngle < 0) {
                 this.rotateCamera = false;
                 this.cameraAngle = Math.PI;
-                if(this.nudge.currentP == 1){
-                    this.defaultCamera =this.whiteCamera;
-                    console.log(this.camera);
+                if (this.nudge.currentP == 1) {
+                    this.defaultCamera = this.blackCamera;
                 }
-                else if(this.nudge.currentP == 2){
-                    this.defaultCamera =this.blackCamera;
-                    console.log(this.camera);
+                else if (this.nudge.currentP == 2) {
+                    this.defaultCamera = this.whiteCamera;
                 }
             }
             else {
@@ -195,8 +234,8 @@ class XMLscene extends CGFscene {
 
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
-            if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
+            if (i >= 8) // Only eight lights allowed by WebGL.
+                break;
 
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
@@ -270,6 +309,7 @@ class XMLscene extends CGFscene {
         this.interface.setUpLights(this.graph.lights);
 
         this.sceneInited = true;
+
         this.setPickEnabled(true);
     }
 
@@ -302,7 +342,10 @@ class XMLscene extends CGFscene {
         this.time = 0;
         this.startingTime = 0;
         this.savedTurn = 0;
-        this.player = 1;
+        this.waitTime = 0;
+        this.elapsedTime2 = 0;
+        this.savedTurn2 = 0;
+        this.nudge.aiPlayer = 1;
         this.cameraAngle = Math.PI;
     }
 
@@ -326,14 +369,15 @@ class XMLscene extends CGFscene {
     }
 
     logPicking() {
-
         if (this.pickMode == false && this.start && this.nudge.gameMode != 2) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];
                     if (obj) {
                         var customId = this.pickResults[i][1];
-                        this.nudge.checkPick(customId);
+                        if (!this.nudge.gameOver) {
+                            this.nudge.checkPick(customId);
+                        }
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                     }
                 }
