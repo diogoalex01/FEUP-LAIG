@@ -1,5 +1,5 @@
 /**
- * Parse
+ * Prolog Parser
  * @constructor
  * @param scene - Reference to MyScene object
  */

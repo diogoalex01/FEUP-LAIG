@@ -168,7 +168,7 @@ class XMLscene extends CGFscene {
         }
 
         if (this.rotateCamera && this.cameraRotation) {
-            console.log("player:" + this.nudge.currentP);
+            //console.log("player:" + this.nudge.currentP);
             if (this.cameraAngle == Math.PI) {
                 this.whiteCamera = new CGFcamera(Math.PI / 4, 0.1, 500, vec3.fromValues(25, 45, 0), vec3.fromValues(0, 0, 0));
                 this.blackCamera = new CGFcamera(Math.PI / 4, 0.1, 500, vec3.fromValues(-25, 45, 0), vec3.fromValues(0, 0, 0));

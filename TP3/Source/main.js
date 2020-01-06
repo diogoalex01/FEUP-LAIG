@@ -11,7 +11,19 @@ function getUrlVars() {
     return vars;
 }
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyRectangle.js', 'MyTriangle.js', 'MyCylinder.js', 'MySphere.js', 'MyTorus.js', 'MyNode.js', 'Animation.js', 'KeyframeAnimation.js', 'KeyFrame.js', 'Plane.js', 'Patch.js', 'Cylinder2.js', 'PickingBoard.js', 'MyPiece.js', 'Nudge.js', 'Board.js', 'Parser.js', 'Move.js', 'Movie.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js',
+    './Parser/MySceneGraph.js', 'MyInterface.js',
+    './Primitives/MyRectangle.js', './Primitives/MyTriangle.js',
+    './Primitives/MyCylinder.js', './Primitives/MySphere.js',
+    './Primitives/MyTorus.js', './Parser/MyNode.js',
+    './Parser/Animation.js', './Parser/KeyframeAnimation.js',
+    './Parser/KeyFrame.js', './Primitives/Plane.js',
+    './Primitives/Patch.js', './Primitives/Cylinder2.js',
+    './Nudge/PickingBoard.js', './Nudge/MyPiece.js',
+    './Nudge/Nudge.js', './Nudge/Board.js',
+    'PrologParser.js', './Nudge/Move.js',
+    './Nudge/Movie.js',
+
     main = function () {
         // Standard application, scene and interface setup
         var app = new CGFapplication(document.body);

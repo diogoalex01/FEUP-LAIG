@@ -125,7 +125,6 @@ class Nudge extends CGFobject {
 				if (this.parser.gameOver == 1) {
 					this.gameOver = true;
 					this.updateScore(player);
-					alert('Game Over!');
 				}
 				else if (this.parser.nudge == 'yes') {
 					this.makeNudge(this.row, this.col, posX, posZ, 1, player);

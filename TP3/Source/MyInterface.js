@@ -35,7 +35,6 @@ class MyInterface extends CGFinterface {
     }
 
     reset() {
-        //alert("lightsssssss:" + this.lights);
         if (this.lights != undefined) { this.gui.removeFolder(this.lights); }
         if (this.camera != undefined) { this.gui.remove(this.camera); }
         if (this.gameMode != undefined) { this.gui.remove(this.gameMode); }
